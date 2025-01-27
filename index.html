@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Funky Web Page</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: #fff;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: gradientShift 5s infinite;
+        }
+        h1 {
+            font-size: 4em;
+            text-shadow: 2px 2px #000;
+            animation: bounce 2s infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Funky Page!</h1>
+</body>
+</html>
