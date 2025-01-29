@@ -1,5 +1,5 @@
 <?php
-$config = include 'config.php';
+$config = include_once 'config.php';
 
 $host = $config['DB_HOST'];
 $db   = $config['DB_NAME'];
