@@ -74,6 +74,8 @@
         }
 
         .hero {
+            position: relative;
+            overflow: hidden;
             padding: 160px 24px 80px;
             text-align: center;
             max-width: 1200px;
@@ -176,6 +178,24 @@
             background: var(--cool-gray);
         }
 
+        .slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 36px;
@@ -198,12 +218,17 @@
 <body>
     <nav class="nav">
         <div class="nav-content">
-            <a href="#" class="logo">spark</a>
+            <a href="#" class="logo">Spark</a>
             <button class="primary-button">Get Started</button>
         </div>
     </nav>
 
     <section class="hero">
+        <div class="slideshow">
+            <img src="image1.jpg" class="slide active">
+            <img src="image2.jpg" class="slide">
+            <img src="image3.jpg" class="slide">
+        </div>
         <h1>Connect Authentically</h1>
         <p>Join the next generation social platform where genuine connections thrive. Experience meaningful interactions in a space designed for real conversations.</p>
         <button class="primary-button">Join Spark Today</button>
@@ -252,5 +277,15 @@
             <button class="secondary-button">Create Your Account</button>
         </div>
     </section>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 3000);
+        </script>
 </body>
 </html>
