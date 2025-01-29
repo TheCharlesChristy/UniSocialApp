@@ -75,9 +75,19 @@
 
         .hero {
             position: relative;
-            overflow: hidden;
-            padding: 160px 24px 80px;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding: 160px 24px 80px;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for better text visibility */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -86,19 +96,45 @@
             font-size: 48px;
             line-height: 1.2;
             margin-bottom: 24px;
-            color: var(--deep-slate);
+            color: white;
         }
 
         .hero p {
             font-size: 18px;
             max-width: 600px;
             margin: 0 auto 32px;
-            color: #4A5568;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            object-fit: cover; /* This ensures images cover the entire container */
+        }
+
+        .slide.active {
+            opacity: 1;
         }
 
         .features {
             padding: 80px 24px;
             background: white;
+            position: relative;
+            z-index: 2;
         }
 
         .features-grid {
@@ -148,6 +184,8 @@
             text-align: center;
             background: var(--spark-blue);
             color: white;
+            position: relative;
+            z-index: 2;
         }
 
         .cta-content {
@@ -178,25 +216,11 @@
             background: var(--cool-gray);
         }
 
-        .slideshow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-        .slide.active {
-            opacity: 1;
-        }
-
         @media (max-width: 768px) {
+            .hero {
+                min-height: 500px;
+            }
+            
             .hero h1 {
                 font-size: 36px;
             }
@@ -225,13 +249,15 @@
 
     <section class="hero">
         <div class="slideshow">
-            <img src="bg1.jpg" class="slide active">
-            <img src="bg2.jpg" class="slide">
-            <img src="bg3.jpg" class="slide">
+            <img src="/api/placeholder/1920/1080" alt="Background 1" class="slide active">
+            <img src="/api/placeholder/1920/1080" alt="Background 2" class="slide">
+            <img src="/api/placeholder/1920/1080" alt="Background 3" class="slide">
         </div>
-        <h1>Connect Authentically</h1>
-        <p>Join the next generation social platform where genuine connections thrive. Experience meaningful interactions in a space designed for real conversations.</p>
-        <button class="primary-button">Join Spark Today</button>
+        <div class="hero-content">
+            <h1>Connect Authentically</h1>
+            <p>Join the next generation social platform where genuine connections thrive. Experience meaningful interactions in a space designed for real conversations.</p>
+            <button class="primary-button">Join Spark Today</button>
+        </div>
     </section>
 
     <section class="features">
@@ -281,11 +307,12 @@
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
+        
         setInterval(() => {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }, 3000);
-        </script>
+    </script>
 </body>
 </html>
