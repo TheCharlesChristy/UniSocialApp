@@ -2,35 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Funky Web Page</title>
+    <title>Spark</title>
     <style>
-        body {
-            background: linear-gradient(45deg, #ff6ec4, #7873f5);
-            color: #fff;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+        .welcome-container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            animation: gradientShift 5s infinite;
+            background: linear-gradient(135deg, #f06, #48f);
+            color: white;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
         }
-        h1 {
+        
+        .welcome-container h1 {
             font-size: 4em;
-            text-shadow: 2px 2px #000;
-            animation: bounce 2s infinite;
+            margin-bottom: 20px;
         }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        
+        .welcome-container p {
+            font-size: 1.5em;
+            margin-bottom: 40px;
         }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        
+        .welcome-container button {
+            padding: 15px 30px;
+            font-size: 1em;
+            background-color: #ff4081;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .welcome-container button:hover {
+            background-color: #f50057;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Funky Page!</h1>
 </body>
 </html>
+<div class="welcome-container">
+    <h1>Welcome to Spark</h1>
+    <p>The newest and hottest social media app connecting you with the world.</p>
+    <button onclick="getStarted()">Get Started</button>
+</div>
+<script>
+    function getStarted() {
+        window.location.href = '/signup.html';
+    }
+</script>
