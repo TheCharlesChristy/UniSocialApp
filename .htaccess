@@ -1,23 +1,29 @@
 RewriteEngine On
 
-# Ensure the rules are only applied to non-existing files
+# Ensure we skip any existing files or directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Remove /Templates/ from URL and add .html extension
-RewriteRule ^([^/]+)$ Templates/$1.html [L]
+# Skip if already in Templates directory
+RewriteCond %{REQUEST_URI} !^/Templates/
 
-# Handle subdirectories if needed
-RewriteRule ^([^/]+)/([^/]+)$ Templates/$1/$2.html [L]
+# Remove .html from the end if present (to prevent double extension)
+RewriteCond %{REQUEST_URI} !\.html$
+
+# Main rewrite rule for pages
+RewriteRule ^([^/]+)/?$ Templates/$1.html [L]
+
+# Handle subdirectories
+RewriteRule ^([^/]+)/([^/]+)/?$ Templates/$1/$2.html [L]
 
 # Prevent direct access to Templates directory
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+Templates/
 RewriteRule ^Templates/ - [F]
 
-# Set default index page (optional)
+# Set default index page
 DirectoryIndex Templates/index.html
 
-# Additional security headers (recommended)
+# Additional security headers
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
@@ -28,5 +34,5 @@ DirectoryIndex Templates/index.html
 # Prevent directory listing
 Options -Indexes
 
-# Handle 404 errors (optional)
+# Handle 404 errors
 ErrorDocument 404 /Templates/404.html
