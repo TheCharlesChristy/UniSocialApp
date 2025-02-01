@@ -94,30 +94,24 @@
             padding: 32px;
             border-radius: 16px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            animation: float 3s ease-in-out infinite;
+            transition: transform 150ms ease-in-out;
         }
-
-        @keyframes float {
-            0%, 100% {
-            transform: translateY(-10px);
-            }
-            50% {
-            transform: translateY(10px);
-            }
+        .hero-content:hover {
+            transform: scale(1.05);
         }
 
         .hero h1 {
             font-size: 48px;
             line-height: 1.2;
             margin-bottom: 24px;
-            color: white;
+            color: black;
         }
 
         .hero p {
             font-size: 18px;
             max-width: 600px;
             margin: 0 auto 32px;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(0, 0, 0, 0.9);
         }
 
         .slideshow {
