@@ -5,30 +5,11 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Skip if already in Templates directory
-RewriteCond %{REQUEST_URI} !^/Templates/
+# Remove "/Templates" segment from URLs
+RewriteRule ^(.*)/Templates/?(.*)$ /$1/$2 [R=301,L,NC]
 
-# Clean URL rewriting rules (removed .html condition)
-RewriteRule ^([^/]+)/?$ Templates/$1.html [NC,L]
-RewriteRule ^([^/]+)/([^/]+)/?$ Templates/$1/$2.html [NC,L]
+# Remove ".html" extension
+RewriteRule ^(.*)\.html$ /$1 [R=301,L,NC]
 
-# Prevent direct access to Templates directory
-RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+Templates/
-RewriteRule ^Templates/ - [F,L]
-
-# Set default index page
-DirectoryIndex index.html
-
-# Additional security headers
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-</IfModule>
-
-# Prevent directory listing
-Options -Indexes
-
-# Handle 404 errors
-ErrorDocument 404 /Templates/404.html
+# Remove ".php" extension
+RewriteRule ^(.*)\.php$ /$1 [R=301,L,NC]
