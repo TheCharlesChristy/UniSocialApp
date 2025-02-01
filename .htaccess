@@ -1,4 +1,5 @@
 RewriteEngine On
+RewriteBase /
 
 # Ensure we skip any existing files or directories
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -7,18 +8,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # Skip if already in Templates directory
 RewriteCond %{REQUEST_URI} !^/Templates/
 
-# Remove .html from the end if present (to prevent double extension)
-RewriteCond %{REQUEST_URI} !\.html$
-
-# Main rewrite rule for pages
-RewriteRule ^([^/]+)/?$ Templates/$1.html [L]
-
-# Handle subdirectories
-RewriteRule ^([^/]+)/([^/]+)/?$ Templates/$1/$2.html [L]
+# Clean URL rewriting rules (removed .html condition)
+RewriteRule ^([^/]+)/?$ Templates/$1.html [NC,L]
+RewriteRule ^([^/]+)/([^/]+)/?$ Templates/$1/$2.html [NC,L]
 
 # Prevent direct access to Templates directory
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+Templates/
-RewriteRule ^Templates/ - [F]
+RewriteRule ^Templates/ - [F,L]
 
 # Set default index page
 DirectoryIndex index.html
