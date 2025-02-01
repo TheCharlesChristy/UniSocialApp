@@ -21,7 +21,7 @@ RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+Templates/
 RewriteRule ^Templates/ - [F]
 
 # Set default index page
-DirectoryIndex Templates/index.html
+DirectoryIndex index.html
 
 # Additional security headers
 <IfModule mod_headers.c>
