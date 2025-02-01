@@ -1,15 +1,8 @@
 RewriteEngine On
 RewriteBase /
 
-# Ensure we skip any existing files or directories
+# If the requested resource isn’t a file or directory,
+# rewrite URL "xyz" to point to "/Templates/xyz.html" internally.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Remove "/Templates" segment from URLs
-RewriteRule ^(.*)/Templates/?(.*)$ /$1/$2 [R=301,L,NC]
-
-# Remove ".html" extension
-RewriteRule ^(.*)\.html$ /$1 [R=301,L,NC]
-
-# Remove ".php" extension
-RewriteRule ^(.*)\.php$ /$1 [R=301,L,NC]
+RewriteRule ^([^/]+)/?$ /Templates/$1.html [L,NC]
