@@ -45,7 +45,8 @@ class SchemaInstaller {
             'table_conversations.sql',
             'table_conversation_participants.sql',
             'table_messages.sql',
-            'table_notifications.sql'
+            'table_notifications.sql',
+            'table_token_blacklist.sql'
         ];
         
         // Check if schema files exist
