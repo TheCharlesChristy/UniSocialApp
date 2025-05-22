@@ -1,0 +1,8 @@
+RESET_DB=TRUE
+DB_HOST=localhost:3306
+DB_NAME=Data
+DB_USER=superuser
+DB_PASS=xyz
+# Configuration file for database connection
+# Set RESET_DB to FALSE in production environments
+# This is test configuration for a local database. Wont work in prod.
