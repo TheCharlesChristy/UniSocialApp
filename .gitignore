@@ -1,2 +1,5 @@
 # Ignore temporary Word documents
 Docs/~*
+
+# Ignore log files
+*.log
