@@ -334,13 +334,13 @@ function formatJson($json) {
                     <input type="hidden" name="endpoint" value="register">                    <div class="form-group">
                         <label for="register-data">Request Body:</label>
                         <textarea class="form-control" id="register-data" name="data" rows="10">{
-                            "username": "testuser",
-                            "email": "test@example.com",
-                            "password": "Password123",
-                            "first_name": "Test",
-                            "last_name": "User",
-                            "date_of_birth": "1990-01-01"
-                        }</textarea>
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "Password123",
+    "first_name": "Test",
+    "last_name": "User",
+    "date_of_birth": "1990-01-01"
+}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>
@@ -357,9 +357,9 @@ function formatJson($json) {
                     <div class="form-group">
                         <label for="login-data">Request Body:</label>
                         <textarea class="form-control" id="login-data" name="data" rows="6">{
-                            "email": "test@example.com",
-                            "password": "Password123"
-                        }</textarea>
+    "email": "test@example.com",
+    "password": "Password123"
+}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>
@@ -380,8 +380,8 @@ function formatJson($json) {
                     <div class="form-group">
                         <label for="logout-data">Request Body:</label>
                         <textarea class="form-control" id="logout-data" name="data" rows="4">{
-                            "token": "[PASTE_TOKEN_HERE]"
-                        }</textarea>
+    "token": "[PASTE_TOKEN_HERE]"
+}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>
@@ -398,8 +398,8 @@ function formatJson($json) {
                     <div class="form-group">
                         <label for="forgot-password-data">Request Body:</label>
                         <textarea class="form-control" id="forgot-password-data" name="data" rows="4">{
-                            "email": "test@example.com"
-                        }</textarea>
+    "email": "test@example.com"
+}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>
@@ -416,9 +416,9 @@ function formatJson($json) {
                     <div class="form-group">
                         <label for="reset-password-data">Request Body:</label>
                         <textarea class="form-control" id="reset-password-data" name="data" rows="5">{
-                            "token": "[PASTE_RESET_TOKEN_HERE]",
-                            "new_password": "NewPassword123"
-                        }</textarea>
+    "token": "[PASTE_RESET_TOKEN_HERE]",
+    "new_password": "NewPassword123"
+}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>

@@ -15,6 +15,7 @@ Update User Password                     | PUT /api/users/me/password
 Get User Posts                           | GET /api/users/:userId/posts
 Search Users                             | GET /api/users/search
 Get User Suggestions                     | GET /api/users/suggestions
+---------------------------------------------------------------------------
 Get Feed Posts                           | GET /api/posts
 Get Specific Post                        | GET /api/posts/:postId
 Create Post                              | POST /api/posts
