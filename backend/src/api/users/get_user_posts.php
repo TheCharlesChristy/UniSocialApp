@@ -63,6 +63,9 @@ if (!$userId) {
     exit;
 }
 
+// Extract only numeric part from user ID
+$userId = filter_var($userId, FILTER_SANITIZE_NUMBER_INT);
+
 // Validate that the requested ID is an integer
 if (!filter_var($userId, FILTER_VALIDATE_INT)) {
     http_response_code(400);

@@ -33,8 +33,7 @@ function getApiUrl($endpoint, $pathParams = []) {
                     // The correct approach is to simply append the parameter to the request
                     return BASE_API_URL . 'get_user.php?userId=' . $userId;
                 }
-                return BASE_API_URL . 'get_user.php';
-                  case 'get_user_posts':
+                return BASE_API_URL . 'get_user.php';                  case 'get_user_posts':
                 $userId = !empty($pathParams['userId']) ? $pathParams['userId'] : '';
                 if (!empty($userId)) {
                     // For URL format /api/users/:userId/posts
@@ -181,7 +180,8 @@ function makeRequest($endpoint, $data = [], $headers = [], $method = 'GET', $pat
     
     // For GET requests with query parameters
     if ($method === 'GET' && !empty($data)) {
-        $url .= '?' . http_build_query($data);
+        // Check if the URL already has a query parameter (contains ?)
+        $url .= (strpos($url, '?') !== false ? '&' : '?') . http_build_query($data);
     }
     
     // Set default headers
