@@ -1,0 +1,70 @@
+API Endpoints with URLs
+======================================================================
+Endpoint Name                            | API URL
+----------------------------------------------------------------------
+Register New User                        | POST /api/auth/register
+User Login                               | POST /api/auth/login
+User Logout                              | POST /api/auth/logout
+Forgot Password                          | POST /api/auth/forgot-password
+Reset Password                           | POST /api/auth/reset-password
+Verify Email                             | GET /api/auth/verify-email/:token
+Get Current User Profile                 | GET /api/users/me
+Get User Profile                         | GET /api/users/:userId
+Update User Profile                      | PUT /api/users/me
+Update User Password                     | PUT /api/users/me/password
+Get User Posts                           | GET /api/users/:userId/posts
+Search Users                             | GET /api/users/search
+Get User Suggestions                     | GET /api/users/suggestions
+Get Feed Posts                           | GET /api/posts
+Get Specific Post                        | GET /api/posts/:postId
+Create Post                              | POST /api/posts
+Update Post                              | PUT /api/posts/:postId
+Delete Post                              | DELETE /api/posts/:postId
+Search Posts                             | GET /api/posts/search
+Upload Media                             | POST /api/media/upload
+Get Post Comments                        | GET /api/posts/:postId/comments
+Add Comment                              | POST /api/posts/:postId/comments
+Update Comment                           | PUT /api/comments/:commentId
+Delete Comment                           | DELETE /api/comments/:commentId
+Add Reply to Comment                     | POST /api/comments/:commentId/replies
+Like Post                                | POST /api/posts/:postId/like
+Unlike Post                              | DELETE /api/posts/:postId/like
+Like Comment                             | POST /api/comments/:commentId/like
+Unlike Comment                           | DELETE /api/comments/:commentId/like
+Get Post Likes                           | GET /api/posts/:postId/likes
+Get Friends                              | GET /api/friends
+Get Friend Requests                      | GET /api/friends/requests
+Send Friend Request                      | POST /api/friends/request/:userId
+Accept Friend Request                    | PUT /api/friends/accept/:userId
+Reject Friend Request                    | PUT /api/friends/reject/:userId
+Remove Friend                            | DELETE /api/friends/:userId
+Block User                               | POST /api/users/:userId/block
+Unblock User                             | DELETE /api/users/:userId/block
+Get Blocked Users                        | GET /api/users/blocked
+Create Report                            | POST /api/reports
+Get User Reports                         | GET /api/users/:userId/reports
+Get Conversations                        | GET /api/conversations
+Create Conversation                      | POST /api/conversations
+Get Conversation Details                 | GET /api/conversations/:conversationId
+Get Conversation Messages                | GET /api/conversations/:conversationId/messages
+Send Message                             | POST /api/conversations/:conversationId/messages
+Mark Message as Read                     | PUT /api/messages/:messageId/read
+Get Notifications                        | GET /api/notifications
+Mark Notification as Read                | PUT /api/notifications/:notificationId/read
+Mark All Notifications as Read           | PUT /api/notifications/read-all
+Get Unread Notification Count            | GET /api/notifications/unread-count
+Get Privacy Settings                     | GET /api/privacy
+Update Privacy Settings                  | PUT /api/privacy
+Get Admin Dashboard                      | GET /api/admin/dashboard
+Get All Users                            | GET /api/admin/users
+Update User (Admin)                      | PUT /api/admin/users/:userId
+Delete User                              | DELETE /api/admin/users/:userId
+Suspend User                             | PUT /api/admin/users/:userId/suspend
+Activate User                            | PUT /api/admin/users/:userId/activate
+Get All Reports                          | GET /api/admin/reports
+Update Report Status                     | PUT /api/admin/reports/:reportId
+Get Post Analytics                       | GET /api/admin/analytics/posts
+Get User Analytics                       | GET /api/admin/analytics/users
+Global Search                            | GET /api/search
+Search Users                             | GET /api/search/users
+Search Posts                             | GET /api/search/posts
