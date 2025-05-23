@@ -24,7 +24,7 @@ $requireAuth = true;
 $Database = require_once dirname(dirname(dirname(__FILE__))) . '/db_handler/connection.php';
 
 // Include authentication middleware (this will exit if not authorized)
-require_once 'auth_middleware.php';
+require_once dirname(__FILE__) . '/../auth/auth_middleware.php';
 
 // If code execution reaches here, user is authenticated
 // $authUser contains the authenticated user data
