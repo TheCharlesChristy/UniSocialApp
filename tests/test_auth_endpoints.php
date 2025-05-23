@@ -322,9 +322,6 @@ function formatJson($json) {
             <li class="nav-item" role="presentation">
                 <button class="nav-link <?= $activeTab === 'verify' ? 'active' : '' ?>" id="verify-tab" data-bs-toggle="tab" data-bs-target="#verify" type="button" role="tab">Verify Email</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link <?= $activeTab === 'me' ? 'active' : '' ?>" id="me-tab" data-bs-toggle="tab" data-bs-target="#me" type="button" role="tab">Me (Protected)</button>
-            </li>
         </ul>
         
         <div class="tab-content" id="authTabsContent">
@@ -438,25 +435,8 @@ function formatJson($json) {
                     <div class="form-group">
                         <label for="verify-token">Verification Token:</label>
                         <textarea class="form-control" id="verify-token" name="data" rows="4">{
-    "token": "[PASTE_VERIFICATION_TOKEN_HERE]"
-}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Request</button>
-                </form>
-            </div>
-            
-            <!-- Me (Protected) Tab -->
-            <div class="tab-pane fade <?= $activeTab === 'me' ? 'show active' : '' ?>" id="me" role="tabpanel">
-                <div class="endpoint-header">
-                    <h3>Get User Profile (Protected Endpoint)</h3>
-                    <p class="text-muted">Endpoint: GET /api/auth/me</p>
-                </div>
-                <form method="post" action="">
-                    <input type="hidden" name="endpoint" value="me">
-                    <input type="hidden" name="data" value="{}">
-                    <div class="form-group">
-                        <label for="me-token">Authentication Token:</label>
-                        <textarea class="form-control" id="me-token" name="token" rows="3"></textarea>
+                            "token": "[PASTE_VERIFICATION_TOKEN_HERE]"
+                        }</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Request</button>
                 </form>
