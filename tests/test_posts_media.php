@@ -288,9 +288,7 @@
             </div>
             <button onclick="unlikePost()">Unlike Post</button>
             <div id="unlikeResponse" class="response"></div>
-        </div>
-
-        <!-- Get Post Likes -->
+        </div>        <!-- Get Post Likes -->
         <div class="container">
             <h3>Get Post Likes</h3>
             <div class="form-group">
@@ -303,6 +301,41 @@
             </div>
             <button onclick="getPostLikes()">Get Likes</button>
             <div id="getLikesResponse" class="response"></div>
+        </div>
+
+        <!-- Like Comment -->
+        <div class="container">
+            <h3>Like Comment</h3>
+            <div class="form-group">
+                <label for="likeCommentId">Comment ID:</label>
+                <input type="number" id="likeCommentId" placeholder="Enter comment ID to like">
+            </div>
+            <button onclick="likeComment()">Like Comment</button>
+            <div id="likeCommentResponse" class="response"></div>
+        </div>        <!-- Unlike Comment -->
+        <div class="container">
+            <h3>Unlike Comment</h3>
+            <div class="form-group">
+                <label for="unlikeCommentId">Comment ID:</label>
+                <input type="number" id="unlikeCommentId" placeholder="Enter comment ID to unlike">
+            </div>
+            <button onclick="unlikeComment()">Unlike Comment</button>
+            <div id="unlikeCommentResponse" class="response"></div>
+        </div>
+
+        <!-- Get Comment Likes -->
+        <div class="container">
+            <h3>Get Comment Likes</h3>
+            <div class="form-group">
+                <label for="getCommentLikesId">Comment ID:</label>
+                <input type="number" id="getCommentLikesId" placeholder="Enter comment ID">
+            </div>
+            <div class="form-group">
+                <label for="commentLikesPage">Page:</label>
+                <input type="number" id="commentLikesPage" value="1" min="1">
+            </div>
+            <button onclick="getCommentLikes()">Get Comment Likes</button>
+            <div id="getCommentLikesResponse" class="response"></div>
         </div>
     </div>
 
@@ -620,9 +653,7 @@
             
             const result = await makeRequest(API_BASE_URL + '/posts/unlike_post.php', 'DELETE', { post_id: parseInt(postId) });
             displayResponse('unlikeResponse', result.success ? result.data : result.error, !result.success);
-        }
-
-        async function getPostLikes() {
+        }        async function getPostLikes() {
             const postId = document.getElementById('getLikesPostId').value;
             const page = document.getElementById('likesPage').value;
             
@@ -633,6 +664,39 @@
             
             const result = await makeRequest(`${API_BASE_URL}/posts/get_post_likes.php?post_id=${postId}&page=${page}`);
             displayResponse('getLikesResponse', result.success ? result.data : result.error, !result.success);
+        }
+
+        async function likeComment() {
+            const commentId = document.getElementById('likeCommentId').value;
+            if (!commentId) {
+                displayResponse('likeCommentResponse', { error: 'Comment ID is required' }, true);
+                return;
+            }
+            
+            const result = await makeRequest(API_BASE_URL + '/posts/like_comment.php', 'POST', { comment_id: parseInt(commentId) });
+            displayResponse('likeCommentResponse', result.success ? result.data : result.error, !result.success);
+        }        async function unlikeComment() {
+            const commentId = document.getElementById('unlikeCommentId').value;
+            if (!commentId) {
+                displayResponse('unlikeCommentResponse', { error: 'Comment ID is required' }, true);
+                return;
+            }
+            
+            const result = await makeRequest(API_BASE_URL + '/posts/unlike_comment.php', 'DELETE', { comment_id: parseInt(commentId) });
+            displayResponse('unlikeCommentResponse', result.success ? result.data : result.error, !result.success);
+        }
+
+        async function getCommentLikes() {
+            const commentId = document.getElementById('getCommentLikesId').value;
+            const page = document.getElementById('commentLikesPage').value;
+            
+            if (!commentId) {
+                displayResponse('getCommentLikesResponse', { error: 'Comment ID is required' }, true);
+                return;
+            }
+            
+            const result = await makeRequest(`${API_BASE_URL}/posts/get_comment_likes.php?comment_id=${commentId}&page=${page}`);
+            displayResponse('getCommentLikesResponse', result.success ? result.data : result.error, !result.success);
         }
 
         // Comments API functions
