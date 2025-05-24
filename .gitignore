@@ -3,3 +3,6 @@ Docs/~*
 
 # Ignore log files
 *.log
+
+# Ignore user posts media
+backend/media/*

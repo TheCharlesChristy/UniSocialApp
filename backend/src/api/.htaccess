@@ -1,0 +1,10 @@
+# Suppress PHP errors and warnings for API endpoints to ensure clean JSON responses
+php_flag display_errors off
+php_flag log_errors on
+php_value error_log ../../../logs/api_errors.log
+
+# Increase upload limits if needed (optional - can also be done in php.ini)
+# php_value upload_max_filesize 100M
+# php_value post_max_size 100M
+# php_value max_execution_time 300
+# php_value max_input_time 300
