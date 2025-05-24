@@ -6,6 +6,10 @@
  * Endpoint: POST /api/media/upload
  */
 
+// Suppress PHP warnings and errors that could break JSON output
+error_reporting(0);
+ini_set('display_errors', 0);
+
 // Set headers
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
@@ -22,6 +26,54 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit();
+}
+
+// Check if POST content length exceeds PHP's limit
+$contentLength = $_SERVER['CONTENT_LENGTH'] ?? 0;
+$maxPostSize = ini_get('post_max_size');
+$maxPostSizeBytes = parseIniSize($maxPostSize);
+
+// Also check if POST data was truncated (another sign of size limit exceeded)
+$postDataMissing = empty($_POST) && $contentLength > 0;
+
+if ($contentLength > $maxPostSizeBytes || $postDataMissing) {
+    http_response_code(413); // 413 Payload Too Large
+    echo json_encode([
+        'success' => false, 
+        'message' => 'File size too large. Maximum allowed size is ' . $maxPostSize,
+        'uploaded_size' => formatBytes($contentLength),
+        'max_size' => $maxPostSize
+    ]);
+    exit();
+}
+
+// Helper function to parse ini size values (e.g., "40M", "2G")
+function parseIniSize($size) {
+    $size = trim($size);
+    $last = strtolower($size[strlen($size)-1]);
+    $value = (int) $size;
+    
+    switch ($last) {
+        case 'g':
+            $value *= 1024;
+        case 'm':
+            $value *= 1024;
+        case 'k':
+            $value *= 1024;
+    }
+    
+    return $value;
+}
+
+// Helper function to format bytes into human readable format
+function formatBytes($bytes, $precision = 2) {
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    
+    for ($i = 0; $bytes > 1024; $i++) {
+        $bytes /= 1024;
+    }
+    
+    return round($bytes, $precision) . ' ' . $units[$i];
 }
 
 // Require authentication
@@ -105,9 +157,13 @@ if (!in_array($mimeType, $config['mime_types'])) {
 
 // Validate file size
 if ($uploadFile['size'] > $config['max_size']) {
-    $maxSizeMB = $config['max_size'] / (1024 * 1024);
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => "File size too large. Maximum {$maxSizeMB}MB allowed"]);
+    http_response_code(413); // 413 Payload Too Large
+    echo json_encode([
+        'success' => false, 
+        'message' => 'File size too large. Maximum allowed size is ' . formatBytes($config['max_size']),
+        'uploaded_size' => formatBytes($uploadFile['size']),
+        'max_size' => formatBytes($config['max_size'])
+    ]);
     exit();
 }
 

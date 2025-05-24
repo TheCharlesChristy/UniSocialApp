@@ -63,7 +63,7 @@ if (strpos($contentType, 'application/json') !== false) {
 // Validate required fields
 $postType = validateInput($input['post_type'] ?? '', true);
 $privacyLevel = validateInput($input['privacy_level'] ?? '', true);
-$caption = validateInput($input['caption'] ?? '', false, 2000);
+$caption = validateInput($input['caption'] ?? '', false);
 $locationName = validateInput($input['location_name'] ?? '', false, 255);
 $locationLat = isset($input['location_lat']) ? floatval($input['location_lat']) : null;
 $locationLng = isset($input['location_lng']) ? floatval($input['location_lng']) : null;
@@ -86,6 +86,13 @@ if (!in_array($privacyLevel, ['public', 'friends', 'private'])) {
 if ($postType === 'text' && empty($caption)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Caption is required for text posts']);
+    exit();
+}
+
+// Validate caption length < 2000 characters
+if ($caption && strlen($caption) > 2000) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Caption exceeds maximum length of 2000 characters']);
     exit();
 }
 

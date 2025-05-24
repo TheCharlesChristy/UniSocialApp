@@ -81,8 +81,11 @@ if ($post[0]['user_id'] != $authUser['user_id']) {
     exit();
 }
 
+// Get post type
+$postType = $post[0]['post_type'];
+
 // Validate updateable fields
-$caption = isset($input['caption']) ? validateInput($input['caption'], false, 2000) : null;
+$caption = isset($input['caption']) ? validateInput($input['caption'], false) : null;
 $privacyLevel = isset($input['privacy_level']) ? validateInput($input['privacy_level'], false) : null;
 $locationName = isset($input['location_name']) ? validateInput($input['location_name'], false, 255) : null;
 $locationLat = isset($input['location_lat']) ? floatval($input['location_lat']) : null;
@@ -102,7 +105,19 @@ if ($privacyLevel !== null && !in_array($privacyLevel, ['public', 'friends', 'pr
     exit();
 }
 
-// Note: Empty captions are allowed for updates (user may want to clear caption)
+// Validate caption for text posts
+if ($postType === 'text' && empty($caption)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Caption is required for text posts']);
+    exit();
+}
+
+// Validate caption length < 2000 characters
+if ($caption && strlen($caption) > 2000) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Caption exceeds maximum length of 2000 characters']);
+    exit();
+}
 
 // Validate coordinates if provided
 if (($locationLat !== null && ($locationLat < -90 || $locationLat > 90)) ||

@@ -87,8 +87,8 @@ if (empty($post)) {
     exit();
 }
 
-// Get total count of comments
-$countSql = "SELECT COUNT(*) as total FROM comments WHERE post_id = ?";
+// Get total count of top-level comments only (for pagination)
+$countSql = "SELECT COUNT(*) as total FROM comments WHERE post_id = ? AND parent_comment_id IS NULL";
 $totalResult = $Database->query($countSql, [$postId]);
 
 if ($totalResult === false) {
@@ -97,11 +97,11 @@ if ($totalResult === false) {
     exit();
 }
 
-$totalComments = $totalResult[0]['total'];
-$totalPages = ceil($totalComments / $limit);
+$totalTopLevelComments = $totalResult[0]['total'];
+$totalPages = ceil($totalTopLevelComments / $limit);
 
-// Get comments with user information and nested structure
-$commentsSql = "
+// First, get the top-level comments with pagination
+$topLevelSql = "
     SELECT 
         c.comment_id,
         c.post_id,
@@ -126,18 +126,79 @@ $commentsSql = "
     ) like_counts ON c.comment_id = like_counts.comment_id
     LEFT JOIN likes user_likes ON c.comment_id = user_likes.comment_id AND user_likes.user_id = ?
     WHERE c.post_id = ?
+    AND c.parent_comment_id IS NULL
     AND u.account_status = 'active'
     ORDER BY c.created_at ASC
     LIMIT ? OFFSET ?
 ";
 
-$comments = $Database->query($commentsSql, [$userId, $postId, $limit, $offset]);
+$topLevelComments = $Database->query($topLevelSql, [$userId, $postId, $limit, $offset]);
 
-if ($comments === false) {
+if ($topLevelComments === false) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database error']);
     exit();
 }
+
+// If no top-level comments, return empty result
+if (empty($topLevelComments)) {
+    $response = [
+        'success' => true,
+        'comments' => [],
+        'total_comments' => (int)$totalTopLevelComments,
+        'current_page' => $page,
+        'total_pages' => $totalPages
+    ];
+    echo json_encode($response);
+    exit();
+}
+
+// Get all comment IDs from the top-level comments
+$topLevelCommentIds = array_column($topLevelComments, 'comment_id');
+$placeholders = str_repeat('?,', count($topLevelCommentIds) - 1) . '?';
+
+// Now get ALL replies for these top-level comments (no pagination on replies)
+$repliesSql = "
+    SELECT 
+        c.comment_id,
+        c.post_id,
+        c.user_id,
+        c.content,
+        c.created_at,
+        c.updated_at,
+        c.parent_comment_id,
+        u.username,
+        u.first_name,
+        u.last_name,
+        u.profile_picture,
+        COALESCE(like_counts.likes_count, 0) as likes_count,
+        CASE WHEN user_likes.like_id IS NOT NULL THEN 1 ELSE 0 END as user_has_liked
+    FROM comments c
+    INNER JOIN users u ON c.user_id = u.user_id
+    LEFT JOIN (
+        SELECT comment_id, COUNT(*) as likes_count
+        FROM likes
+        WHERE comment_id IS NOT NULL
+        GROUP BY comment_id
+    ) like_counts ON c.comment_id = like_counts.comment_id
+    LEFT JOIN likes user_likes ON c.comment_id = user_likes.comment_id AND user_likes.user_id = ?
+    WHERE c.post_id = ?
+    AND c.parent_comment_id IN ($placeholders)
+    AND u.account_status = 'active'
+    ORDER BY c.created_at ASC
+";
+
+$queryParams = array_merge([$userId, $postId], $topLevelCommentIds);
+$replies = $Database->query($repliesSql, $queryParams);
+
+if ($replies === false) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error']);
+    exit();
+}
+
+// Combine top-level comments and replies
+$comments = array_merge($topLevelComments, $replies);
 
 // Organize comments into nested structure
 $commentTree = [];
@@ -165,7 +226,7 @@ foreach ($comments as $comment) {
 $response = [
     'success' => true,
     'comments' => $commentTree,
-    'total_comments' => (int)$totalComments,
+    'total_comments' => (int)$totalTopLevelComments,
     'current_page' => $page,
     'total_pages' => $totalPages
 ];

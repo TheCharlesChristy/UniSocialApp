@@ -431,9 +431,7 @@
             const element = document.getElementById(elementId);
             element.textContent = JSON.stringify(response, null, 2);
             element.className = 'response ' + (isError ? 'error' : 'success');
-        }
-
-        // Helper function to make API requests
+        }        // Helper function to make API requests
         async function makeRequest(url, method = 'GET', data = null, isFormData = false) {
             const headers = {
                 'Authorization': 'Bearer ' + getAuthToken()
@@ -454,7 +452,39 @@
 
             try {
                 const response = await fetch(url, config);
-                const result = await response.json();
+                const responseText = await response.text();
+                
+                // Try to extract JSON from response that might contain HTML warnings/errors
+                let result;
+                try {
+                    // Check if response starts with HTML (PHP warnings/errors)
+                    if (responseText.trim().startsWith('<')) {
+                        // Try to find JSON in the response
+                        const jsonMatch = responseText.match(/\{.*\}$/s);
+                        if (jsonMatch) {
+                            result = JSON.parse(jsonMatch[0]);
+                        } else {
+                            // No JSON found, return the HTML as an error
+                            result = {
+                                success: false,
+                                message: 'Server returned HTML instead of JSON',
+                                raw_response: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '')
+                            };
+                        }
+                    } else {
+                        // Normal JSON response
+                        result = JSON.parse(responseText);
+                    }
+                } catch (parseError) {
+                    // JSON parsing failed, return raw response
+                    result = {
+                        success: false,
+                        message: 'Invalid JSON response from server',
+                        parse_error: parseError.message,
+                        raw_response: responseText.substring(0, 500) + (responseText.length > 500 ? '...' : '')
+                    };
+                }
+                
                 return { success: true, data: result, status: response.status };
             } catch (error) {
                 return { success: false, error: error.message };
@@ -490,6 +520,7 @@
         async function createPost() {
             const postType = document.getElementById('postType').value;
             const caption = document.getElementById('postCaption').value;
+            console.log("Caption Length", caption.length);
             const privacyLevel = document.getElementById('privacyLevel').value;
             const locationName = document.getElementById('locationName').value;
             const locationLat = document.getElementById('locationLat').value;

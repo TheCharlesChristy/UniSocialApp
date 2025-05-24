@@ -5,4 +5,4 @@ Docs/~*
 *.log
 
 # Ignore user posts media
-Posts/media/*
+backend/media/*
