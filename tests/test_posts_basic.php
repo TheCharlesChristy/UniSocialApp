@@ -8,7 +8,27 @@
 // Include database connection
 $Database = require_once dirname(dirname(__FILE__)) . '/backend/src/db_handler/connection.php';
 
-echo "<!DOCTYPE html>\n<html>\n<head>\n<title>Posts API Basic Test</title>\n</head>\n<body>\n";
+echo "<!DOCTYPE html>\n<html>\n<head>\n<title>Posts API Basic Test</title>\n<style>
+.back-to-tests-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 1000;
+    transition: background-color 0.3s;
+}
+.back-to-tests-btn:hover {
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+}
+</style>\n</head>\n<body>\n";
+echo "<a href='http://localhost/webdev/tests' class='back-to-tests-btn'>← Back to Tests</a>\n";
 echo "<h1>Posts and Media API Basic Test</h1>\n";
 
 // Check database connection

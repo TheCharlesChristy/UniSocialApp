@@ -295,9 +295,28 @@ function formatJson($json) {
         .badge {
             font-size: 14px;
         }
+        .back-to-tests-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        .back-to-tests-btn:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+    <a href="http://localhost/webdev/tests" class="back-to-tests-btn">← Back to Tests</a>
     <div class="container">
         <h1 class="text-center mb-4">Authentication API Test Page</h1>
         
