@@ -32,8 +32,7 @@ class SchemaInstaller {
      * 
      * @return bool True if installation successful, false otherwise
      */
-    public function installSchema() {
-        // Define the order of schema files
+    public function installSchema() {        // Define the order of schema files
         $schemaFiles = [
             'table_users.sql',
             'table_posts.sql',
@@ -46,6 +45,7 @@ class SchemaInstaller {
             'table_conversation_participants.sql',
             'table_messages.sql',
             'table_notifications.sql',
+            'table_privacy_settings.sql',
             'table_token_blacklist.sql'
         ];
         

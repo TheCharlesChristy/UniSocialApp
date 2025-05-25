@@ -250,6 +250,19 @@ class DatabaseHandler {
         
         return $this->pdo->rollBack();
     }
+      /**
+     * Get the last insert ID
+     * 
+     * @return string|false Last insert ID or false on failure
+     */
+    public function getLastInsertId() {
+        if (!$this->connected) {
+            $this->errors[] = "Database not connected";
+            return false;
+        }
+        
+        return $this->pdo->lastInsertId();
+    }
     
     /**
      * Check if database is connected
