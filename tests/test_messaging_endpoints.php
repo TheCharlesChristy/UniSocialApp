@@ -51,13 +51,15 @@ function getApiUrl($endpoint, $pathParams = []) {
                 if (!empty($messageId)) {
                     return BASE_MESSAGES_URL . 'mark_message_read.php?messageId=' . $messageId;
                 }
-                return BASE_MESSAGES_URL . 'mark_message_read.php';
-            case 'delete_message':
+                return BASE_MESSAGES_URL . 'mark_message_read.php';            case 'delete_message':
                 $messageId = !empty($pathParams['messageId']) ? $pathParams['messageId'] : '';
                 if (!empty($messageId)) {
                     return BASE_MESSAGES_URL . 'delete_message.php?messageId=' . $messageId;
                 }
-                return BASE_MESSAGES_URL . 'delete_message.php';
+                return BASE_MESSAGES_URL . 'delete_message.php';            case 'leave_conversation':
+                return BASE_CONVERSATIONS_URL . 'leave_conversation.php';
+            case 'delete_conversation':
+                return BASE_CONVERSATIONS_URL . 'delete_conversation.php';
             default:
                 return BASE_CONVERSATIONS_URL . $endpoint . '.php';
         }
@@ -355,9 +357,13 @@ function formatJson($json) {
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link <?= $activeTab === 'mark_message_read' ? 'active' : '' ?>" id="mark-message-read-tab" data-bs-toggle="tab" data-bs-target="#mark-message-read" type="button" role="tab">Mark Message Read</button>
+            </li>            <li class="nav-item" role="presentation">
+                <button class="nav-link <?= $activeTab === 'delete_message' ? 'active' : '' ?>" id="delete-message-tab" data-bs-toggle="tab" data-bs-target="#delete-message" type="button" role="tab">Delete Message</button>
+            </li>            <li class="nav-item" role="presentation">
+                <button class="nav-link <?= $activeTab === 'leave_conversation' ? 'active' : '' ?>" id="leave-conversation-tab" data-bs-toggle="tab" data-bs-target="#leave-conversation" type="button" role="tab">Leave Conversation</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link <?= $activeTab === 'delete_message' ? 'active' : '' ?>" id="delete-message-tab" data-bs-toggle="tab" data-bs-target="#delete-message" type="button" role="tab">Delete Message</button>
+                <button class="nav-link <?= $activeTab === 'delete_conversation' ? 'active' : '' ?>" id="delete-conversation-tab" data-bs-toggle="tab" data-bs-target="#delete-conversation" type="button" role="tab">Delete Conversation</button>
             </li>
         </ul>
         
@@ -539,8 +545,57 @@ function formatJson($json) {
                         <textarea class="form-control" id="delete-message-data" name="data" rows="3">{
     "messageId": "1"
 }</textarea>
+                    </div>                    <button type="submit" class="btn btn-primary">Send Request</button>
+                </form>
+            </div>
+            
+            <!-- Leave Conversation Tab -->
+            <div class="tab-pane fade <?= $activeTab === 'leave_conversation' ? 'show active' : '' ?>" id="leave-conversation" role="tabpanel">
+                <div class="endpoint-header">
+                    <h3>Leave Conversation</h3>
+                    <p class="text-muted">Endpoint: POST /api/conversations/leave_conversation</p>
+                </div>
+                <form method="post" action="">
+                    <input type="hidden" name="endpoint" value="leave_conversation">
+                    <input type="hidden" name="method" value="POST">
+                    
+                    <div class="form-group">
+                        <label for="leave-conversation-token">Authentication Token:</label>
+                        <textarea class="form-control token-field" id="leave-conversation-token" name="token" rows="2"><?= htmlspecialchars($_SESSION['global_token'] ?? '') ?></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Send Request</button>
+                    
+                    <div class="form-group">
+                        <label for="leave-conversation-data">Request Parameters:</label>
+                        <textarea class="form-control" id="leave-conversation-data" name="data" rows="3">{
+    "conversation_id": "1"
+}</textarea>
+                    </div>                    <button type="submit" class="btn btn-primary">Send Request</button>
+                </form>
+            </div>
+            
+            <!-- Delete Conversation Tab -->
+            <div class="tab-pane fade <?= $activeTab === 'delete_conversation' ? 'show active' : '' ?>" id="delete-conversation" role="tabpanel">
+                <div class="endpoint-header">
+                    <h3>Delete Conversation</h3>
+                    <p class="text-muted">Endpoint: DELETE /api/conversations/delete_conversation</p>
+                    <p class="text-warning"><strong>Warning:</strong> This will permanently delete the conversation and all its messages. Only the conversation creator can delete group conversations.</p>
+                </div>
+                <form method="post" action="">
+                    <input type="hidden" name="endpoint" value="delete_conversation">
+                    <input type="hidden" name="method" value="DELETE">
+                    
+                    <div class="form-group">
+                        <label for="delete-conversation-token">Authentication Token:</label>
+                        <textarea class="form-control token-field" id="delete-conversation-token" name="token" rows="2"><?= htmlspecialchars($_SESSION['global_token'] ?? '') ?></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="delete-conversation-data">Request Body:</label>
+                        <textarea class="form-control" id="delete-conversation-data" name="data" rows="3">{
+    "conversation_id": "1"
+}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Delete Conversation</button>
                 </form>
             </div>
         </div>
@@ -589,16 +644,16 @@ function formatJson($json) {
                 <li>Click "Send Request" to execute the API call.</li>
                 <li>The response will be displayed at the bottom of the page.</li>
             </ol>
-            
-            <h5>Testing Flow:</h5>
+              <h5>Testing Flow:</h5>
             <ol>
                 <li><strong>Create Conversation:</strong> Create a new conversation with one or more participants</li>
                 <li><strong>Get Conversations:</strong> Retrieve all conversations for the authenticated user</li>
                 <li><strong>Get Conversation Details:</strong> Get detailed information about a specific conversation</li>
                 <li><strong>Send Message:</strong> Send a message to a conversation</li>
-                <li><strong>Get Messages:</strong> Retrieve messages from a conversation</li>
-                <li><strong>Mark Message Read:</strong> Mark a message as read (can only mark others' messages)</li>
+                <li><strong>Get Messages:</strong> Retrieve messages from a conversation</li>                <li><strong>Mark Message Read:</strong> Mark a message as read (can only mark others' messages)</li>
                 <li><strong>Delete Message:</strong> Delete a message (can only delete your own messages)</li>
+                <li><strong>Leave Conversation:</strong> Leave a group conversation (not allowed for private conversations)</li>
+                <li><strong>Delete Conversation:</strong> Permanently delete a conversation and all its messages (only creators can delete group conversations)</li>
             </ol>
         </div>
     </div>
