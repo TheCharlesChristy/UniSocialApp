@@ -9,7 +9,7 @@
 // Set headers
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: PUT');
+header('Access-Control-Allow-Methods: GET, POST, PUT');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Handle preflight request
@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// Only allow PUT requests
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+// Allow GET, POST, and PUT requests
+if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST', 'PUT'])) {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit();
@@ -40,16 +40,33 @@ if (!$Database->isConnected()) {
     exit();
 }
 
-// Get notification ID from URL path
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$pathParts = explode('/', $path);
-
-// Find the notification ID in the URL
+// Get notification ID from multiple sources
 $notificationId = null;
-for ($i = 0; $i < count($pathParts); $i++) {
-    if ($pathParts[$i] === 'notifications' && isset($pathParts[$i + 1]) && is_numeric($pathParts[$i + 1])) {
-        $notificationId = (int)$pathParts[$i + 1];
-        break;
+
+// 1. Try to get from URL query parameter
+if (isset($_GET['notificationId']) && is_numeric($_GET['notificationId'])) {
+    $notificationId = (int)$_GET['notificationId'];
+}
+
+// 2. Try to get from request body
+if (!$notificationId) {
+    $input = json_decode(file_get_contents('php://input'), true);
+    if ($input && isset($input['notificationId']) && is_numeric($input['notificationId'])) {
+        $notificationId = (int)$input['notificationId'];
+    }
+}
+
+// 3. Try to get from URL path (RESTful style)
+if (!$notificationId) {
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $pathParts = explode('/', $path);
+    
+    // Find the notification ID in the URL
+    for ($i = 0; $i < count($pathParts); $i++) {
+        if ($pathParts[$i] === 'notifications' && isset($pathParts[$i + 1]) && is_numeric($pathParts[$i + 1])) {
+            $notificationId = (int)$pathParts[$i + 1];
+            break;
+        }
     }
 }
 

@@ -9,7 +9,7 @@
 // Set headers
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: PUT');
+header('Access-Control-Allow-Methods: GET, POST, PUT');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Handle preflight request
@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-// Only allow PUT requests
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+// Allow GET, POST, and PUT requests
+if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST', 'PUT'])) {
     http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Method not allowed']);
     exit();
