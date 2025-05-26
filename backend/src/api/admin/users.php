@@ -44,6 +44,7 @@ if ($authUser['role'] !== 'admin') {
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
 $status = isset($_GET['status']) ? trim($_GET['status']) : '';
+$role = isset($_GET['role']) ? trim($_GET['role']) : '';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 // Validate pagination parameters
@@ -65,6 +66,12 @@ $params = [];
 if (!empty($status) && in_array($status, ['active', 'suspended'])) {
     $whereConditions[] = "account_status = ?";
     $params[] = $status;
+}
+
+// Add role filter if provided
+if (!empty($role) && in_array($role, ['user', 'admin'])) {
+    $whereConditions[] = "role = ?";
+    $params[] = $role;
 }
 
 // Add search filter if provided

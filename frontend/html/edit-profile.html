@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - SocialConnect</title>
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/edit-profile.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="main-feed.html" class="logo">
+                    <span class="logo-icon">📱</span>
+                    SocialConnect
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <div class="search-box">
+                    <input type="text" placeholder="Search SocialConnect..." aria-label="Search">
+                    <button class="search-btn" aria-label="Search">🔍</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button class="nav-btn" aria-label="Notifications">
+                    <span class="nav-icon">🔔</span>
+                    <span class="badge">3</span>
+                </button>
+                <button class="nav-btn" aria-label="Messages">
+                    <span class="nav-icon">💬</span>
+                    <span class="badge">2</span>
+                </button>
+                <div class="user-dropdown">
+                    <button class="user-btn" aria-label="User menu">
+                        <img src="../../backend/media/images/placeholder.png" alt="Profile" class="user-avatar">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="user-profile.html" class="dropdown-item">
+                            <span class="dropdown-icon">👤</span>
+                            My Profile
+                        </a>
+                        <a href="privacy-settings.html" class="dropdown-item">
+                            <span class="dropdown-icon">⚙️</span>
+                            Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item">
+                            <span class="dropdown-icon">🚪</span>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="header-content">
+                    <h1>Edit Profile</h1>
+                    <p>Update your personal information and customize your profile</p>
+                </div>
+                <div class="header-actions">
+                    <a href="manage-account.html" class="btn btn-outline">Cancel</a>
+                    <button class="btn btn-primary" id="saveProfile">Save Changes</button>
+                </div>
+            </div>
+
+            <div class="edit-profile-container">
+                <!-- Profile Pictures Section -->
+                <div class="profile-pictures-section">
+                    <div class="section-header">
+                        <h2>Profile Pictures</h2>
+                        <p>Upload and customize your profile and cover photos</p>
+                    </div>
+
+                    <div class="pictures-container">
+                        <!-- Cover Photo -->
+                        <div class="cover-photo-editor">
+                            <div class="cover-photo-container">
+                                <img src="../../backend/media/images/placeholder.png" alt="Cover Photo" id="coverPhoto">
+                                <div class="cover-photo-overlay">
+                                    <button class="photo-edit-btn" onclick="editCoverPhoto()">
+                                        <span class="btn-icon">📷</span>
+                                        Edit Cover Photo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Avatar -->
+                        <div class="avatar-editor">
+                            <div class="avatar-container">
+                                <img src="../../backend/media/images/placeholder.png" alt="Profile Picture" id="profileAvatar">
+                                <button class="avatar-edit-btn" onclick="editAvatar()">📷</button>
+                            </div>
+                            <div class="avatar-actions">
+                                <button class="btn btn-sm btn-outline" onclick="removeAvatar()">Remove</button>
+                                <button class="btn btn-sm btn-primary" onclick="editAvatar()">Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Information -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2>Basic Information</h2>
+                        <p>Your name and basic details that others can see</p>
+                    </div>
+
+                    <form class="profile-form" id="basicInfoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name *</label>
+                                <input type="text" id="firstName" value="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name *</label>
+                                <input type="text" id="lastName" value="Doe" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <div class="input-with-prefix">
+                                <span class="input-prefix">@</span>
+                                <input type="text" id="username" value="johndoe" required>
+                            </div>
+                            <div class="form-hint">Your username must be unique and can only contain letters, numbers, and underscores.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" value="john.doe@email.com" required>
+                            <div class="form-hint">Your email is private and used for account notifications.</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="birthdate">Birth Date</label>
+                                <input type="date" id="birthdate" value="1990-01-15">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="male" selected>Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="relationship">Relationship Status</label>
+                                <select id="relationship">
+                                    <option value="">Not specified</option>
+                                    <option value="single" selected>Single</option>
+                                    <option value="married">Married</option>
+                                    <option value="relationship">In a relationship</option>
+                                    <option value="complicated">It's complicated</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- About Me -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2>About Me</h2>
+                        <p>Tell others about yourself and your interests</p>
+                    </div>
+
+                    <form class="profile-form" id="aboutForm">
+                        <div class="form-group">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" rows="4" maxlength="500" placeholder="Write a short bio about yourself...">Passionate developer and coffee enthusiast. Love exploring new technologies and sharing knowledge with the community. Always up for a good conversation about tech, travel, or life in general.</textarea>
+                            <div class="character-count">
+                                <span id="bioCount">184</span>/500 characters
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="occupation">Occupation</label>
+                            <input type="text" id="occupation" value="Software Developer" placeholder="What do you do for work?">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company/Organization</label>
+                            <input type="text" id="company" value="TechCorp Inc." placeholder="Where do you work?">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="education">Education</label>
+                            <input type="text" id="education" value="Bachelor's in Computer Science" placeholder="Your educational background">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="interests">Interests & Hobbies</label>
+                            <div class="tags-input" id="interestsContainer">
+                                <span class="tag">Technology <button type="button" onclick="removeTag(this)">×</button></span>
+                                <span class="tag">Coffee <button type="button" onclick="removeTag(this)">×</button></span>
+                                <span class="tag">Travel <button type="button" onclick="removeTag(this)">×</button></span>
+                                <span class="tag">Photography <button type="button" onclick="removeTag(this)">×</button></span>
+                                <input type="text" id="interestInput" placeholder="Add interest..." onkeypress="addInterest(event)">
+                            </div>
+                            <div class="form-hint">Press Enter to add interests and hobbies</div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Location & Contact -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2>Location & Contact</h2>
+                        <p>Share your location and how people can reach you</p>
+                    </div>
+
+                    <form class="profile-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="location">Current Location</label>
+                            <div class="location-input">
+                                <input type="text" id="location" value="New York, NY, USA" placeholder="City, State, Country">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="getCurrentLocation()">📍 Use Current</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hometown">Hometown</label>
+                            <input type="text" id="hometown" value="Boston, MA, USA" placeholder="Where are you from?">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="website">Website</label>
+                            <input type="url" id="website" value="https://johndoe.dev" placeholder="https://your-website.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Social Links</label>
+                            <div class="social-links-editor">
+                                <div class="social-link-item">
+                                    <select class="social-platform">
+                                        <option value="twitter" selected>Twitter</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="linkedin">LinkedIn</option>
+                                        <option value="github">GitHub</option>
+                                        <option value="youtube">YouTube</option>
+                                    </select>
+                                    <input type="text" value="@johndoe" placeholder="Username or URL">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="removeSocialLink(this)">Remove</button>
+                                </div>
+                                <div class="social-link-item">
+                                    <select class="social-platform">
+                                        <option value="twitter">Twitter</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="linkedin" selected>LinkedIn</option>
+                                        <option value="github">GitHub</option>
+                                        <option value="youtube">YouTube</option>
+                                    </select>
+                                    <input type="text" value="john-doe-dev" placeholder="Username or URL">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="removeSocialLink(this)">Remove</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="addSocialLink()">+ Add Social Link</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2>Profile Privacy</h2>
+                        <p>Control who can see different parts of your profile</p>
+                    </div>
+
+                    <div class="privacy-settings">
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <h4>Profile Visibility</h4>
+                                <p>Who can see your profile</p>
+                            </div>
+                            <select class="privacy-select">
+                                <option value="public" selected>Everyone</option>
+                                <option value="friends">Friends Only</option>
+                                <option value="private">Only Me</option>
+                            </select>
+                        </div>
+
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <h4>Contact Information</h4>
+                                <p>Who can see your email and phone</p>
+                            </div>
+                            <select class="privacy-select">
+                                <option value="public">Everyone</option>
+                                <option value="friends" selected>Friends Only</option>
+                                <option value="private">Only Me</option>
+                            </select>
+                        </div>
+
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <h4>Birth Date</h4>
+                                <p>Who can see your birth date</p>
+                            </div>
+                            <select class="privacy-select">
+                                <option value="public">Everyone</option>
+                                <option value="friends" selected>Friends Only</option>
+                                <option value="private">Only Me</option>
+                            </select>
+                        </div>
+
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <h4>Friend List</h4>
+                                <p>Who can see your friends</p>
+                            </div>
+                            <select class="privacy-select">
+                                <option value="public" selected>Everyone</option>
+                                <option value="friends">Friends Only</option>
+                                <option value="private">Only Me</option>
+                            </select>
+                        </div>
+
+                        <div class="privacy-item">
+                            <div class="privacy-info">
+                                <h4>Search Visibility</h4>
+                                <p>Allow others to find you in search</p>
+                            </div>
+                            <div class="privacy-toggle">
+                                <input type="checkbox" id="searchable" checked>
+                                <label for="searchable"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Preferences -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <h2>Account Preferences</h2>
+                        <p>Customize your account settings and preferences</p>
+                    </div>
+
+                    <div class="preferences-grid">
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Language</h4>
+                                <p>Choose your preferred language</p>
+                            </div>
+                            <select class="preference-select">
+                                <option value="en" selected>English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="ja">日本語</option>
+                            </select>
+                        </div>
+
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Time Zone</h4>
+                                <p>Your local time zone</p>
+                            </div>
+                            <select class="preference-select">
+                                <option value="America/New_York" selected>Eastern Time (UTC-5)</option>
+                                <option value="America/Chicago">Central Time (UTC-6)</option>
+                                <option value="America/Denver">Mountain Time (UTC-7)</option>
+                                <option value="America/Los_Angeles">Pacific Time (UTC-8)</option>
+                                <option value="UTC">UTC</option>
+                            </select>
+                        </div>
+
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Theme Preference</h4>
+                                <p>Choose your display theme</p>
+                            </div>
+                            <select class="preference-select" id="themeSelect">
+                                <option value="auto" selected>Auto (System)</option>
+                                <option value="light">Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                            </select>
+                        </div>
+
+                        <div class="preference-item">
+                            <div class="preference-info">
+                                <h4>Email Notifications</h4>
+                                <p>Receive email updates</p>
+                            </div>
+                            <div class="preference-toggle">
+                                <input type="checkbox" id="emailNotifications" checked>
+                                <label for="emailNotifications"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Actions -->
+                <div class="save-actions">
+                    <div class="save-info">
+                        <span class="save-status" id="saveStatus">All changes saved</span>
+                        <span class="last-updated">Last updated: Just now</span>
+                    </div>
+                    <div class="save-buttons">
+                        <button class="btn btn-outline" onclick="resetChanges()">Reset Changes</button>
+                        <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Photo Upload Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content photo-upload-modal">
+            <div class="modal-header">
+                <h3 id="photoModalTitle">Edit Profile Picture</h3>
+                <button class="modal-close" onclick="closePhotoModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="photo-upload-area">
+                    <div class="upload-zone" id="photoUploadZone">
+                        <div class="upload-content">
+                            <div class="upload-icon">📷</div>
+                            <h4>Upload Photo</h4>
+                            <p>Drag and drop or click to browse</p>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" hidden>
+                    </div>
+                    
+                    <div class="photo-preview" id="photoPreview" style="display: none;">
+                        <img id="previewImage" alt="Preview">
+                        <div class="photo-actions">
+                            <button class="btn btn-outline" onclick="changePhoto()">Change Photo</button>
+                            <button class="btn btn-primary" onclick="cropPhoto()">Crop & Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="photo-options">
+                    <h4>Photo Guidelines</h4>
+                    <ul>
+                        <li>Use a clear, recent photo of yourself</li>
+                        <li>Recommended size: 400x400 pixels</li>
+                        <li>Supported formats: JPG, PNG, GIF</li>
+                        <li>Maximum file size: 5MB</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and character counting
+        document.getElementById('bio').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('bioCount').textContent = count;
+            
+            if (count > 450) {
+                document.getElementById('bioCount').style.color = 'var(--color-danger)';
+            } else {
+                document.getElementById('bioCount').style.color = 'var(--color-text-secondary)';
+            }
+        });
+
+        // Interest tags functionality
+        function addInterest(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const value = input.value.trim();
+                
+                if (value && value.length > 0) {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.innerHTML = `${value} <button type="button" onclick="removeTag(this)">×</button>`;
+                    
+                    input.parentNode.insertBefore(tag, input);
+                    input.value = '';
+                }
+            }
+        }
+
+        function removeTag(button) {
+            button.parentElement.remove();
+        }
+
+        // Social links functionality
+        function addSocialLink() {
+            const container = document.querySelector('.social-links-editor');
+            const newLink = document.createElement('div');
+            newLink.className = 'social-link-item';
+            newLink.innerHTML = `
+                <select class="social-platform">
+                    <option value="twitter">Twitter</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="github">GitHub</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+                <input type="text" placeholder="Username or URL">
+                <button type="button" class="btn btn-sm btn-outline" onclick="removeSocialLink(this)">Remove</button>
+            `;
+            container.appendChild(newLink);
+        }
+
+        function removeSocialLink(button) {
+            button.parentElement.remove();
+        }
+
+        // Location functionality
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // In a real app, this would use a geocoding service
+                    document.getElementById('location').value = 'Current Location (GPS)';
+                    alert('Location detected! In a real app, this would show your actual location.');
+                }, function() {
+                    alert('Unable to detect location. Please enter manually.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+
+        // Photo upload functionality
+        let currentPhotoType = '';
+
+        function editAvatar() {
+            currentPhotoType = 'avatar';
+            document.getElementById('photoModalTitle').textContent = 'Edit Profile Picture';
+            document.getElementById('photoModal').classList.add('active');
+        }
+
+        function editCoverPhoto() {
+            currentPhotoType = 'cover';
+            document.getElementById('photoModalTitle').textContent = 'Edit Cover Photo';
+            document.getElementById('photoModal').classList.add('active');
+        }
+
+        function removeAvatar() {
+            if (confirm('Are you sure you want to remove your profile picture?')) {
+                document.getElementById('profileAvatar').src = '../../backend/media/images/placeholder.png';
+            }
+        }
+
+        function closePhotoModal() {
+            document.getElementById('photoModal').classList.remove('active');
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('photoUploadZone').style.display = 'block';
+        }
+
+        // Photo upload handling
+        document.getElementById('photoUploadZone').addEventListener('click', () => {
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    document.getElementById('photoPreview').style.display = 'block';
+                    document.getElementById('photoUploadZone').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function changePhoto() {
+            document.getElementById('photoInput').click();
+        }
+
+        function cropPhoto() {
+            const previewSrc = document.getElementById('previewImage').src;
+            
+            if (currentPhotoType === 'avatar') {
+                document.getElementById('profileAvatar').src = previewSrc;
+            } else if (currentPhotoType === 'cover') {
+                document.getElementById('coverPhoto').src = previewSrc;
+            }
+            
+            closePhotoModal();
+            updateSaveStatus('unsaved');
+        }
+
+        // Save functionality
+        function updateSaveStatus(status) {
+            const saveStatus = document.getElementById('saveStatus');
+            
+            switch(status) {
+                case 'unsaved':
+                    saveStatus.textContent = 'You have unsaved changes';
+                    saveStatus.style.color = 'var(--color-warning)';
+                    break;
+                case 'saving':
+                    saveStatus.textContent = 'Saving...';
+                    saveStatus.style.color = 'var(--color-primary)';
+                    break;
+                case 'saved':
+                    saveStatus.textContent = 'All changes saved';
+                    saveStatus.style.color = 'var(--color-success)';
+                    break;
+                case 'error':
+                    saveStatus.textContent = 'Error saving changes';
+                    saveStatus.style.color = 'var(--color-danger)';
+                    break;
+            }
+        }
+
+        function saveProfile() {
+            updateSaveStatus('saving');
+            
+            // Simulate API call
+            setTimeout(() => {
+                updateSaveStatus('saved');
+                document.querySelector('.last-updated').textContent = 'Last updated: Just now';
+                alert('Profile updated successfully!');
+            }, 1500);
+        }
+
+        function resetChanges() {
+            if (confirm('Are you sure you want to reset all changes? This will restore your profile to the last saved version.')) {
+                location.reload();
+            }
+        }
+
+        // Track changes
+        document.addEventListener('input', function(e) {
+            if (e.target.matches('input, textarea, select')) {
+                updateSaveStatus('unsaved');
+            }
+        });
+
+        // Theme change handler
+        document.getElementById('themeSelect').addEventListener('change', function() {
+            const theme = this.value;
+            // In a real app, this would apply the theme
+            console.log('Theme changed to:', theme);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize any interactive elements
+            const userDropdown = document.querySelector('.user-dropdown');
+            const userBtn = userDropdown.querySelector('.user-btn');
+            const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', () => {
+                dropdownMenu.classList.remove('active');
+            });
+
+            // Mobile menu toggle
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navRight = document.querySelector('.nav-right');
+
+            mobileToggle.addEventListener('click', () => {
+                navRight.classList.toggle('mobile-active');
+            });
+
+            // Close modal when clicking outside
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-overlay')) {
+                    closePhotoModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

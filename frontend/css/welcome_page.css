@@ -1,0 +1,219 @@
+/* Hero Section */
+.hero {
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: #64748b;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-background {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+}
+
+.background-image {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.1));
+}
+
+.hero-phone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.phone-image {
+    width: 250px;
+    height: auto;
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.3));
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-10px);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+    
+    .hero-text h1 {
+        font-size: 3rem;
+    }
+    
+    .hero-description {
+        font-size: 1.125rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+    }
+    
+    .nav-toggle {
+        display: block;
+    }
+    
+    .hero {
+        padding: 100px 0 60px;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+    }
+    
+    .hero-actions {
+        justify-content: center;
+    }
+    
+    .btn-lg {
+        padding: 0.875rem 1.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .phone-image {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .navbar {
+        padding: 0.75rem 15px;
+    }
+    
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .phone-image {
+        width: 150px;
+    }
+}
+
+/* Additional Visual Enhancements */
+.hero-text {
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-image {
+    animation: fadeInRight 1s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus states for accessibility */
+.btn:focus,
+.nav-link:focus,
+.logo:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Loading state for images */
+img {
+    transition: opacity 0.3s ease;
+}
+
+img:not([src]) {
+    opacity: 0;
+}

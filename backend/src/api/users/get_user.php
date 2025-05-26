@@ -74,12 +74,23 @@ if (!filter_var($userId, FILTER_VALIDATE_INT)) {
 }
 
 // Query database for user information
-$user = $Database->query(
-    "SELECT user_id, username, first_name, last_name, profile_picture, bio 
-     FROM users 
-     WHERE user_id = ? AND account_status != 'deleted'",
-    [$userId]
-);
+// If requesting user is admin, return more detailed information
+if ($authUser['role'] === 'admin') {
+    $user = $Database->query(
+        "SELECT user_id, username, email, first_name, last_name, profile_picture, bio, 
+                date_of_birth, registration_date, last_login, account_status, role
+         FROM users 
+         WHERE user_id = ? AND account_status != 'deleted'",
+        [$userId]
+    );
+} else {
+    $user = $Database->query(
+        "SELECT user_id, username, first_name, last_name, profile_picture, bio 
+         FROM users 
+         WHERE user_id = ? AND account_status != 'deleted'",
+        [$userId]
+    );
+}
 
 if (!$user || empty($user)) {
     http_response_code(404);
@@ -108,15 +119,28 @@ if ($userId != $authUser['user_id']) {
 }
 
 // Return user profile data
+$userData = [
+    'user_id' => $user['user_id'],
+    'username' => $user['username'],
+    'first_name' => $user['first_name'],
+    'last_name' => $user['last_name'],
+    'profile_picture' => $user['profile_picture'],
+    'bio' => $user['bio']
+];
+
+// Add admin-specific fields if requesting user is admin
+if ($authUser['role'] === 'admin') {
+    $userData['email'] = $user['email'];
+    $userData['date_of_birth'] = $user['date_of_birth'];
+    $userData['registration_date'] = $user['registration_date'];
+    $userData['last_login'] = $user['last_login'];
+    $userData['account_status'] = $user['account_status'];
+    $userData['role'] = $user['role'];
+} else {
+    $userData['friendship_status'] = $friendshipStatus;
+}
+
 echo json_encode([
     'success' => true,
-    'user' => [
-        'user_id' => $user['user_id'],
-        'username' => $user['username'],
-        'first_name' => $user['first_name'],
-        'last_name' => $user['last_name'],
-        'profile_picture' => $user['profile_picture'],
-        'bio' => $user['bio'],
-        'friendship_status' => $friendshipStatus
-    ]
+    'user' => $userData
 ]);

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Friends - SocialConnect</title>
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/manage-friends.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="main-feed.html" class="logo">
+                    <span class="logo-icon">📱</span>
+                    SocialConnect
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <div class="search-box">
+                    <input type="text" placeholder="Search SocialConnect..." aria-label="Search">
+                    <button class="search-btn" aria-label="Search">🔍</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button class="nav-btn" aria-label="Notifications">
+                    <span class="nav-icon">🔔</span>
+                    <span class="badge">3</span>
+                </button>
+                <button class="nav-btn" aria-label="Messages">
+                    <span class="nav-icon">💬</span>
+                    <span class="badge">2</span>
+                </button>
+                <div class="user-dropdown">
+                    <button class="user-btn" aria-label="User menu">
+                        <img src="../../backend/media/images/placeholder.png" alt="Profile" class="user-avatar">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="user-profile.html" class="dropdown-item">
+                            <span class="dropdown-icon">👤</span>
+                            My Profile
+                        </a>
+                        <a href="privacy-settings.html" class="dropdown-item">
+                            <span class="dropdown-icon">⚙️</span>
+                            Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item">
+                            <span class="dropdown-icon">🚪</span>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="header-content">
+                    <h1>Manage Friends</h1>
+                    <p>Manage your friends, friend requests, and blocked users</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="findFriends()">Find Friends</button>
+                </div>
+            </div>
+
+            <div class="friends-management-container">
+                <!-- Friends Overview -->
+                <div class="friends-overview">
+                    <div class="overview-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <div class="stat-number">1,234</div>
+                                <div class="stat-label">Friends</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📤</div>
+                            <div class="stat-content">
+                                <div class="stat-number">12</div>
+                                <div class="stat-label">Sent Requests</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📥</div>
+                            <div class="stat-content">
+                                <div class="stat-number">8</div>
+                                <div class="stat-label">Pending Requests</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🚫</div>
+                            <div class="stat-content">
+                                <div class="stat-number">5</div>
+                                <div class="stat-label">Blocked Users</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friends Tabs -->
+                <div class="friends-tabs">
+                    <button class="tab-btn active" data-tab="friends">All Friends</button>
+                    <button class="tab-btn" data-tab="requests">
+                        Friend Requests
+                        <span class="tab-badge">8</span>
+                    </button>
+                    <button class="tab-btn" data-tab="sent">Sent Requests</button>
+                    <button class="tab-btn" data-tab="blocked">Blocked</button>
+                    <button class="tab-btn" data-tab="suggestions">Suggestions</button>
+                </div>
+
+                <!-- Friends Tab Content -->
+                <div class="tab-content active" id="friends">
+                    <div class="friends-controls">
+                        <div class="search-friends">
+                            <input type="text" placeholder="Search friends..." id="friendsSearch">
+                        </div>
+                        <div class="friends-sort">
+                            <select id="friendsSort">
+                                <option value="name">Sort by Name</option>
+                                <option value="recent">Recently Added</option>
+                                <option value="activity">Most Active</option>
+                                <option value="mutual">Mutual Friends</option>
+                            </select>
+                        </div>
+                        <div class="view-options">
+                            <button class="view-btn active" data-view="grid">⊞</button>
+                            <button class="view-btn" data-view="list">☰</button>
+                        </div>
+                    </div>
+
+                    <div class="friends-grid" id="friendsGrid">
+                        <!-- Sample friends -->
+                        <div class="friend-card" data-name="alice johnson">
+                            <div class="friend-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Alice Johnson">
+                                <div class="online-status online"></div>
+                            </div>
+                            <div class="friend-info">
+                                <h3 class="friend-name">Alice Johnson</h3>
+                                <p class="friend-mutual">15 mutual friends</p>
+                                <p class="friend-status">Active now</p>
+                            </div>
+                            <div class="friend-actions">
+                                <button class="btn btn-sm btn-primary" onclick="viewProfile('alice')">View Profile</button>
+                                <button class="btn btn-sm btn-outline" onclick="sendMessage('alice')">Message</button>
+                                <div class="friend-dropdown">
+                                    <button class="action-btn dropdown-trigger">⋮</button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item" onclick="viewProfile('alice')">View Profile</button>
+                                        <button class="dropdown-item" onclick="sendMessage('alice')">Send Message</button>
+                                        <button class="dropdown-item" onclick="restrictFriend('alice')">Restrict</button>
+                                        <div class="dropdown-divider"></div>
+                                        <button class="dropdown-item" onclick="unfriend('alice')">Unfriend</button>
+                                        <button class="dropdown-item danger" onclick="blockUser('alice')">Block</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="friend-card" data-name="bob smith">
+                            <div class="friend-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Bob Smith">
+                                <div class="online-status away"></div>
+                            </div>
+                            <div class="friend-info">
+                                <h3 class="friend-name">Bob Smith</h3>
+                                <p class="friend-mutual">8 mutual friends</p>
+                                <p class="friend-status">Last seen 2 hours ago</p>
+                            </div>
+                            <div class="friend-actions">
+                                <button class="btn btn-sm btn-primary" onclick="viewProfile('bob')">View Profile</button>
+                                <button class="btn btn-sm btn-outline" onclick="sendMessage('bob')">Message</button>
+                                <div class="friend-dropdown">
+                                    <button class="action-btn dropdown-trigger">⋮</button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item" onclick="viewProfile('bob')">View Profile</button>
+                                        <button class="dropdown-item" onclick="sendMessage('bob')">Send Message</button>
+                                        <button class="dropdown-item" onclick="restrictFriend('bob')">Restrict</button>
+                                        <div class="dropdown-divider"></div>
+                                        <button class="dropdown-item" onclick="unfriend('bob')">Unfriend</button>
+                                        <button class="dropdown-item danger" onclick="blockUser('bob')">Block</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="friend-card" data-name="carol davis">
+                            <div class="friend-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Carol Davis">
+                                <div class="online-status offline"></div>
+                            </div>
+                            <div class="friend-info">
+                                <h3 class="friend-name">Carol Davis</h3>
+                                <p class="friend-mutual">23 mutual friends</p>
+                                <p class="friend-status">Last seen yesterday</p>
+                            </div>
+                            <div class="friend-actions">
+                                <button class="btn btn-sm btn-primary" onclick="viewProfile('carol')">View Profile</button>
+                                <button class="btn btn-sm btn-outline" onclick="sendMessage('carol')">Message</button>
+                                <div class="friend-dropdown">
+                                    <button class="action-btn dropdown-trigger">⋮</button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item" onclick="viewProfile('carol')">View Profile</button>
+                                        <button class="dropdown-item" onclick="sendMessage('carol')">Send Message</button>
+                                        <button class="dropdown-item" onclick="restrictFriend('carol')">Restrict</button>
+                                        <div class="dropdown-divider"></div>
+                                        <button class="dropdown-item" onclick="unfriend('carol')">Unfriend</button>
+                                        <button class="dropdown-item danger" onclick="blockUser('carol')">Block</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="friend-card" data-name="david wilson">
+                            <div class="friend-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="David Wilson">
+                                <div class="online-status online"></div>
+                            </div>
+                            <div class="friend-info">
+                                <h3 class="friend-name">David Wilson</h3>
+                                <p class="friend-mutual">5 mutual friends</p>
+                                <p class="friend-status">Active now</p>
+                            </div>
+                            <div class="friend-actions">
+                                <button class="btn btn-sm btn-primary" onclick="viewProfile('david')">View Profile</button>
+                                <button class="btn btn-sm btn-outline" onclick="sendMessage('david')">Message</button>
+                                <div class="friend-dropdown">
+                                    <button class="action-btn dropdown-trigger">⋮</button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item" onclick="viewProfile('david')">View Profile</button>
+                                        <button class="dropdown-item" onclick="sendMessage('david')">Send Message</button>
+                                        <button class="dropdown-item" onclick="restrictFriend('david')">Restrict</button>
+                                        <div class="dropdown-divider"></div>
+                                        <button class="dropdown-item" onclick="unfriend('david')">Unfriend</button>
+                                        <button class="dropdown-item danger" onclick="blockUser('david')">Block</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friend Requests Tab -->
+                <div class="tab-content" id="requests">
+                    <div class="requests-header">
+                        <h3>Friend Requests</h3>
+                        <div class="requests-actions">
+                            <button class="btn btn-outline" onclick="confirmAllRequests()">Accept All</button>
+                            <button class="btn btn-outline" onclick="deleteAllRequests()">Delete All</button>
+                        </div>
+                    </div>
+
+                    <div class="requests-list">
+                        <div class="request-card">
+                            <div class="request-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Emma Thompson">
+                            </div>
+                            <div class="request-info">
+                                <h4 class="request-name">Emma Thompson</h4>
+                                <p class="request-mutual">12 mutual friends</p>
+                                <p class="request-time">2 hours ago</p>
+                            </div>
+                            <div class="request-actions">
+                                <button class="btn btn-sm btn-primary" onclick="acceptRequest('emma')">Accept</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteRequest('emma')">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="request-card">
+                            <div class="request-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Frank Miller">
+                            </div>
+                            <div class="request-info">
+                                <h4 class="request-name">Frank Miller</h4>
+                                <p class="request-mutual">7 mutual friends</p>
+                                <p class="request-time">1 day ago</p>
+                            </div>
+                            <div class="request-actions">
+                                <button class="btn btn-sm btn-primary" onclick="acceptRequest('frank')">Accept</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteRequest('frank')">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="request-card">
+                            <div class="request-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Grace Lee">
+                            </div>
+                            <div class="request-info">
+                                <h4 class="request-name">Grace Lee</h4>
+                                <p class="request-mutual">3 mutual friends</p>
+                                <p class="request-time">3 days ago</p>
+                            </div>
+                            <div class="request-actions">
+                                <button class="btn btn-sm btn-primary" onclick="acceptRequest('grace')">Accept</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteRequest('grace')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sent Requests Tab -->
+                <div class="tab-content" id="sent">
+                    <div class="sent-header">
+                        <h3>Sent Friend Requests</h3>
+                        <p>Requests you've sent that are waiting for a response</p>
+                    </div>
+
+                    <div class="sent-list">
+                        <div class="sent-card">
+                            <div class="sent-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Henry Brown">
+                            </div>
+                            <div class="sent-info">
+                                <h4 class="sent-name">Henry Brown</h4>
+                                <p class="sent-mutual">9 mutual friends</p>
+                                <p class="sent-time">Sent 2 days ago</p>
+                            </div>
+                            <div class="sent-actions">
+                                <button class="btn btn-sm btn-outline" onclick="cancelRequest('henry')">Cancel Request</button>
+                            </div>
+                        </div>
+
+                        <div class="sent-card">
+                            <div class="sent-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Isabel Garcia">
+                            </div>
+                            <div class="sent-info">
+                                <h4 class="sent-name">Isabel Garcia</h4>
+                                <p class="sent-mutual">14 mutual friends</p>
+                                <p class="sent-time">Sent 1 week ago</p>
+                            </div>
+                            <div class="sent-actions">
+                                <button class="btn btn-sm btn-outline" onclick="cancelRequest('isabel')">Cancel Request</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blocked Users Tab -->
+                <div class="tab-content" id="blocked">
+                    <div class="blocked-header">
+                        <h3>Blocked Users</h3>
+                        <p>Users you have blocked from contacting you</p>
+                    </div>
+
+                    <div class="blocked-list">
+                        <div class="blocked-card">
+                            <div class="blocked-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Jake Wilson">
+                            </div>
+                            <div class="blocked-info">
+                                <h4 class="blocked-name">Jake Wilson</h4>
+                                <p class="blocked-time">Blocked 2 weeks ago</p>
+                            </div>
+                            <div class="blocked-actions">
+                                <button class="btn btn-sm btn-primary" onclick="unblockUser('jake')">Unblock</button>
+                            </div>
+                        </div>
+
+                        <div class="blocked-card">
+                            <div class="blocked-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Kelly Adams">
+                            </div>
+                            <div class="blocked-info">
+                                <h4 class="blocked-name">Kelly Adams</h4>
+                                <p class="blocked-time">Blocked 1 month ago</p>
+                            </div>
+                            <div class="blocked-actions">
+                                <button class="btn btn-sm btn-primary" onclick="unblockUser('kelly')">Unblock</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friend Suggestions Tab -->
+                <div class="tab-content" id="suggestions">
+                    <div class="suggestions-header">
+                        <h3>People You May Know</h3>
+                        <p>Friend suggestions based on mutual friends and contacts</p>
+                    </div>
+
+                    <div class="suggestions-grid">
+                        <div class="suggestion-card">
+                            <div class="suggestion-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Laura Martinez">
+                            </div>
+                            <div class="suggestion-info">
+                                <h4 class="suggestion-name">Laura Martinez</h4>
+                                <p class="suggestion-mutual">18 mutual friends</p>
+                                <p class="suggestion-reason">From your contacts</p>
+                            </div>
+                            <div class="suggestion-actions">
+                                <button class="btn btn-sm btn-primary" onclick="addFriend('laura')">Add Friend</button>
+                                <button class="btn btn-sm btn-outline" onclick="removeSuggestion('laura')">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="suggestion-card">
+                            <div class="suggestion-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Mike Chen">
+                            </div>
+                            <div class="suggestion-info">
+                                <h4 class="suggestion-name">Mike Chen</h4>
+                                <p class="suggestion-mutual">6 mutual friends</p>
+                                <p class="suggestion-reason">Works at TechCorp</p>
+                            </div>
+                            <div class="suggestion-actions">
+                                <button class="btn btn-sm btn-primary" onclick="addFriend('mike')">Add Friend</button>
+                                <button class="btn btn-sm btn-outline" onclick="removeSuggestion('mike')">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="suggestion-card">
+                            <div class="suggestion-avatar">
+                                <img src="../../backend/media/images/placeholder.png" alt="Nina Patel">
+                            </div>
+                            <div class="suggestion-info">
+                                <h4 class="suggestion-name">Nina Patel</h4>
+                                <p class="suggestion-mutual">11 mutual friends</p>
+                                <p class="suggestion-reason">Friends with Alice Johnson</p>
+                            </div>
+                            <div class="suggestion-actions">
+                                <button class="btn btn-sm btn-primary" onclick="addFriend('nina')">Add Friend</button>
+                                <button class="btn btn-sm btn-outline" onclick="removeSuggestion('nina')">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmTitle">Confirm Action</h3>
+                <button class="modal-close" onclick="closeModal('confirmModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('confirmModal')">Cancel</button>
+                <button class="btn btn-danger" id="confirmButton" onclick="confirmAction()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAction = null;
+        let currentTarget = null;
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+                
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // Search functionality
+        document.getElementById('friendsSearch').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.friend-card').forEach(card => {
+                const name = card.dataset.name;
+                const matches = name.includes(query);
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+        // Sort friends
+        document.getElementById('friendsSort').addEventListener('change', (e) => {
+            sortFriends(e.target.value);
+        });
+
+        function sortFriends(criteria) {
+            const container = document.getElementById('friendsGrid');
+            const cards = Array.from(container.querySelectorAll('.friend-card'));
+            
+            cards.sort((a, b) => {
+                const nameA = a.querySelector('.friend-name').textContent;
+                const nameB = b.querySelector('.friend-name').textContent;
+                
+                switch(criteria) {
+                    case 'name':
+                        return nameA.localeCompare(nameB);
+                    case 'recent':
+                        // Would sort by date added in real app
+                        return Math.random() - 0.5;
+                    case 'activity':
+                        // Would sort by last activity in real app
+                        return Math.random() - 0.5;
+                    case 'mutual':
+                        const mutualA = parseInt(a.querySelector('.friend-mutual').textContent);
+                        const mutualB = parseInt(b.querySelector('.friend-mutual').textContent);
+                        return mutualB - mutualA;
+                    default:
+                        return 0;
+                }
+            });
+            
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        // View toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toggleView(btn.dataset.view);
+            });
+        });
+
+        function toggleView(view) {
+            const grid = document.getElementById('friendsGrid');
+            grid.className = view === 'list' ? 'friends-grid list-view' : 'friends-grid';
+        }
+
+        // Friend actions
+        function viewProfile(userId) {
+            window.open('user-profile.html?user=' + userId, '_blank');
+        }
+
+        function sendMessage(userId) {
+            window.location.href = 'conversation.html?user=' + userId;
+        }
+
+        function restrictFriend(userId) {
+            showConfirmation(
+                'Restrict Friend',
+                'This person will no longer see your posts and stories, but they will still be your friend.',
+                'Restrict',
+                () => {
+                    alert(`${userId} has been restricted.`);
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        function unfriend(userId) {
+            showConfirmation(
+                'Unfriend',
+                'Are you sure you want to unfriend this person? You can send them a friend request again later.',
+                'Unfriend',
+                () => {
+                    const card = document.querySelector(`[data-name*="${userId}"]`);
+                    if (card) card.remove();
+                    alert(`${userId} has been unfriended.`);
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        function blockUser(userId) {
+            showConfirmation(
+                'Block User',
+                'This person will no longer be able to see your profile, posts, or contact you.',
+                'Block',
+                () => {
+                    const card = document.querySelector(`[data-name*="${userId}"]`);
+                    if (card) card.remove();
+                    alert(`${userId} has been blocked.`);
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        // Friend request actions
+        function acceptRequest(userId) {
+            const requestCard = document.querySelector(`.request-card:has(.request-name:contains("${userId}"))`);
+            if (requestCard) {
+                requestCard.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => requestCard.remove(), 300);
+            }
+            alert(`Friend request from ${userId} accepted!`);
+        }
+
+        function deleteRequest(userId) {
+            const requestCard = document.querySelector(`.request-card:has(.request-name:contains("${userId}"))`);
+            if (requestCard) {
+                requestCard.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => requestCard.remove(), 300);
+            }
+            alert(`Friend request from ${userId} deleted.`);
+        }
+
+        function confirmAllRequests() {
+            showConfirmation(
+                'Accept All Requests',
+                'Are you sure you want to accept all pending friend requests?',
+                'Accept All',
+                () => {
+                    document.querySelectorAll('.request-card').forEach(card => {
+                        card.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => card.remove(), 300);
+                    });
+                    alert('All friend requests accepted!');
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        function deleteAllRequests() {
+            showConfirmation(
+                'Delete All Requests',
+                'Are you sure you want to delete all pending friend requests?',
+                'Delete All',
+                () => {
+                    document.querySelectorAll('.request-card').forEach(card => {
+                        card.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => card.remove(), 300);
+                    });
+                    alert('All friend requests deleted!');
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        // Sent request actions
+        function cancelRequest(userId) {
+            showConfirmation(
+                'Cancel Friend Request',
+                `Cancel your friend request to ${userId}?`,
+                'Cancel Request',
+                () => {
+                    const sentCard = document.querySelector(`.sent-card:has(.sent-name:contains("${userId}"))`);
+                    if (sentCard) {
+                        sentCard.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => sentCard.remove(), 300);
+                    }
+                    alert(`Friend request to ${userId} cancelled.`);
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        // Blocked user actions
+        function unblockUser(userId) {
+            showConfirmation(
+                'Unblock User',
+                `Unblock ${userId}? They will be able to see your profile and contact you again.`,
+                'Unblock',
+                () => {
+                    const blockedCard = document.querySelector(`.blocked-card:has(.blocked-name:contains("${userId}"))`);
+                    if (blockedCard) {
+                        blockedCard.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => blockedCard.remove(), 300);
+                    }
+                    alert(`${userId} has been unblocked.`);
+                    closeModal('confirmModal');
+                }
+            );
+        }
+
+        // Friend suggestion actions
+        function addFriend(userId) {
+            const suggestionCard = document.querySelector(`.suggestion-card:has(.suggestion-name:contains("${userId}"))`);
+            if (suggestionCard) {
+                suggestionCard.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => suggestionCard.remove(), 300);
+            }
+            alert(`Friend request sent to ${userId}!`);
+        }
+
+        function removeSuggestion(userId) {
+            const suggestionCard = document.querySelector(`.suggestion-card:has(.suggestion-name:contains("${userId}"))`);
+            if (suggestionCard) {
+                suggestionCard.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => suggestionCard.remove(), 300);
+            }
+        }
+
+        // Find friends functionality
+        function findFriends() {
+            window.location.href = 'search.html?type=people';
+        }
+
+        // Modal functions
+        function showConfirmation(title, message, buttonText, callback) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmButton').textContent = buttonText;
+            currentAction = callback;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function confirmAction() {
+            if (currentAction) {
+                currentAction();
+                currentAction = null;
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Dropdown handling
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-trigger')) {
+                e.stopPropagation();
+                const dropdown = e.target.nextElementSibling;
+                
+                // Close other dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdown) menu.classList.remove('active');
+                });
+                
+                dropdown.classList.toggle('active');
+            } else {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                const modal = e.target.closest('.modal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize dropdown and mobile menu functionality
+            const userDropdown = document.querySelector('.user-dropdown');
+            const userBtn = userDropdown.querySelector('.user-btn');
+            const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', () => {
+                dropdownMenu.classList.remove('active');
+            });
+
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navRight = document.querySelector('.nav-right');
+
+            mobileToggle.addEventListener('click', () => {
+                navRight.classList.toggle('mobile-active');
+            });
+        });
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post - SocialConnect</title>
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/create-post.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <a href="main-feed.html" class="brand-link">SocialConnect</a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="main-feed.html" class="nav-link">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="search.html" class="nav-link">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">Search</span>
+                </a>
+                <a href="messages.html" class="nav-link">
+                    <span class="nav-icon">💬</span>
+                    <span class="nav-text">Messages</span>
+                </a>
+                <a href="notifications.html" class="nav-link">
+                    <span class="nav-icon">🔔</span>
+                    <span class="nav-text">Notifications</span>
+                </a>
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-expanded="false">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="user-profile.html" class="dropdown-item">View Profile</a>
+                        <a href="edit-profile.html" class="dropdown-item">Edit Profile</a>
+                        <a href="manage-account.html" class="dropdown-item">Account Settings</a>
+                        <a href="privacy-settings.html" class="dropdown-item">Privacy Settings</a>
+                        <a href="saved-content.html" class="dropdown-item">Saved Content</a>
+                        <a href="help-support.html" class="dropdown-item">Help & Support</a>
+                        <hr class="dropdown-divider">
+                        <a href="login.html" class="dropdown-item">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="create-post-page">
+            <div class="create-post-header">
+                <h1>Create Post</h1>
+                <button class="close-btn" onclick="window.history.back()" aria-label="Close">×</button>
+            </div>
+
+            <div class="create-post-content">
+                <div class="post-creator">
+                    <div class="creator-header">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="Your Profile" class="creator-avatar">
+                        <div class="creator-info">
+                            <h3>John Smith</h3>
+                            <div class="privacy-selector">
+                                <button class="privacy-btn" id="privacyBtn">
+                                    <span class="privacy-icon">🌍</span>
+                                    <span class="privacy-text">Public</span>
+                                    <span class="dropdown-arrow">▼</span>
+                                </button>
+                                <div class="privacy-dropdown" id="privacyDropdown">
+                                    <div class="privacy-option" data-privacy="public">
+                                        <span class="privacy-icon">🌍</span>
+                                        <div class="privacy-details">
+                                            <span class="privacy-label">Public</span>
+                                            <span class="privacy-description">Anyone can see this post</span>
+                                        </div>
+                                    </div>
+                                    <div class="privacy-option" data-privacy="friends">
+                                        <span class="privacy-icon">👥</span>
+                                        <div class="privacy-details">
+                                            <span class="privacy-label">Friends</span>
+                                            <span class="privacy-description">Only your friends can see this</span>
+                                        </div>
+                                    </div>
+                                    <div class="privacy-option" data-privacy="private">
+                                        <span class="privacy-icon">🔒</span>
+                                        <div class="privacy-details">
+                                            <span class="privacy-label">Only Me</span>
+                                            <span class="privacy-description">Only you can see this</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-compose">
+                        <textarea 
+                            class="post-textarea" 
+                            placeholder="What's on your mind, John?"
+                            id="postText"
+                            rows="4"
+                        ></textarea>
+                        
+                        <div class="character-count">
+                            <span id="charCount">0</span> / 500
+                        </div>
+                    </div>
+
+                    <div class="media-upload-area" id="mediaArea" style="display: none;">
+                        <div class="media-preview" id="mediaPreview">
+                            <!-- Media previews will be added here -->
+                        </div>
+                        <button class="remove-media-btn" id="removeMediaBtn">Remove All Media</button>
+                    </div>
+
+                    <div class="post-options">
+                        <div class="media-options">
+                            <h4>Add to your post</h4>
+                            <div class="option-buttons">
+                                <button class="option-btn" id="photoBtn" title="Photo/Video">
+                                    <span class="option-icon">📷</span>
+                                    <span class="option-text">Photo/Video</span>
+                                </button>
+                                <button class="option-btn" id="pollBtn" title="Poll">
+                                    <span class="option-icon">📊</span>
+                                    <span class="option-text">Poll</span>
+                                </button>
+                                <button class="option-btn" id="locationBtn" title="Location">
+                                    <span class="option-icon">📍</span>
+                                    <span class="option-text">Location</span>
+                                </button>
+                                <button class="option-btn" id="tagBtn" title="Tag People">
+                                    <span class="option-icon">👥</span>
+                                    <span class="option-text">Tag People</span>
+                                </button>
+                                <button class="option-btn" id="emojiBtn" title="Feeling/Activity">
+                                    <span class="option-icon">😊</span>
+                                    <span class="option-text">Feeling</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Poll Creation -->
+                        <div class="poll-creator" id="pollCreator" style="display: none;">
+                            <h4>Create a Poll</h4>
+                            <div class="poll-question">
+                                <input type="text" placeholder="Ask a question..." class="poll-input" id="pollQuestion">
+                            </div>
+                            <div class="poll-options" id="pollOptions">
+                                <div class="poll-option">
+                                    <input type="text" placeholder="Option 1" class="poll-input">
+                                    <button class="remove-option-btn">×</button>
+                                </div>
+                                <div class="poll-option">
+                                    <input type="text" placeholder="Option 2" class="poll-input">
+                                    <button class="remove-option-btn">×</button>
+                                </div>
+                            </div>
+                            <button class="add-option-btn" id="addPollOption">+ Add Option</button>
+                            <div class="poll-settings">
+                                <label class="poll-setting">
+                                    <input type="checkbox" id="allowMultiple">
+                                    Allow multiple selections
+                                </label>
+                                <div class="poll-duration">
+                                    <label>Duration:</label>
+                                    <select id="pollDuration">
+                                        <option value="1">1 day</option>
+                                        <option value="3">3 days</option>
+                                        <option value="7" selected>1 week</option>
+                                        <option value="30">1 month</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="remove-poll-btn" id="removePollBtn">Remove Poll</button>
+                        </div>
+
+                        <!-- Location Selector -->
+                        <div class="location-selector" id="locationSelector" style="display: none;">
+                            <h4>Add Location</h4>
+                            <div class="location-search">
+                                <input type="text" placeholder="Search for a location..." class="location-input" id="locationSearch">
+                                <div class="location-suggestions" id="locationSuggestions">
+                                    <div class="location-suggestion" data-location="San Francisco, CA">
+                                        <span class="location-icon">📍</span>
+                                        <span class="location-name">San Francisco, CA</span>
+                                    </div>
+                                    <div class="location-suggestion" data-location="Golden Gate Park">
+                                        <span class="location-icon">🌳</span>
+                                        <span class="location-name">Golden Gate Park</span>
+                                    </div>
+                                    <div class="location-suggestion" data-location="Union Square">
+                                        <span class="location-icon">🏢</span>
+                                        <span class="location-name">Union Square</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="selected-location" id="selectedLocation" style="display: none;">
+                                <span class="location-icon">📍</span>
+                                <span class="location-name"></span>
+                                <button class="remove-location-btn">×</button>
+                            </div>
+                        </div>
+
+                        <!-- Tag People -->
+                        <div class="tag-people" id="tagPeople" style="display: none;">
+                            <h4>Tag People</h4>
+                            <div class="tag-search">
+                                <input type="text" placeholder="Search friends..." class="tag-input" id="tagSearch">
+                                <div class="tag-suggestions" id="tagSuggestions">
+                                    <div class="tag-suggestion" data-user="sarah">
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b73609ca?w=40&h=40&fit=crop&crop=face" alt="Sarah Wilson">
+                                        <span class="tag-name">Sarah Wilson</span>
+                                    </div>
+                                    <div class="tag-suggestion" data-user="emma">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="Emma Davis">
+                                        <span class="tag-name">Emma Davis</span>
+                                    </div>
+                                    <div class="tag-suggestion" data-user="mike">
+                                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" alt="Mike Chen">
+                                        <span class="tag-name">Mike Chen</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tagged-people" id="taggedPeople">
+                                <!-- Tagged people will appear here -->
+                            </div>
+                        </div>
+
+                        <!-- Feeling/Activity -->
+                        <div class="feeling-selector" id="feelingSelector" style="display: none;">
+                            <h4>How are you feeling?</h4>
+                            <div class="feeling-grid">
+                                <button class="feeling-btn" data-feeling="happy">😊 Happy</button>
+                                <button class="feeling-btn" data-feeling="excited">🎉 Excited</button>
+                                <button class="feeling-btn" data-feeling="grateful">🙏 Grateful</button>
+                                <button class="feeling-btn" data-feeling="relaxed">😌 Relaxed</button>
+                                <button class="feeling-btn" data-feeling="motivated">💪 Motivated</button>
+                                <button class="feeling-btn" data-feeling="creative">🎨 Creative</button>
+                                <button class="feeling-btn" data-feeling="adventurous">🏔️ Adventurous</button>
+                                <button class="feeling-btn" data-feeling="thoughtful">🤔 Thoughtful</button>
+                            </div>
+                            <div class="selected-feeling" id="selectedFeeling" style="display: none;">
+                                <span class="feeling-text"></span>
+                                <button class="remove-feeling-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-actions">
+                        <div class="post-scheduling">
+                            <label class="schedule-checkbox">
+                                <input type="checkbox" id="schedulePost">
+                                <span class="checkbox-custom"></span>
+                                Schedule post
+                            </label>
+                            <div class="schedule-options" id="scheduleOptions" style="display: none;">
+                                <input type="datetime-local" id="scheduleDateTime" class="schedule-input">
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                            <button class="btn btn-primary" id="publishBtn" disabled>Post</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post Preview -->
+                <div class="post-preview">
+                    <h3>Preview</h3>
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="Your Profile" class="preview-avatar">
+                            <div class="preview-meta">
+                                <h4>John Smith</h4>
+                                <p class="preview-time">Just now • <span id="previewPrivacy">🌍 Public</span></p>
+                            </div>
+                        </div>
+                        <div class="preview-content">
+                            <p class="preview-text" id="previewText">Share what's on your mind...</p>
+                            <div class="preview-media" id="previewMedia" style="display: none;">
+                                <!-- Media preview will appear here -->
+                            </div>
+                            <div class="preview-poll" id="previewPoll" style="display: none;">
+                                <!-- Poll preview will appear here -->
+                            </div>
+                            <div class="preview-location" id="previewLocation" style="display: none;">
+                                <span class="location-icon">📍</span>
+                                <span class="location-text"></span>
+                            </div>
+                            <div class="preview-tags" id="previewTags" style="display: none;">
+                                <span class="tags-text">with </span>
+                                <span class="tagged-names"></span>
+                            </div>
+                            <div class="preview-feeling" id="previewFeeling" style="display: none;">
+                                <span class="feeling-prefix">is feeling </span>
+                                <span class="feeling-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden file input -->
+        <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display: none;">
+    </main>
+
+    <script>
+        let selectedFiles = [];
+        let taggedUsers = [];
+        let selectedLocation = null;
+        let selectedFeeling = null;
+        let pollData = null;
+
+        // Character counter
+        const postText = document.getElementById('postText');
+        const charCount = document.getElementById('charCount');
+        const publishBtn = document.getElementById('publishBtn');
+
+        postText.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            
+            // Update preview
+            const previewText = document.getElementById('previewText');
+            previewText.textContent = this.value || 'Share what\'s on your mind...';
+            
+            // Enable/disable publish button
+            updatePublishButton();
+        });
+
+        function updatePublishButton() {
+            const hasContent = postText.value.trim() || selectedFiles.length > 0 || pollData;
+            publishBtn.disabled = !hasContent;
+        }
+
+        // Privacy selector
+        const privacyBtn = document.getElementById('privacyBtn');
+        const privacyDropdown = document.getElementById('privacyDropdown');
+
+        privacyBtn.addEventListener('click', function() {
+            privacyDropdown.style.display = privacyDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.privacy-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const privacy = this.dataset.privacy;
+                const icon = this.querySelector('.privacy-icon').textContent;
+                const label = this.querySelector('.privacy-label').textContent;
+                
+                document.querySelector('.privacy-btn .privacy-icon').textContent = icon;
+                document.querySelector('.privacy-btn .privacy-text').textContent = label;
+                document.getElementById('previewPrivacy').textContent = `${icon} ${label}`;
+                
+                privacyDropdown.style.display = 'none';
+            });
+        });
+
+        // Media upload
+        document.getElementById('photoBtn').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            selectedFiles = [...selectedFiles, ...files];
+            
+            displayMediaPreviews();
+            updatePublishButton();
+        });
+
+        function displayMediaPreviews() {
+            const mediaArea = document.getElementById('mediaArea');
+            const mediaPreview = document.getElementById('mediaPreview');
+            
+            if (selectedFiles.length > 0) {
+                mediaArea.style.display = 'block';
+                mediaPreview.innerHTML = '';
+                
+                selectedFiles.forEach((file, index) => {
+                    const preview = document.createElement('div');
+                    preview.className = 'media-item';
+                    
+                    if (file.type.startsWith('image/')) {
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(file);
+                        img.alt = 'Preview';
+                        preview.appendChild(img);
+                    } else if (file.type.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        video.src = URL.createObjectURL(file);
+                        video.controls = true;
+                        preview.appendChild(video);
+                    }
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-media-item';
+                    removeBtn.textContent = '×';
+                    removeBtn.onclick = () => removeMediaItem(index);
+                    preview.appendChild(removeBtn);
+                    
+                    mediaPreview.appendChild(preview);
+                });
+            } else {
+                mediaArea.style.display = 'none';
+            }
+        }
+
+        function removeMediaItem(index) {
+            selectedFiles.splice(index, 1);
+            displayMediaPreviews();
+            updatePublishButton();
+        }
+
+        document.getElementById('removeMediaBtn').addEventListener('click', function() {
+            selectedFiles = [];
+            displayMediaPreviews();
+            updatePublishButton();
+        });
+
+        // Poll functionality
+        document.getElementById('pollBtn').addEventListener('click', function() {
+            const pollCreator = document.getElementById('pollCreator');
+            pollCreator.style.display = pollCreator.style.display === 'block' ? 'none' : 'block';
+            
+            if (pollCreator.style.display === 'block') {
+                pollData = { question: '', options: ['', ''], settings: { multiple: false, duration: 7 } };
+            } else {
+                pollData = null;
+            }
+            updatePublishButton();
+        });
+
+        document.getElementById('addPollOption').addEventListener('click', function() {
+            const pollOptions = document.getElementById('pollOptions');
+            const optionCount = pollOptions.children.length;
+            
+            if (optionCount < 4) {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'poll-option';
+                optionDiv.innerHTML = `
+                    <input type="text" placeholder="Option ${optionCount + 1}" class="poll-input">
+                    <button class="remove-option-btn">×</button>
+                `;
+                pollOptions.appendChild(optionDiv);
+                
+                // Add remove functionality
+                optionDiv.querySelector('.remove-option-btn').addEventListener('click', function() {
+                    if (pollOptions.children.length > 2) {
+                        optionDiv.remove();
+                    }
+                });
+            }
+        });
+
+        document.getElementById('removePollBtn').addEventListener('click', function() {
+            document.getElementById('pollCreator').style.display = 'none';
+            pollData = null;
+            updatePublishButton();
+        });
+
+        // Location functionality
+        document.getElementById('locationBtn').addEventListener('click', function() {
+            const locationSelector = document.getElementById('locationSelector');
+            locationSelector.style.display = locationSelector.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.location-suggestion').forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                const location = this.dataset.location;
+                selectedLocation = location;
+                
+                const selectedLocationDiv = document.getElementById('selectedLocation');
+                selectedLocationDiv.querySelector('.location-name').textContent = location;
+                selectedLocationDiv.style.display = 'block';
+                
+                document.getElementById('locationSuggestions').style.display = 'none';
+                
+                // Update preview
+                const previewLocation = document.getElementById('previewLocation');
+                previewLocation.querySelector('.location-text').textContent = location;
+                previewLocation.style.display = 'block';
+            });
+        });
+
+        // Tag people functionality
+        document.getElementById('tagBtn').addEventListener('click', function() {
+            const tagPeople = document.getElementById('tagPeople');
+            tagPeople.style.display = tagPeople.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.tag-suggestion').forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                const userId = this.dataset.user;
+                const userName = this.querySelector('.tag-name').textContent;
+                const userImg = this.querySelector('img').src;
+                
+                if (!taggedUsers.find(user => user.id === userId)) {
+                    taggedUsers.push({ id: userId, name: userName, img: userImg });
+                    
+                    const taggedPeople = document.getElementById('taggedPeople');
+                    const taggedUser = document.createElement('div');
+                    taggedUser.className = 'tagged-user';
+                    taggedUser.innerHTML = `
+                        <img src="${userImg}" alt="${userName}">
+                        <span>${userName}</span>
+                        <button class="remove-tag-btn" onclick="removeTaggedUser('${userId}')">×</button>
+                    `;
+                    taggedPeople.appendChild(taggedUser);
+                    
+                    // Update preview
+                    updateTagsPreview();
+                }
+            });
+        });
+
+        function removeTaggedUser(userId) {
+            taggedUsers = taggedUsers.filter(user => user.id !== userId);
+            const taggedPeople = document.getElementById('taggedPeople');
+            const userElement = taggedPeople.querySelector(`[onclick="removeTaggedUser('${userId}')"]`).parentElement;
+            userElement.remove();
+            
+            updateTagsPreview();
+        }
+
+        function updateTagsPreview() {
+            const previewTags = document.getElementById('previewTags');
+            if (taggedUsers.length > 0) {
+                const names = taggedUsers.map(user => user.name).join(', ');
+                previewTags.querySelector('.tagged-names').textContent = names;
+                previewTags.style.display = 'block';
+            } else {
+                previewTags.style.display = 'none';
+            }
+        }
+
+        // Feeling functionality
+        document.getElementById('emojiBtn').addEventListener('click', function() {
+            const feelingSelector = document.getElementById('feelingSelector');
+            feelingSelector.style.display = feelingSelector.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.querySelectorAll('.feeling-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const feeling = this.dataset.feeling;
+                const feelingText = this.textContent;
+                selectedFeeling = { id: feeling, text: feelingText };
+                
+                const selectedFeelingDiv = document.getElementById('selectedFeeling');
+                selectedFeelingDiv.querySelector('.feeling-text').textContent = feelingText;
+                selectedFeelingDiv.style.display = 'block';
+                
+                // Update preview
+                const previewFeeling = document.getElementById('previewFeeling');
+                previewFeeling.querySelector('.feeling-text').textContent = feelingText;
+                previewFeeling.style.display = 'block';
+            });
+        });
+
+        // Schedule post
+        document.getElementById('schedulePost').addEventListener('change', function() {
+            const scheduleOptions = document.getElementById('scheduleOptions');
+            scheduleOptions.style.display = this.checked ? 'block' : 'none';
+            
+            if (this.checked) {
+                // Set minimum date to current time
+                const now = new Date();
+                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                document.getElementById('scheduleDateTime').min = localDateTime;
+            }
+        });
+
+        // Publish post
+        publishBtn.addEventListener('click', function() {
+            const postData = {
+                text: postText.value,
+                privacy: document.querySelector('.privacy-btn .privacy-text').textContent.toLowerCase(),
+                media: selectedFiles,
+                poll: pollData,
+                location: selectedLocation,
+                tags: taggedUsers,
+                feeling: selectedFeeling,
+                scheduled: document.getElementById('schedulePost').checked ? document.getElementById('scheduleDateTime').value : null
+            };
+            
+            console.log('Publishing post:', postData);
+            
+            // Show success message and redirect
+            alert('Post published successfully!');
+            window.location.href = 'main-feed.html';
+        });
+
+        // Navigation dropdown functionality
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                const dropdown = toggle.parentElement;
+                const menu = dropdown.querySelector('.dropdown-menu');
+                const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+                // Close all other dropdowns
+                document.querySelectorAll('.nav-dropdown').forEach(dd => {
+                    if (dd !== dropdown) {
+                        dd.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+                        dd.querySelector('.dropdown-menu').classList.remove('show');
+                    }
+                });
+
+                // Toggle current dropdown
+                toggle.setAttribute('aria-expanded', !isExpanded);
+                menu.classList.toggle('show');
+            });
+        });
+
+        // Mobile navigation toggle
+        document.getElementById('navToggle').addEventListener('click', () => {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.privacy-btn') && !e.target.closest('.privacy-dropdown')) {
+                document.getElementById('privacyDropdown').style.display = 'none';
+            }
+            
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                    dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
+                    dropdown.querySelector('.dropdown-menu').classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

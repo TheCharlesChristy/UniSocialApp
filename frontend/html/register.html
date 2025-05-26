@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Join SocialConnect - Create Your Account</title>
+    <meta name="description" content="Create your free SocialConnect account and start connecting with friends, sharing content, and exploring communities today.">
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/register_page.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar container">
+            <a href="welcome.html" class="logo">SocialConnect</a>
+            <ul class="nav-menu">
+                <li><a href="welcome.html" class="nav-link active">Home</a></li>
+                <li><a href="login.html" class="nav-link">Sign In</a></li>
+                <li><a href="register.html" class="btn btn-primary">Register</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+        </nav>
+    </header>
+
+    <main class="auth-main">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-form-section">
+                    <div class="auth-header">
+                        <h1>Create your account</h1>
+                        <p>Join millions of users on SocialConnect</p>
+                    </div>
+
+                    <form class="auth-form" id="registerForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    class="form-input" 
+                                    placeholder="Enter your first name"
+                                    required
+                                    aria-describedby="firstName-error"
+                                >
+                                <div class="form-error" id="firstName-error" role="alert"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">Last name</label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    class="form-input" 
+                                    placeholder="Enter your last name"
+                                    required
+                                    aria-describedby="lastName-error"
+                                >
+                                <div class="form-error" id="lastName-error" role="alert"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                class="form-input" 
+                                placeholder="Choose a unique username"
+                                required
+                                pattern="^[a-zA-Z0-9_]{3,20}$"
+                                aria-describedby="username-error username-help"
+                            >
+                            <div class="form-help" id="username-help">3-20 characters, letters, numbers, and underscores only</div>
+                            <div class="form-error" id="username-error" role="alert"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email address</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="Enter your email address"
+                                required
+                                aria-describedby="email-error"
+                            >
+                            <div class="form-error" id="email-error" role="alert"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-input-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    class="form-input" 
+                                    placeholder="Create a strong password"
+                                    required
+                                    minlength="8"
+                                    aria-describedby="password-error password-help"
+                                >
+                                <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                    👁️
+                                </button>
+                            </div>
+                            <div class="form-help" id="password-help">At least 8 characters with a mix of letters, numbers, and symbols</div>
+                            <div class="form-error" id="password-error" role="alert"></div>
+                            
+                            <div class="password-strength" id="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill"></div>
+                                </div>
+                                <span class="strength-text">Password strength</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm password</label>
+                            <div class="password-input-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    name="confirmPassword" 
+                                    class="form-input" 
+                                    placeholder="Confirm your password"
+                                    required
+                                    aria-describedby="confirmPassword-error"
+                                >
+                                <button type="button" class="password-toggle" aria-label="Toggle password visibility">
+                                    👁️
+                                </button>
+                            </div>
+                            <div class="form-error" id="confirmPassword-error" role="alert"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthDate" class="form-label">Date of birth</label>
+                            <input 
+                                type="date" 
+                                id="birthDate" 
+                                name="birthDate" 
+                                class="form-input" 
+                                required
+                                max="2007-01-01"
+                                aria-describedby="birthDate-error birthDate-help"
+                            >
+                            <div class="form-help" id="birthDate-help">You must be at least 18 years old to join</div>
+                            <div class="form-error" id="birthDate-error" role="alert"></div>
+                        </div>
+
+                        <div class="form-agreements">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">
+                                    I agree to the <a href="#terms" target="_blank">Terms of Service</a> and 
+                                    <a href="#privacy" target="_blank">Privacy Policy</a>
+                                </span>
+                            </label>
+
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-label">
+                                    I'd like to receive updates and marketing communications
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full btn-lg">
+                            <span class="btn-text">Create Account</span>
+                            <span class="spinner hidden"></span>
+                        </button>
+
+                        <div class="auth-footer">
+                            <p>Already have an account? <a href="login.html">Sign in instead</a></p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="auth-visual-section">
+                    <div class="visual-content">
+                        <div class="visual-header">
+                            <h2>Join a vibrant community</h2>
+                            <p>Discover new friends, share your story, and connect with communities that matter to you.</p>
+                        </div>
+                        
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <div class="benefit-icon">✨</div>
+                                <div class="benefit-text">
+                                    <h4>Free Forever</h4>
+                                    <p>No hidden fees, no premium tiers. SocialConnect is completely free to use.</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">🛡️</div>
+                                <div class="benefit-text">
+                                    <h4>Your Data is Safe</h4>
+                                    <p>Industry-leading security and privacy controls keep your information secure.</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">🌟</div>
+                                <div class="benefit-text">
+                                    <h4>Join 2.5M+ Users</h4>
+                                    <p>Connect with millions of active users across 150+ countries worldwide.</p>
+                                </div>
+                            </div>
+                            <div class="benefit-item">
+                                <div class="benefit-icon">🚀</div>
+                                <div class="benefit-text">
+                                    <h4>Get Started Instantly</h4>
+                                    <p>Your account is ready in minutes. Start connecting right away.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="social-proof">
+                            <h4>Trusted by users worldwide</h4>
+                            <div class="rating-display">
+                                <div class="stars">⭐⭐⭐⭐⭐</div>
+                                <span class="rating-text">4.8/5 based on 25,000+ reviews</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/password_strength_indicator.js"></script>
+    <script src="../js/password_confirm_validator.js"></script>
+    <script src="../js/age_verify.js"></script>
+    <script src="../js/password_toggle.js"></script>
+
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

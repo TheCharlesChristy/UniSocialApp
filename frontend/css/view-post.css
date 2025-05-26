@@ -1,0 +1,133 @@
+/* View Post Page Specific Styles */
+
+:root {
+  --color-brand-purple: #8B5CF6;
+  --color-text-dark: #1F2937;
+  --color-text-body: #6B7280;
+  --color-white: #FFFFFF;
+  --color-background-light: #F9FAFB;
+  --color-border: #E5E7EB;
+  --color-success-green: #10B981;
+  --color-error-red: #EF4444;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 8px;
+}
+
+.view-post-page {
+    min-height: calc(100vh - 80px);
+    background: var(--color-background-light);
+    padding-top: 80px;
+}
+
+.post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+.post-card {
+    background: var(--color-white);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--spacing-lg);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--color-white);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.post-author-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-dark);
+    margin-bottom: 4px;
+}
+
+.post-meta {
+    font-size: 14px;
+    color: var(--color-text-body);
+}
+
+.post-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text-dark);
+    margin-bottom: var(--spacing-lg);
+}
+
+.post-media img {
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-lg);
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--color-text-body);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--border-radius-md);
+    transition: all 0.15s ease;
+}
+
+.action-btn:hover {
+    background: var(--color-background-light);
+    color: var(--color-text-dark);
+}
+
+.btn-primary {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-primary:hover {
+    background: #7C3AED;
+}
+
+@media (max-width: 767px) {
+    .post-container {
+        padding: var(--spacing-md);
+    }
+    
+    .post-card {
+        padding: var(--spacing-lg);
+    }
+}

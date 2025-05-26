@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Posts - SocialConnect</title>
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/manage-posts.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="main-feed.html" class="logo">
+                    <span class="logo-icon">📱</span>
+                    SocialConnect
+                </a>
+            </div>
+
+            <div class="nav-center">
+                <div class="search-box">
+                    <input type="text" placeholder="Search SocialConnect..." aria-label="Search">
+                    <button class="search-btn" aria-label="Search">🔍</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button class="nav-btn" aria-label="Notifications">
+                    <span class="nav-icon">🔔</span>
+                    <span class="badge">3</span>
+                </button>
+                <button class="nav-btn" aria-label="Messages">
+                    <span class="nav-icon">💬</span>
+                    <span class="badge">2</span>
+                </button>
+                <div class="user-dropdown">
+                    <button class="user-btn" aria-label="User menu">
+                        <img src="../../backend/media/images/placeholder.png" alt="Profile" class="user-avatar">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="user-profile.html" class="dropdown-item">
+                            <span class="dropdown-icon">👤</span>
+                            My Profile
+                        </a>
+                        <a href="privacy-settings.html" class="dropdown-item">
+                            <span class="dropdown-icon">⚙️</span>
+                            Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="login.html" class="dropdown-item">
+                            <span class="dropdown-icon">🚪</span>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                <button class="mobile-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <div class="header-content">
+                    <h1>Manage Posts</h1>
+                    <p>View, edit, and organize all your posts</p>
+                </div>
+                <div class="header-actions">
+                    <a href="create-post.html" class="btn btn-primary">Create New Post</a>
+                </div>
+            </div>
+
+            <div class="posts-management-container">
+                <!-- Posts Overview -->
+                <div class="posts-overview">
+                    <div class="overview-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-content">
+                                <div class="stat-number">1,234</div>
+                                <div class="stat-label">Total Posts</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">👁️</div>
+                            <div class="stat-content">
+                                <div class="stat-number">45.6k</div>
+                                <div class="stat-label">Total Views</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">❤️</div>
+                            <div class="stat-content">
+                                <div class="stat-number">8.9k</div>
+                                <div class="stat-label">Total Likes</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💬</div>
+                            <div class="stat-content">
+                                <div class="stat-number">2.1k</div>
+                                <div class="stat-label">Total Comments</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts Filters and Controls -->
+                <div class="posts-controls">
+                    <div class="filter-section">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">All Posts</button>
+                            <button class="filter-tab" data-filter="published">Published</button>
+                            <button class="filter-tab" data-filter="draft">Drafts</button>
+                            <button class="filter-tab" data-filter="scheduled">Scheduled</button>
+                            <button class="filter-tab" data-filter="archived">Archived</button>
+                        </div>
+
+                        <div class="filter-options">
+                            <div class="search-posts">
+                                <input type="text" placeholder="Search posts..." id="postsSearch">
+                            </div>
+                            
+                            <div class="sort-dropdown">
+                                <select id="sortPosts">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="mostLiked">Most Liked</option>
+                                    <option value="mostCommented">Most Commented</option>
+                                    <option value="mostViewed">Most Viewed</option>
+                                </select>
+                            </div>
+
+                            <div class="view-options">
+                                <button class="view-btn active" data-view="list" aria-label="List view">☰</button>
+                                <button class="view-btn" data-view="grid" aria-label="Grid view">⊞</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bulk-actions" id="bulkActions" style="display: none;">
+                        <div class="bulk-info">
+                            <span id="selectedCount">0</span> posts selected
+                        </div>
+                        <div class="bulk-buttons">
+                            <button class="btn btn-sm btn-outline" onclick="selectAllPosts()">Select All</button>
+                            <button class="btn btn-sm btn-outline" onclick="clearSelection()">Clear</button>
+                            <button class="btn btn-sm btn-outline" onclick="bulkEdit()">Edit Privacy</button>
+                            <button class="btn btn-sm btn-warning" onclick="bulkArchive()">Archive</button>
+                            <button class="btn btn-sm btn-danger" onclick="bulkDelete()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts List -->
+                <div class="posts-list" id="postsList">
+                    <!-- Sample posts -->
+                    <div class="post-item" data-status="published" data-date="2024-01-15">
+                        <div class="post-checkbox">
+                            <input type="checkbox" id="post1" onchange="updateBulkActions()">
+                            <label for="post1"></label>
+                        </div>
+                        
+                        <div class="post-thumbnail">
+                            <img src="../../backend/media/images/placeholder.png" alt="Post image">
+                        </div>
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <h3 class="post-title">Exploring the Future of Web Development</h3>
+                                <div class="post-meta">
+                                    <span class="post-date">Jan 15, 2024</span>
+                                    <span class="post-status published">Published</span>
+                                    <span class="post-privacy">🌐 Public</span>
+                                </div>
+                            </div>
+                            <p class="post-excerpt">Diving deep into the latest trends and technologies that are shaping the future of web development. From AI integration to new frameworks...</p>
+                            <div class="post-stats">
+                                <span class="stat">👁️ 1.2k views</span>
+                                <span class="stat">❤️ 89 likes</span>
+                                <span class="stat">💬 23 comments</span>
+                                <span class="stat">🔄 12 shares</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="viewPost('post1')" title="View Post">👁️</button>
+                            <button class="action-btn" onclick="editPost('post1')" title="Edit Post">✏️</button>
+                            <button class="action-btn" onclick="sharePost('post1')" title="Share">🔄</button>
+                            <div class="action-dropdown">
+                                <button class="action-btn dropdown-trigger" title="More options">⋮</button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="duplicatePost('post1')">Duplicate</button>
+                                    <button class="dropdown-item" onclick="changePrivacy('post1')">Change Privacy</button>
+                                    <button class="dropdown-item" onclick="viewInsights('post1')">View Insights</button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item" onclick="archivePost('post1')">Archive</button>
+                                    <button class="dropdown-item danger" onclick="deletePost('post1')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item" data-status="draft" data-date="2024-01-14">
+                        <div class="post-checkbox">
+                            <input type="checkbox" id="post2" onchange="updateBulkActions()">
+                            <label for="post2"></label>
+                        </div>
+                        
+                        <div class="post-thumbnail">
+                            <div class="thumbnail-placeholder">📝</div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <h3 class="post-title">My Journey with Machine Learning</h3>
+                                <div class="post-meta">
+                                    <span class="post-date">Jan 14, 2024</span>
+                                    <span class="post-status draft">Draft</span>
+                                    <span class="post-privacy">👥 Friends</span>
+                                </div>
+                            </div>
+                            <p class="post-excerpt">An incomplete post about my learning journey in machine learning and AI. Still working on the technical details...</p>
+                            <div class="post-stats">
+                                <span class="stat">📝 Draft</span>
+                                <span class="stat">⏰ Last edited 2 hours ago</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="editPost('post2')" title="Continue Editing">✏️</button>
+                            <button class="action-btn" onclick="publishDraft('post2')" title="Publish">📤</button>
+                            <div class="action-dropdown">
+                                <button class="action-btn dropdown-trigger" title="More options">⋮</button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="duplicatePost('post2')">Duplicate</button>
+                                    <button class="dropdown-item" onclick="schedulePost('post2')">Schedule</button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item danger" onclick="deletePost('post2')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item" data-status="scheduled" data-date="2024-01-13">
+                        <div class="post-checkbox">
+                            <input type="checkbox" id="post3" onchange="updateBulkActions()">
+                            <label for="post3"></label>
+                        </div>
+                        
+                        <div class="post-thumbnail">
+                            <img src="../../backend/media/images/placeholder.png" alt="Post image">
+                        </div>
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <h3 class="post-title">Weekend Photography Adventures</h3>
+                                <div class="post-meta">
+                                    <span class="post-date">Scheduled for Jan 20, 2024 at 9:00 AM</span>
+                                    <span class="post-status scheduled">Scheduled</span>
+                                    <span class="post-privacy">🌐 Public</span>
+                                </div>
+                            </div>
+                            <p class="post-excerpt">Sharing some amazing shots from my weekend hiking trip. Nature photography has become my new passion and I wanted to share...</p>
+                            <div class="post-stats">
+                                <span class="stat">⏰ Scheduled</span>
+                                <span class="stat">📅 Jan 20, 9:00 AM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="editPost('post3')" title="Edit">✏️</button>
+                            <button class="action-btn" onclick="publishNow('post3')" title="Publish Now">📤</button>
+                            <div class="action-dropdown">
+                                <button class="action-btn dropdown-trigger" title="More options">⋮</button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="reschedulePost('post3')">Reschedule</button>
+                                    <button class="dropdown-item" onclick="duplicatePost('post3')">Duplicate</button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item" onclick="cancelSchedule('post3')">Cancel Schedule</button>
+                                    <button class="dropdown-item danger" onclick="deletePost('post3')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item" data-status="published" data-date="2024-01-12">
+                        <div class="post-checkbox">
+                            <input type="checkbox" id="post4" onchange="updateBulkActions()">
+                            <label for="post4"></label>
+                        </div>
+                        
+                        <div class="post-thumbnail">
+                            <video poster="../../backend/media/images/placeholder.png">
+                                <source src="../../backend/media/videos/placeholder.mp4" type="video/mp4">
+                            </video>
+                            <div class="video-duration">2:45</div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <h3 class="post-title">Quick Coding Tutorial: React Hooks</h3>
+                                <div class="post-meta">
+                                    <span class="post-date">Jan 12, 2024</span>
+                                    <span class="post-status published">Published</span>
+                                    <span class="post-privacy">🌐 Public</span>
+                                </div>
+                            </div>
+                            <p class="post-excerpt">A quick tutorial video explaining the basics of React Hooks and how to use them effectively in your projects...</p>
+                            <div class="post-stats">
+                                <span class="stat">👁️ 3.4k views</span>
+                                <span class="stat">❤️ 156 likes</span>
+                                <span class="stat">💬 45 comments</span>
+                                <span class="stat">🔄 28 shares</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="viewPost('post4')" title="View Post">👁️</button>
+                            <button class="action-btn" onclick="editPost('post4')" title="Edit Post">✏️</button>
+                            <button class="action-btn" onclick="sharePost('post4')" title="Share">🔄</button>
+                            <div class="action-dropdown">
+                                <button class="action-btn dropdown-trigger" title="More options">⋮</button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="duplicatePost('post4')">Duplicate</button>
+                                    <button class="dropdown-item" onclick="changePrivacy('post4')">Change Privacy</button>
+                                    <button class="dropdown-item" onclick="viewInsights('post4')">View Insights</button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item" onclick="archivePost('post4')">Archive</button>
+                                    <button class="dropdown-item danger" onclick="deletePost('post4')">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post-item" data-status="archived" data-date="2024-01-10">
+                        <div class="post-checkbox">
+                            <input type="checkbox" id="post5" onchange="updateBulkActions()">
+                            <label for="post5"></label>
+                        </div>
+                        
+                        <div class="post-thumbnail">
+                            <img src="../../backend/media/images/placeholder.png" alt="Post image">
+                            <div class="archived-overlay">📁</div>
+                        </div>
+                        
+                        <div class="post-content">
+                            <div class="post-header">
+                                <h3 class="post-title">Old Project Showcase</h3>
+                                <div class="post-meta">
+                                    <span class="post-date">Jan 10, 2024</span>
+                                    <span class="post-status archived">Archived</span>
+                                    <span class="post-privacy">🌐 Public</span>
+                                </div>
+                            </div>
+                            <p class="post-excerpt">Showcasing an old project that I worked on last year. While it's no longer actively maintained, it was a great learning...</p>
+                            <div class="post-stats">
+                                <span class="stat">👁️ 892 views</span>
+                                <span class="stat">❤️ 67 likes</span>
+                                <span class="stat">💬 15 comments</span>
+                                <span class="stat">📁 Archived</span>
+                            </div>
+                        </div>
+                        
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="viewPost('post5')" title="View Post">👁️</button>
+                            <button class="action-btn" onclick="restorePost('post5')" title="Restore">↩️</button>
+                            <div class="action-dropdown">
+                                <button class="action-btn dropdown-trigger" title="More options">⋮</button>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item" onclick="restorePost('post5')">Restore</button>
+                                    <button class="dropdown-item" onclick="duplicatePost('post5')">Duplicate</button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item danger" onclick="deletePost('post5')">Delete Permanently</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-section">
+                    <button class="btn btn-outline" id="loadMorePosts">Load More Posts</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Post Insights Modal -->
+    <div class="modal" id="insightsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content insights-modal">
+            <div class="modal-header">
+                <h3>Post Insights</h3>
+                <button class="modal-close" onclick="closeModal('insightsModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="insights-content">
+                    <div class="insights-overview">
+                        <div class="insight-stat">
+                            <div class="insight-number">1,234</div>
+                            <div class="insight-label">Total Reach</div>
+                        </div>
+                        <div class="insight-stat">
+                            <div class="insight-number">89</div>
+                            <div class="insight-label">Engagements</div>
+                        </div>
+                        <div class="insight-stat">
+                            <div class="insight-number">7.2%</div>
+                            <div class="insight-label">Engagement Rate</div>
+                        </div>
+                    </div>
+                    
+                    <div class="insights-chart">
+                        <h4>Engagement Over Time</h4>
+                        <div class="chart-placeholder">
+                            📊 Chart would be displayed here
+                        </div>
+                    </div>
+                    
+                    <div class="insights-breakdown">
+                        <h4>Engagement Breakdown</h4>
+                        <div class="breakdown-item">
+                            <span class="breakdown-type">❤️ Likes</span>
+                            <span class="breakdown-count">67</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-type">💬 Comments</span>
+                            <span class="breakdown-count">15</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-type">🔄 Shares</span>
+                            <span class="breakdown-count">7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Change Modal -->
+    <div class="modal" id="privacyModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Privacy Settings</h3>
+                <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-options">
+                    <div class="privacy-option">
+                        <input type="radio" id="privacy-public" name="privacy" value="public" checked>
+                        <label for="privacy-public">
+                            <div class="privacy-icon">🌐</div>
+                            <div class="privacy-info">
+                                <h4>Public</h4>
+                                <p>Anyone can see this post</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="privacy-option">
+                        <input type="radio" id="privacy-friends" name="privacy" value="friends">
+                        <label for="privacy-friends">
+                            <div class="privacy-icon">👥</div>
+                            <div class="privacy-info">
+                                <h4>Friends</h4>
+                                <p>Only your friends can see this post</p>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="privacy-option">
+                        <input type="radio" id="privacy-private" name="privacy" value="private">
+                        <label for="privacy-private">
+                            <div class="privacy-icon">🔒</div>
+                            <div class="privacy-info">
+                                <h4>Only Me</h4>
+                                <p>Only you can see this post</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeModal('privacyModal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="updatePrivacy()">Update Privacy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                filterPosts(tab.dataset.filter);
+            });
+        });
+
+        function filterPosts(filter) {
+            const posts = document.querySelectorAll('.post-item');
+            posts.forEach(post => {
+                const status = post.dataset.status;
+                const show = filter === 'all' || status === filter;
+                post.style.display = show ? 'flex' : 'none';
+            });
+        }
+
+        // View toggle
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                toggleView(btn.dataset.view);
+            });
+        });
+
+        function toggleView(view) {
+            const postsList = document.getElementById('postsList');
+            postsList.className = view === 'grid' ? 'posts-list grid-view' : 'posts-list';
+        }
+
+        // Search functionality
+        document.getElementById('postsSearch').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('.post-item').forEach(post => {
+                const title = post.querySelector('.post-title').textContent.toLowerCase();
+                const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+                const matches = title.includes(query) || excerpt.includes(query);
+                post.style.display = matches ? 'flex' : 'none';
+            });
+        });
+
+        // Sort functionality
+        document.getElementById('sortPosts').addEventListener('change', (e) => {
+            sortPosts(e.target.value);
+        });
+
+        function sortPosts(criteria) {
+            const container = document.getElementById('postsList');
+            const posts = Array.from(container.querySelectorAll('.post-item'));
+            
+            posts.sort((a, b) => {
+                switch(criteria) {
+                    case 'newest':
+                        return new Date(b.dataset.date) - new Date(a.dataset.date);
+                    case 'oldest':
+                        return new Date(a.dataset.date) - new Date(b.dataset.date);
+                    case 'mostLiked':
+                        const likesA = parseInt(a.querySelector('.post-stats').textContent.match(/(\d+) likes/)?.[1] || 0);
+                        const likesB = parseInt(b.querySelector('.post-stats').textContent.match(/(\d+) likes/)?.[1] || 0);
+                        return likesB - likesA;
+                    case 'mostCommented':
+                        const commentsA = parseInt(a.querySelector('.post-stats').textContent.match(/(\d+) comments/)?.[1] || 0);
+                        const commentsB = parseInt(b.querySelector('.post-stats').textContent.match(/(\d+) comments/)?.[1] || 0);
+                        return commentsB - commentsA;
+                    case 'mostViewed':
+                        const viewsA = parseInt(a.querySelector('.post-stats').textContent.match(/(\d+\.?\d*)k? views/)?.[1] || 0);
+                        const viewsB = parseInt(b.querySelector('.post-stats').textContent.match(/(\d+\.?\d*)k? views/)?.[1] || 0);
+                        return viewsB - viewsA;
+                    default:
+                        return 0;
+                }
+            });
+            
+            posts.forEach(post => container.appendChild(post));
+        }
+
+        // Bulk actions
+        function updateBulkActions() {
+            const checkboxes = document.querySelectorAll('.post-item input[type="checkbox"]');
+            const selected = Array.from(checkboxes).filter(cb => cb.checked);
+            const count = selected.length;
+            
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('bulkActions').style.display = count > 0 ? 'flex' : 'none';
+        }
+
+        function selectAllPosts() {
+            const visibleCheckboxes = document.querySelectorAll('.post-item:not([style*="display: none"]) input[type="checkbox"]');
+            visibleCheckboxes.forEach(cb => cb.checked = true);
+            updateBulkActions();
+        }
+
+        function clearSelection() {
+            document.querySelectorAll('.post-item input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updateBulkActions();
+        }
+
+        function bulkEdit() {
+            const selected = getSelectedPosts();
+            if (selected.length > 0) {
+                document.getElementById('privacyModal').classList.add('active');
+            }
+        }
+
+        function bulkArchive() {
+            const selected = getSelectedPosts();
+            if (selected.length > 0 && confirm(`Archive ${selected.length} selected posts?`)) {
+                selected.forEach(postId => archivePost(postId));
+                clearSelection();
+            }
+        }
+
+        function bulkDelete() {
+            const selected = getSelectedPosts();
+            if (selected.length > 0 && confirm(`Delete ${selected.length} selected posts? This action cannot be undone.`)) {
+                selected.forEach(postId => deletePost(postId));
+                clearSelection();
+            }
+        }
+
+        function getSelectedPosts() {
+            const checkboxes = document.querySelectorAll('.post-item input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.id);
+        }
+
+        // Post actions
+        function viewPost(postId) {
+            window.open('view-post.html', '_blank');
+        }
+
+        function editPost(postId) {
+            window.location.href = 'create-post.html?edit=' + postId;
+        }
+
+        function sharePost(postId) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this post',
+                    url: window.location.origin + '/view-post.html?id=' + postId
+                });
+            } else {
+                alert('Share functionality would be implemented here');
+            }
+        }
+
+        function duplicatePost(postId) {
+            if (confirm('Create a copy of this post?')) {
+                alert('Post duplicated successfully!');
+            }
+        }
+
+        function changePrivacy(postId) {
+            document.getElementById('privacyModal').classList.add('active');
+        }
+
+        function viewInsights(postId) {
+            document.getElementById('insightsModal').classList.add('active');
+        }
+
+        function archivePost(postId) {
+            if (confirm('Archive this post?')) {
+                const post = document.getElementById(postId).closest('.post-item');
+                post.dataset.status = 'archived';
+                post.querySelector('.post-status').textContent = 'Archived';
+                post.querySelector('.post-status').className = 'post-status archived';
+                alert('Post archived successfully!');
+            }
+        }
+
+        function restorePost(postId) {
+            if (confirm('Restore this post?')) {
+                const post = document.getElementById(postId).closest('.post-item');
+                post.dataset.status = 'published';
+                post.querySelector('.post-status').textContent = 'Published';
+                post.querySelector('.post-status').className = 'post-status published';
+                alert('Post restored successfully!');
+            }
+        }
+
+        function deletePost(postId) {
+            if (confirm('Delete this post permanently? This action cannot be undone.')) {
+                document.getElementById(postId).closest('.post-item').remove();
+                alert('Post deleted successfully!');
+            }
+        }
+
+        function publishDraft(postId) {
+            if (confirm('Publish this draft?')) {
+                const post = document.getElementById(postId).closest('.post-item');
+                post.dataset.status = 'published';
+                post.querySelector('.post-status').textContent = 'Published';
+                post.querySelector('.post-status').className = 'post-status published';
+                alert('Post published successfully!');
+            }
+        }
+
+        function publishNow(postId) {
+            if (confirm('Publish this scheduled post now?')) {
+                const post = document.getElementById(postId).closest('.post-item');
+                post.dataset.status = 'published';
+                post.querySelector('.post-status').textContent = 'Published';
+                post.querySelector('.post-status').className = 'post-status published';
+                alert('Post published successfully!');
+            }
+        }
+
+        function schedulePost(postId) {
+            alert('Schedule post functionality would open scheduling modal');
+        }
+
+        function reschedulePost(postId) {
+            alert('Reschedule functionality would open scheduling modal');
+        }
+
+        function cancelSchedule(postId) {
+            if (confirm('Cancel scheduled publication?')) {
+                const post = document.getElementById(postId).closest('.post-item');
+                post.dataset.status = 'draft';
+                post.querySelector('.post-status').textContent = 'Draft';
+                post.querySelector('.post-status').className = 'post-status draft';
+                alert('Schedule cancelled. Post saved as draft.');
+            }
+        }
+
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function updatePrivacy() {
+            const selectedPrivacy = document.querySelector('input[name="privacy"]:checked').value;
+            alert(`Privacy updated to: ${selectedPrivacy}`);
+            closeModal('privacyModal');
+        }
+
+        // Dropdown handling
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('dropdown-trigger')) {
+                e.stopPropagation();
+                const dropdown = e.target.nextElementSibling;
+                
+                // Close other dropdowns
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== dropdown) menu.classList.remove('active');
+                });
+                
+                dropdown.classList.toggle('active');
+            } else {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                const modal = e.target.closest('.modal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            }
+        });
+
+        // Load more posts
+        document.getElementById('loadMorePosts').addEventListener('click', function() {
+            this.textContent = 'Loading...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.textContent = 'Load More Posts';
+                this.disabled = false;
+                alert('More posts would be loaded here');
+            }, 1000);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize dropdown and mobile menu functionality
+            const userDropdown = document.querySelector('.user-dropdown');
+            const userBtn = userDropdown.querySelector('.user-btn');
+            const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+
+            userBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', () => {
+                dropdownMenu.classList.remove('active');
+            });
+
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navRight = document.querySelector('.nav-right');
+
+            mobileToggle.addEventListener('click', () => {
+                navRight.classList.toggle('mobile-active');
+            });
+        });
+    </script>
+</body>
+</html>

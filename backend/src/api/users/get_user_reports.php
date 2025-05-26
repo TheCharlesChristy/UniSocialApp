@@ -2,7 +2,7 @@
 /**
  * Get User Reports API Endpoint
  * 
- * Gets reports filed by current user
+ * Gets reports filed by a specific user (admin only)
  * Endpoint: GET /api/users/:userId/reports
  */
 
@@ -69,13 +69,13 @@ if (!$userId) {
 
 $userId = (int)$userId;
 
-// Check if the authenticated user can access reports for this user ID
-// Users can only view their own reports
-if ($authUser['user_id'] != $userId) {
+// Check if the authenticated user is an admin
+// Only admins can view reports
+if ($authUser['role'] !== 'admin') {
     http_response_code(403);
     echo json_encode([
         'success' => false,
-        'message' => 'You can only view your own reports'
+        'message' => 'Admin access required'
     ]);
     exit;
 }

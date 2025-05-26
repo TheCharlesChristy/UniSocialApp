@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post by Sarah Wilson - SocialConnect</title>
+    <link rel="stylesheet" href="../css/generic.css">
+    <link rel="stylesheet" href="../css/view-post.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-brand">
+                <a href="welcome.html" class="logo">SocialConnect</a>
+            </div>
+            
+            <div class="nav-search">
+                <form class="search-form">
+                    <input type="search" placeholder="Search SocialConnect..." class="search-input">
+                    <button type="submit" class="search-btn" aria-label="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="main-feed.html" class="nav-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                        </svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
+                        </svg>
+                        <span>Messages</span>
+                        <span class="badge">3</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="notifications.html" class="nav-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                        </svg>
+                        <span>Notifications</span>
+                        <span class="badge">5</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle" id="profile-dropdown">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" alt="Profile" class="profile-avatar">
+                        <span>John Doe</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6,9 12,15 18,9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" id="profile-menu">
+                        <a href="user-profile.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            My Profile
+                        </a>
+                        <a href="edit-profile.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Edit Profile
+                        </a>
+                        <a href="privacy-settings.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="16" r="1"></circle>
+                                <path d="m7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Privacy & Settings
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="help-support.html" class="dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Help & Support
+                        </a>
+                        <a href="login.html" class="dropdown-item text-danger">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16,17 21,12 16,7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Sign Out
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="post-view-layout">
+                <!-- Back Navigation -->
+                <div class="back-nav">
+                    <button onclick="history.back()" class="back-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15,18 9,12 15,6"></polyline>
+                        </svg>
+                        Back to Feed
+                    </button>
+                </div>
+
+                <div class="post-view-content">
+                    <!-- Main Post -->
+                    <article class="card post-detail-card">
+                        <div class="post-header">
+                            <div class="post-user">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b000?w=60&h=60&fit=crop&crop=face" alt="Sarah Wilson" class="post-avatar-large">
+                                <div class="post-user-info">
+                                    <h2 class="post-username-large">Sarah Wilson</h2>
+                                    <p class="post-details">
+                                        <span class="post-time">2 hours ago</span>
+                                        <span class="post-separator">•</span>
+                                        <span class="post-visibility">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                                            </svg>
+                                            Public
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="post-actions-menu">
+                                <button class="post-menu-btn" aria-label="Post options" id="post-options">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="19" cy="12" r="1"></circle>
+                                        <circle cx="5" cy="12" r="1"></circle>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" id="post-options-menu">
+                                    <button class="dropdown-item">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                        </svg>
+                                        Save Post
+                                    </button>
+                                    <button class="dropdown-item">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                        </svg>
+                                        Copy Link
+                                    </button>
+                                    <button class="dropdown-item">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                        </svg>
+                                        Embed Post
+                                    </button>
+                                    <hr class="dropdown-divider">
+                                    <button class="dropdown-item text-danger">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                        Report Post
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-content-detail">
+                            <p>Just finished an amazing project using React and Node.js! The feeling of solving complex problems and seeing everything come together is incredible. 🚀</p>
+                            <p>This project taught me so much about full-stack development, from designing the database schema to creating responsive user interfaces. The journey wasn't always smooth, but every challenge was a learning opportunity.</p>
+                            <p>Special thanks to my team members and mentors who helped along the way. Collaboration truly makes us better developers! 💪</p>
+                            
+                            <div class="post-tags">
+                                <a href="#" class="post-tag">#WebDevelopment</a>
+                                <a href="#" class="post-tag">#React</a>
+                                <a href="#" class="post-tag">#NodeJS</a>
+                                <a href="#" class="post-tag">#JavaScript</a>
+                                <a href="#" class="post-tag">#FullStack</a>
+                            </div>
+
+                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=500&fit=crop" alt="Code on laptop screen" class="post-image-detail">
+                        </div>
+
+                        <div class="post-engagement">
+                            <div class="post-stats-detail">
+                                <div class="engagement-item">
+                                    <span class="engagement-count">42</span>
+                                    <span class="engagement-label">Likes</span>
+                                </div>
+                                <div class="engagement-item">
+                                    <span class="engagement-count">8</span>
+                                    <span class="engagement-label">Comments</span>
+                                </div>
+                                <div class="engagement-item">
+                                    <span class="engagement-count">3</span>
+                                    <span class="engagement-label">Shares</span>
+                                </div>
+                                <div class="engagement-item">
+                                    <span class="engagement-count">127</span>
+                                    <span class="engagement-label">Views</span>
+                                </div>
+                            </div>
+
+                            <div class="post-actions-detail">
+                                <button class="post-action-detail liked">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Like</span>
+                                </button>
+                                <button class="post-action-detail">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    <span>Comment</span>
+                                </button>
+                                <button class="post-action-detail">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                        <polyline points="16,6 12,2 8,6"></polyline>
+                                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                                    </svg>
+                                    <span>Share</span>
+                                </button>
+                                <button class="post-action-detail">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                    </svg>
+                                    <span>Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Comments Section -->
+                    <section class="card comments-section">
+                        <div class="comments-header">
+                            <h3 class="comments-title">Comments (8)</h3>
+                            <div class="comments-sort">
+                                <select class="sort-select">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="popular">Most Popular</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Add Comment -->
+                        <div class="add-comment">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Your avatar" class="comment-avatar">
+                            <div class="comment-input-container">
+                                <textarea placeholder="Write a comment..." class="comment-input" rows="1" id="comment-text"></textarea>
+                                <div class="comment-actions">
+                                    <button class="comment-emoji-btn" aria-label="Add emoji">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                                        </svg>
+                                    </button>
+                                    <button class="comment-image-btn" aria-label="Add image">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                            <polyline points="21,15 16,10 5,21"></polyline>
+                                        </svg>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary comment-submit" disabled>Post</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments List -->
+                        <div class="comments-list">
+                            <!-- Comment 1 -->
+                            <div class="comment">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Mike Johnson" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <h4 class="comment-author">Mike Johnson</h4>
+                                        <span class="comment-time">1 hour ago</span>
+                                    </div>
+                                    <p class="comment-text">This is awesome! The UI looks really clean and professional. What tech stack did you use for the backend?</p>
+                                    <div class="comment-actions">
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                            Like (5)
+                                        </button>
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comment 2 with Reply -->
+                            <div class="comment">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="Emma Davis" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <h4 class="comment-author">Emma Davis</h4>
+                                        <span class="comment-time">45 minutes ago</span>
+                                    </div>
+                                    <p class="comment-text">Congratulations! 🎉 Your dedication to learning and improving is really inspiring. Keep up the great work!</p>
+                                    <div class="comment-actions">
+                                        <button class="comment-action liked">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                            Like (12)
+                                        </button>
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reply to Emma's comment -->
+                            <div class="comment comment-reply">
+                                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b000?w=40&h=40&fit=crop&crop=face" alt="Sarah Wilson" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <h4 class="comment-author">Sarah Wilson</h4>
+                                        <span class="comment-badge">Author</span>
+                                        <span class="comment-time">30 minutes ago</span>
+                                    </div>
+                                    <p class="comment-text">@Emma Davis Thank you so much! Your support means a lot to me. 😊</p>
+                                    <div class="comment-actions">
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                            Like (3)
+                                        </button>
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Comment 3 -->
+                            <div class="comment">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face" alt="Alex Smith" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-header">
+                                        <h4 class="comment-author">Alex Smith</h4>
+                                        <span class="comment-time">20 minutes ago</span>
+                                    </div>
+                                    <p class="comment-text">Would love to see a demo or read about your development process. Any chance you'll write a blog post about it?</p>
+                                    <div class="comment-actions">
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                            </svg>
+                                            Like (2)
+                                        </button>
+                                        <button class="comment-action">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Load More Comments -->
+                            <button class="load-more-comments">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6,9 12,15 18,9"></polyline>
+                                </svg>
+                                Show 5 more comments
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Related Posts Sidebar -->
+                <aside class="related-posts-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">More from Sarah Wilson</h3>
+                        <div class="related-posts">
+                            <article class="related-post">
+                                <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=80&h=60&fit=crop" alt="Post thumbnail" class="related-post-image">
+                                <div class="related-post-content">
+                                    <h4 class="related-post-title">Learning TypeScript: A Beginner's Journey</h4>
+                                    <p class="related-post-meta">3 days ago • 15 likes</p>
+                                </div>
+                            </article>
+                            <article class="related-post">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=80&h=60&fit=crop" alt="Post thumbnail" class="related-post-image">
+                                <div class="related-post-content">
+                                    <h4 class="related-post-title">Building My First API with Express.js</h4>
+                                    <p class="related-post-meta">1 week ago • 28 likes</p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Related Topics</h3>
+                        <div class="related-topics">
+                            <a href="#" class="topic-tag">#WebDevelopment</a>
+                            <a href="#" class="topic-tag">#React</a>
+                            <a href="#" class="topic-tag">#NodeJS</a>
+                            <a href="#" class="topic-tag">#JavaScript</a>
+                            <a href="#" class="topic-tag">#FullStack</a>
+                            <a href="#" class="topic-tag">#Programming</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Navigation toggle functionality
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('nav-menu-open');
+        });
+
+        // Profile dropdown functionality
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const profileMenu = document.getElementById('profile-menu');
+
+        profileDropdown.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileMenu.classList.toggle('dropdown-menu-open');
+        });
+
+        // Post options dropdown
+        const postOptions = document.getElementById('post-options');
+        const postOptionsMenu = document.getElementById('post-options-menu');
+
+        postOptions.addEventListener('click', (e) => {
+            e.preventDefault();
+            postOptionsMenu.classList.toggle('dropdown-menu-open');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) {
+                profileMenu.classList.remove('dropdown-menu-open');
+            }
+            if (!postOptions.contains(e.target)) {
+                postOptionsMenu.classList.remove('dropdown-menu-open');
+            }
+        });
+
+        // Comment input functionality
+        const commentText = document.getElementById('comment-text');
+        const commentSubmit = document.querySelector('.comment-submit');
+
+        commentText.addEventListener('input', (e) => {
+            // Auto-resize textarea
+            e.target.style.height = 'auto';
+            e.target.style.height = e.target.scrollHeight + 'px';
+            
+            // Enable/disable submit button
+            commentSubmit.disabled = e.target.value.trim() === '';
+        });
+
+        // Post action interactions
+        document.querySelectorAll('.post-action-detail').forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (button.textContent.trim().includes('Like')) {
+                    button.classList.toggle('liked');
+                    const icon = button.querySelector('svg');
+                    if (button.classList.contains('liked')) {
+                        icon.setAttribute('fill', 'currentColor');
+                    } else {
+                        icon.setAttribute('fill', 'none');
+                    }
+                }
+            });
+        });
+
+        // Comment action interactions
+        document.querySelectorAll('.comment-action').forEach(button => {
+            button.addEventListener('click', (e) => {
+                if (button.textContent.trim().includes('Like')) {
+                    button.classList.toggle('liked');
+                    const icon = button.querySelector('svg');
+                    if (button.classList.contains('liked')) {
+                        icon.setAttribute('fill', 'currentColor');
+                    } else {
+                        icon.setAttribute('fill', 'none');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
