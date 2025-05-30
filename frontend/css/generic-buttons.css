@@ -1,0 +1,285 @@
+/* Generic Button Styles */
+/* Based on SocialConnect Style Guide */
+
+:root {
+  --color-brand-purple: #8B5CF6;
+  --color-text-dark: #1F2937;
+  --color-text-body: #6B7280;
+  --color-white: #FFFFFF;
+  --color-background-light: #F9FAFB;
+  --color-border: #E5E7EB;
+  --border-radius-md: 6px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+/* Base Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease-out;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  text-align: center;
+  min-height: 48px;
+}
+
+.btn:focus {
+  outline: 2px solid var(--color-brand-purple);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Primary Button */
+.btn-primary {
+  background-color: var(--color-brand-purple);
+  color: var(--color-white);
+  border: 1px solid var(--color-brand-purple);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #7C3AED;
+  border-color: #7C3AED;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+  background-color: #6D28D9;
+  border-color: #6D28D9;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background-color: var(--color-white);
+  color: var(--color-brand-purple);
+  border: 1px solid var(--color-brand-purple);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-background-light);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1);
+}
+
+.btn-secondary:active:not(:disabled) {
+  background-color: var(--color-border);
+  transform: translateY(0);
+}
+
+/* Secondary Outline Button */
+.btn-secondary-outline {
+  background-color: transparent;
+  color: var(--color-brand-purple);
+  border: 1px solid var(--color-brand-purple);
+}
+
+.btn-secondary-outline:hover:not(:disabled) {
+  background-color: var(--color-brand-purple);
+  color: var(--color-white);
+  transform: translateY(-1px);
+}
+
+/* Tertiary Button */
+.btn-tertiary {
+  background-color: transparent;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border);
+}
+
+.btn-tertiary:hover:not(:disabled) {
+  background-color: var(--color-background-light);
+  border-color: var(--color-brand-purple);
+  color: var(--color-brand-purple);
+}
+
+/* Disabled Button */
+.btn:disabled,
+.btn.disabled {
+  background-color: var(--color-border);
+  color: var(--color-text-body);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Button Sizes */
+.btn-small {
+  padding: 8px 16px;
+  font-size: 14px;
+  min-height: 36px;
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  min-height: 56px;
+}
+
+.btn-xl {
+  padding: 20px 40px;
+  font-size: 20px;
+  font-weight: 600;
+  min-height: 64px;
+}
+
+/* Button Variants */
+.btn-block {
+  width: 100%;
+  display: flex;
+}
+
+.btn-rounded {
+  border-radius: 50px;
+}
+
+/* Icon Buttons */
+.btn-icon {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-icon.btn-small {
+  width: 36px;
+  height: 36px;
+}
+
+.btn-icon.btn-large {
+  width: 56px;
+  height: 56px;
+}
+
+/* Loading State */
+.btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: button-loading 1s linear infinite;
+}
+
+@keyframes button-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* CTA Specific Styles */
+.cta-button {
+  animation: subtle-pulse 2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% {
+    box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 12px rgba(139, 92, 246, 0.4);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .btn {
+    padding: 14px 20px;
+    min-height: 50px;
+  }
+  
+  .btn-large {
+    padding: 16px 24px;
+    font-size: 16px;
+    min-height: 52px;
+  }
+  
+  .btn-block-mobile {
+    width: 100%;
+    display: flex;
+  }
+}
+
+/* Group Buttons */
+.btn-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-group.btn-group-vertical {
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  .btn-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-group .btn {
+    width: 100%;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+    animation: none;
+  }
+  
+  .cta-button {
+    animation: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+}
