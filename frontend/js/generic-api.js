@@ -2,7 +2,7 @@
 /* Standardized API calls for SocialConnect platform */
 
 class APIHandler {
-  constructor(baseURL = '/backend/src/api') {
+  constructor(baseURL = '/webdev/backend/src/api') {
     this.baseURL = baseURL;
     this.defaultHeaders = {
       'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ class APIHandler {
 
   // Generic fetch wrapper with error handling
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}`;
+    const url = `${this.baseURL}${endpoint}.php`;
     const config = {
       headers: { ...this.defaultHeaders, ...options.headers },
       ...options
@@ -147,11 +147,17 @@ class StatsAPI extends APIHandler {
 
 // User API methods
 class UserAPI extends APIHandler {
-  async login(username, password) {
-    const response = await this.post('/auth/login', {
-      username,
-      password
-    });
+  
+  async login(credentials, password) {
+    const loginData = {};
+    if (credentials.includes('@')) {
+      loginData.email = credentials;
+    } else {
+      loginData.username = credentials;
+    }
+    loginData.password = password;
+  
+  const response = await this.post('/auth/login', loginData);
     
     if (response.token) {
       this.setAuthToken(response.token, true);

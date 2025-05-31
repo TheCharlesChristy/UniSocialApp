@@ -1,0 +1,273 @@
+/* Generic Forms CSS */
+/* Reusable form components for SocialConnect */
+
+:root {
+  --form-input-border: #E5E7EB;
+  --form-input-border-focus: #8B5CF6;
+  --form-input-border-error: #EF4444;
+  --form-input-bg: #FFFFFF;
+  --form-input-bg-disabled: #F9FAFB;
+  --form-label-color: #374151;
+  --form-placeholder-color: #9CA3AF;
+  --form-error-color: #EF4444;
+  --form-success-color: #10B981;
+}
+
+/* Form Layout */
+.form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Labels */
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--form-label-color);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.required {
+  color: var(--form-error-color);
+  margin-left: 2px;
+}
+
+/* Input Wrapper */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid var(--form-input-border);
+  border-radius: 6px;
+  background-color: var(--form-input-bg);
+  color: var(--color-text-dark);
+  transition: all 0.15s ease-out;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--form-input-border-focus);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--form-placeholder-color);
+}
+
+.form-input:disabled {
+  background-color: var(--form-input-bg-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Input with icon */
+.input-wrapper .form-input {
+  padding-right: 48px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 16px;
+  color: var(--form-placeholder-color);
+  pointer-events: none;
+  font-size: 16px;
+}
+
+/* Password Toggle Button */
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--form-placeholder-color);
+  transition: color 0.15s ease-out;
+  font-size: 16px;
+}
+
+.password-toggle:hover {
+  color: var(--color-text-dark);
+}
+
+.password-toggle:focus {
+  outline: 2px solid var(--form-input-border-focus);
+  outline-offset: 2px;
+}
+
+/* Checkbox Styling */
+.form-checkbox {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  accent-color: var(--form-input-border-focus);
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  font-size: 14px;
+  color: var(--color-text-body);
+  cursor: pointer;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+/* Error States */
+.form-input.error {
+  border-color: var(--form-input-border-error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.field-error {
+  display: block;
+  color: var(--form-error-color);
+  font-size: 14px;
+  margin-top: 4px;
+  min-height: 20px;
+  line-height: 1.4;
+}
+
+.field-error:empty {
+  margin-top: 0;
+  min-height: 0;
+}
+
+/* Success States */
+.form-input.success {
+  border-color: var(--form-success-color);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Form Options (Remember Me / Forgot Password) */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.forgot-password-link {
+  color: var(--form-input-border-focus);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.15s ease-out;
+}
+
+.forgot-password-link:hover {
+  color: #7C3AED;
+  text-decoration: underline;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 24px 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--form-input-border);
+}
+
+.divider-text {
+  background: var(--form-input-bg);
+  padding: 0 16px;
+  color: var(--form-placeholder-color);
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Loading States */
+.form-loading .form-input {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.form-loading .form-checkbox {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .checkbox-wrapper {
+    width: 100%;
+  }
+  
+  .forgot-password-link {
+    align-self: flex-end;
+  }
+}
+
+/* Focus Visible for Better Accessibility */
+.form-input:focus-visible {
+  outline: 2px solid var(--form-input-border-focus);
+  outline-offset: 2px;
+}
+
+.form-checkbox:focus-visible {
+  outline: 2px solid var(--form-input-border-focus);
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .form-input {
+    border-width: 2px;
+  }
+  
+  .form-input:focus {
+    border-width: 2px;
+    box-shadow: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .form-input {
+    border: 1px solid #000;
+    background: white;
+  }
+  
+  .password-toggle {
+    display: none;
+  }
+}
