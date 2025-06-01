@@ -1,0 +1,99 @@
+<!-- SocialConnect Logged-in Header Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/logged-in-header.css">
+
+<header class="logged-in-header" role="banner" aria-label="SocialConnect main navigation">
+    <div class="header-branding">
+        <a href="feed.php" class="brand-link" aria-label="SocialConnect home - go to feed">
+            <h1 class="brand-title">SocialConnect</h1>
+        </a>
+    </div>
+
+    <nav class="main-navigation" role="navigation" aria-label="Main navigation">
+        <!-- Desktop Navigation -->
+        <div class="nav-menu desktop-nav">
+            <a href="feed.php" class="nav-link" aria-label="View your feed">
+                <span class="nav-text">Feed</span>
+            </a>
+            <a href="search.php" class="nav-link" aria-label="Search users and content">
+                <span class="nav-text">Search</span>
+            </a>
+            <a href="create-post.php" class="nav-link" aria-label="Create new post">
+                <span class="nav-text">Post</span>
+            </a>
+        </div>
+
+        <!-- Mobile Navigation Button -->
+        <button class="mobile-nav-toggle" 
+                aria-label="Toggle mobile navigation" 
+                aria-expanded="false"
+                aria-controls="mobile-menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </nav>
+
+    <!-- User Account Section -->
+    <div class="user-section">        <!-- Notifications (optional) -->
+        <button class="notification-btn" aria-label="View notifications" id="notificationBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+            </svg>
+            <span class="notification-badge" id="notificationBadge">
+                {{notification_count}}
+            </span>
+        </button>
+
+        <!-- User Profile Dropdown -->
+        <div class="user-profile-dropdown">
+            <button class="user-profile-btn" 
+                    aria-label="User menu" 
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    id="userProfileBtn">
+                <img src="{{profile_picture}}" 
+                     alt="{{user_name}}'s profile picture" 
+                     class="profile-picture"
+                     onerror="this.src='../assets/images/default-avatar.png';">
+                <span class="user-name">{{user_name}}</span>
+                <span class="dropdown-arrow">▼</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div class="user-dropdown-menu" id="userDropdownMenu" role="menu">
+                <a href="manage-account.php" class="dropdown-item" role="menuitem">
+                    Manage Account
+                </a>
+                <button class="dropdown-item logout-btn" role="menuitem" id="logoutBtn">
+                    Log Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav-menu" id="mobile-menu" aria-hidden="true">
+        <div class="mobile-nav-content">
+            <a href="feed.php" class="mobile-nav-link">
+                Feed
+            </a>
+            <a href="search.php" class="mobile-nav-link">
+                Search
+            </a>
+            <a href="create-post.php" class="mobile-nav-link">
+                Post
+            </a>
+            <a href="manage-account.php" class="mobile-nav-link">
+                Manage Account
+            </a>
+            <button class="mobile-nav-link logout-btn" id="mobileLogoutBtn">
+                Log Out
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Include JavaScript -->
+<script src="../js/generic-api.js"></script>
+<script src="../js/logged-in-header.js"></script>
