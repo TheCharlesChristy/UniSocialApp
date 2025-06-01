@@ -11,27 +11,48 @@ class APIHandler {
 
   // Generic fetch wrapper with error handling
   async request(endpoint, options = {}) {
-    const url = `${this.baseURL}${endpoint}.php`;
-    const config = {
+    const url = `${this.baseURL}${endpoint}.php`;    const config = {
       headers: { ...this.defaultHeaders, ...options.headers },
       ...options
-    };
-
-    try {
+    };    try {
       const response = await fetch(url, config);
       
+      const contentType = response.headers.get('content-type');
+      let responseData;
+      
+      if (contentType && contentType.includes('application/json')) {
+        responseData = await response.json();
+      } else {
+        responseData = await response.text();
+      }
+      
+      // Debug logging
+      console.log('API Response:', {
+        url,
+        status: response.status,
+        contentType,
+        responseData
+      });
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // If server returned JSON with error message, use that
+        if (typeof responseData === 'object' && responseData.message) {
+          throw new Error(responseData.message);
+        } else if (typeof responseData === 'string' && responseData.trim()) {
+          throw new Error(responseData);
+        } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
       }
 
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        return await response.json();
-      } else {
-        return await response.text();
-      }
+      return responseData;
     } catch (error) {
-      console.error('API request failed:', error);
+      // Enhanced error logging
+      console.error('API request failed:', {
+        url,
+        error: error.message,
+        stack: error.stack
+      });
       throw error;
     }
   }

@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/video.css">
+
+<section class="video-display" role="region" aria-label="Video content">
+    <div class="video-container">
+        <div class="video-wrapper">
+            <video 
+                class="video-player" 
+                controls 
+                preload="metadata"
+                aria-label="Video player"
+            >
+                <source src="{{video_url}}" type="video/mp4">
+                <source src="{{video_url}}" type="video/webm">
+                <source src="{{video_url}}" type="video/ogg">
+                <p class="video-error">
+                    Your browser doesn't support video playback. 
+                    <a href="{{video_url}}" target="_blank" rel="noopener noreferrer">
+                        Download the video
+                    </a>
+                </p>
+            </video>
+        </div>
+    </div>
+</section>
