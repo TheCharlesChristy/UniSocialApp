@@ -1,7 +1,7 @@
 <?php
 
 require_once 'api-handler.php';
-class AdminAPIHandler extends APIHandler {
+class AdminAPI extends APIHandler {
     
     public function __construct($baseURL = '/webdev/backend/src/api') {
         parent::__construct($baseURL);
