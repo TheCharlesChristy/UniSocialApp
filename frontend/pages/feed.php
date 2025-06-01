@@ -5,23 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocialConnect - Feed</title>
 </head>
-<body>
+<body>    
     <?php
-    // Include the component loader
-    require_once '../php/component-loader.php';
+    // Require authentication - this will handle all JWT token logic
+    require_once '../php/auth-guard.php';
     
-    // Create component loader instance
-    $loader = new ComponentLoader();
+    // Include the FeedPost builder
+    require_once '../php/builders/feed-post.php';
     
-    // In a real application, this data would come from the session or database
-    $userData = [
-        'user_name' => 'John Doe',
-        'profile_picture' => '../assets/images/default-profile.svg',
-        'notification_count' => '5'
-    ];
+    // Create an instance of the FeedPost builder
+    $feedPost = new FeedPost();
     
-    // Render the logged-in header with user data
-    echo $loader->getComponentWithVars('logged_in_header', $userData);
+    // Example: Build a feed post with ID 1 (replace with actual post ID)
+    $feedPost->build(1);
     ?>
 </body>
 </html>

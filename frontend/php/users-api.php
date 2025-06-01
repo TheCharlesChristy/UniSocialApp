@@ -5,8 +5,9 @@ require_once 'api-handler.php';
 class UsersAPI extends APIHandler {
     
     public function __construct() {
-        // Initialize with users-specific base URL
-        parent::__construct('/webdev/backend/src/api/users');
+        // Initialize with default base URL, then append users path
+        parent::__construct();
+        $this->baseURL = $this->baseURL . '/users';
     }
 
     /**
@@ -76,9 +77,7 @@ class UsersAPI extends APIHandler {
             'method' => 'PUT',
             'body' => json_encode($data)
         ]);
-    }
-
-    /**
+    }    /**
      * Get a specific user's profile information
      * 
      * @param int $userId Target user's ID
@@ -90,9 +89,9 @@ class UsersAPI extends APIHandler {
             throw new Exception('Invalid user ID format');
         }
 
-        return $this->authenticatedRequest('/get_user', [
+        return $this->authenticatedRequest("/get_user", [
             'method' => 'GET',
-            'body' => json_encode(['userId' => (int)$userId])
+            'query_params' => ['userId' => (int)$userId]
         ]);
     }
 
@@ -114,10 +113,9 @@ class UsersAPI extends APIHandler {
             'query' => $query,
             'page' => max(1, (int)$page),
             'limit' => max(1, min(50, (int)$limit))
-        ];
-
-        return $this->authenticatedRequest('/search_users?' . http_build_query($params), [
-            'method' => 'GET'
+        ];        return $this->authenticatedRequest('/search_users', [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -131,10 +129,9 @@ class UsersAPI extends APIHandler {
     public function getUserSuggestions($limit = 10) {
         $params = [
             'limit' => max(1, min(50, (int)$limit))
-        ];
-
-        return $this->authenticatedRequest('/get_suggestions?' . http_build_query($params), [
-            'method' => 'GET'
+        ];        return $this->authenticatedRequest('/get_suggestions', [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -156,10 +153,9 @@ class UsersAPI extends APIHandler {
             'userId' => (int)$userId,
             'page' => max(1, (int)$page),
             'limit' => max(1, min(50, (int)$limit))
-        ];
-
-        return $this->authenticatedRequest('/get_user_posts?' . http_build_query($params), [
-            'method' => 'GET'
+        ];        return $this->authenticatedRequest('/get_user_posts', [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -215,10 +211,9 @@ class UsersAPI extends APIHandler {
         $params = [
             'page' => max(1, (int)$page),
             'limit' => max(1, min(50, (int)$limit))
-        ];
-
-        return $this->authenticatedRequest('/get_blocked?' . http_build_query($params), [
-            'method' => 'GET'
+        ];        return $this->authenticatedRequest('/get_blocked', [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -271,10 +266,9 @@ class UsersAPI extends APIHandler {
             if (isset($filters[$filter]) && !empty($filters[$filter])) {
                 $params[$filter] = $filters[$filter];
             }
-        }
-
-        return $this->authenticatedRequest('/get_user_reports?' . http_build_query($params), [
-            'method' => 'GET'
+        }        return $this->authenticatedRequest('/get_user_reports', [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -327,11 +321,10 @@ class UsersAPI extends APIHandler {
      * @param string $endpoint API endpoint
      * @param array $params Query parameters
      * @return array Response data
-     */
-    private function getPaginated($endpoint, $params = []) {
-        $queryString = http_build_query($params);
-        $fullEndpoint = $queryString ? "$endpoint?$queryString" : $endpoint;
-        
-        return $this->authenticatedRequest($fullEndpoint, ['method' => 'GET']);
+     */    private function getPaginated($endpoint, $params = []) {
+        return $this->authenticatedRequest($endpoint, [
+            'method' => 'GET',
+            'query_params' => $params
+        ]);
     }
 }

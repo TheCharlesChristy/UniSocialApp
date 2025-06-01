@@ -5,8 +5,9 @@ require_once 'api-handler.php';
 class PostsAPI extends APIHandler {
     
     public function __construct() {
-        // Initialize with posts-specific base URL
-        parent::__construct('/webdev/backend/src/api/posts');
+        // Initialize with default base URL, then append posts path
+        parent::__construct();
+        $this->baseURL = $this->baseURL . '/posts';
     }
 
     /**
@@ -90,9 +91,7 @@ class PostsAPI extends APIHandler {
             ],
             'body' => $formData
         ]);
-    }
-
-    /**
+    }    /**
      * Get a specific post by ID
      * 
      * @param int $postId Post ID
@@ -100,8 +99,9 @@ class PostsAPI extends APIHandler {
      * @throws Exception If request fails
      */
     public function getPost($postId) {
-        return $this->authenticatedRequest("/get_post?id=$postId", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/get_post", [
+            'method' => 'GET',
+            'query_params' => ['id' => $postId]
         ]);
     }
 
@@ -195,17 +195,16 @@ class PostsAPI extends APIHandler {
      * @param int $limit Comments per page (1-50, default: 20)
      * @return array Response data
      * @throws Exception If request fails
-     */
-    public function getComments($postId, $page = 1, $limit = 20) {
+     */    public function getComments($postId, $page = 1, $limit = 20) {
         $params = [
             'post_id' => $postId,
             'page' => $page,
             'limit' => $limit
         ];
 
-        $queryString = http_build_query($params);
-        return $this->authenticatedRequest("/get_comments?$queryString", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/get_comments", [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -327,17 +326,16 @@ class PostsAPI extends APIHandler {
      * @param int $limit Users per page (1-50, default: 20)
      * @return array Response data
      * @throws Exception If request fails
-     */
-    public function getPostLikes($postId, $page = 1, $limit = 20) {
+     */    public function getPostLikes($postId, $page = 1, $limit = 20) {
         $params = [
             'post_id' => $postId,
             'page' => $page,
             'limit' => $limit
         ];
 
-        $queryString = http_build_query($params);
-        return $this->authenticatedRequest("/get_post_likes?$queryString", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/get_post_likes", [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -349,17 +347,16 @@ class PostsAPI extends APIHandler {
      * @param int $limit Users per page (1-50, default: 20)
      * @return array Response data
      * @throws Exception If request fails
-     */
-    public function getCommentLikes($commentId, $page = 1, $limit = 20) {
+     */    public function getCommentLikes($commentId, $page = 1, $limit = 20) {
         $params = [
             'comment_id' => $commentId,
             'page' => $page,
             'limit' => $limit
         ];
 
-        $queryString = http_build_query($params);
-        return $this->authenticatedRequest("/get_comment_likes?$queryString", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/get_comment_likes", [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -376,15 +373,13 @@ class PostsAPI extends APIHandler {
         $params = [
             'page' => $page,
             'limit' => $limit
-        ];
-
-        if ($filter !== null) {
+        ];        if ($filter !== null) {
             $params['filter'] = $filter;
         }
 
-        $queryString = http_build_query($params);
-        return $this->authenticatedRequest("/get_feed?$queryString", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/get_feed", [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 
@@ -397,16 +392,15 @@ class PostsAPI extends APIHandler {
      * @return array Response data
      * @throws Exception If request fails
      */
-    public function searchPosts($query, $page = 1, $limit = 10) {
-        $params = [
+    public function searchPosts($query, $page = 1, $limit = 10) {        $params = [
             'q' => $query,
             'page' => $page,
             'limit' => $limit
         ];
 
-        $queryString = http_build_query($params);
-        return $this->authenticatedRequest("/search_posts?$queryString", [
-            'method' => 'GET'
+        return $this->authenticatedRequest("/search_posts", [
+            'method' => 'GET',
+            'query_params' => $params
         ]);
     }
 

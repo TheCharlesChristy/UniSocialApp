@@ -7,6 +7,9 @@
 </head>
 <body>
     <?php
+    // Require authentication
+    require_once '../php/auth-guard.php';
+    
     // Include the component loader
     require_once '../php/component-loader.php';
     

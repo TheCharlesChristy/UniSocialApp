@@ -12,7 +12,7 @@ function gotoProfile(username) {
             console.error('Username not found in the banner');
             return;
         }
-        // window.location.href = '../pages/view-account.php?username=' + encodeURIComponent(username);
+        window.location.href = '../pages/view-account.php?username=' + encodeURIComponent(username);
     } catch (error) {
         console.error('Error navigating to profile:', error);
         APIUtils.showError('Unable to access profile page');
