@@ -42,5 +42,5 @@ window.navigateToComments = function(postId) {
     }
     
     // Redirect to comments page with post ID
-    window.location.href = `comments.php?post_id=${postId}`;
+    window.location.href = `view_post.php?post_id=${postId}`;
 }
