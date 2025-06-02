@@ -185,6 +185,34 @@
     transform: translateY(-1px);
 }
 
+.text-post-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-text-body);
+    cursor: pointer;
+    transition: all 150ms ease-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.text-post-btn:hover {
+    background: var(--color-background-light);
+    border-color: var(--color-brand-purple);
+    color: var(--color-brand-purple);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+.text-post-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .capture-btn {
     width: 72px;
     height: 72px;
@@ -350,9 +378,17 @@
     .capture-btn {
         width: 64px;
         height: 64px;
+    }    .upload-btn {
+        width: 44px;
+        height: 44px;
     }
     
-    .upload-btn {
+    .text-post-btn {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .text-post-btn {
         width: 44px;
         height: 44px;
     }

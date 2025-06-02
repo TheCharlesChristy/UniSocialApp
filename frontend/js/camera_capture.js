@@ -13,10 +13,12 @@ class CameraCapture {
         this.photoModeBtn = document.getElementById('photoModeBtn');
         this.videoModeBtn = document.getElementById('videoModeBtn');
         this.captureBtn = document.getElementById('captureBtn');
-        this.captureBtnInner = document.getElementById('captureBtnInner');
-        
+        this.captureBtnInner = document.getElementById('captureBtnInner');        
         // File upload
         this.fileInput = document.getElementById('fileInput');
+        
+        // Text post button
+        this.textPostBtn = document.getElementById('textPostBtn');
         
         // Preview elements
         this.previewImage = document.getElementById('previewImage');
@@ -64,9 +66,11 @@ class CameraCapture {
         
         // Capture button
         this.captureBtn.addEventListener('click', () => this.handleCapture());
-        
-        // File upload
+          // File upload
         this.fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
+        
+        // Text post button
+        this.textPostBtn.addEventListener('click', () => this.handleTextPost());
         
         // Permission request
         this.requestPermissionBtn.addEventListener('click', () => this.requestCameraAccess());
@@ -411,9 +415,25 @@ class CameraCapture {
         this.capturedMediaBlob = file;
         this.capturedMediaType = file.type.startsWith('image/') ? 'image' : 'video';
         this.showPreview();
-        
-        // Reset file input
+          // Reset file input
         event.target.value = '';
+    }
+    
+    handleTextPost() {
+        // Clear any existing media data from storage
+        sessionStorage.removeItem('capturedMedia');
+        
+        // Clear IndexedDB as well
+        const request = indexedDB.deleteDatabase('CapturedMediaDB');
+        request.onsuccess = () => {
+            console.log('Cleared media database for text-only post');
+        };
+        request.onerror = () => {
+            console.log('Error clearing media database, proceeding anyway');
+        };
+        
+        // Redirect to confirm post page without any media
+        window.location.href = '../pages/confirm_post.php';
     }
       showPreview() {
         if (!this.capturedMediaBlob) return;
