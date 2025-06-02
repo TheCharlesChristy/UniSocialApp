@@ -149,9 +149,7 @@ class ComponentLoader {
     public function componentExists($name) {
         $file_path = $this->getComponentPath($name);
         return file_exists($file_path) && is_readable($file_path);
-    }
-
-    /**
+    }    /**
      * Get component with variables replaced
      * Usage: getComponentWithVars('header', ['title' => 'My Page', 'user' => 'John'])
      */
@@ -175,6 +173,26 @@ class ComponentLoader {
      */
     public function renderComponentWithVars($name, $variables = []) {
         echo $this->getComponentWithVars($name, $variables);
+    }
+
+    /**
+     * Get component with variables replaced without HTML escaping
+     * Use this when inserting HTML content that should be rendered as HTML
+     * Usage: getComponentInsertHtml('header', ['content' => '<div>HTML content</div>'])
+     */
+    public function getComponentInsertHtml($name, $variables = []) {
+        $html = $this->getComponent($name);
+        
+        if (!empty($variables)) {
+            foreach ($variables as $key => $value) {
+                // Replace {{variable}} syntax without escaping
+                $html = str_replace('{{' . $key . '}}', $value, $html);
+                // Replace {variable} syntax as well
+                $html = str_replace('{' . $key . '}', $value, $html);
+            }
+        }
+        
+        return $html;
     }
 }
 

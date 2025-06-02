@@ -1,0 +1,33 @@
+<!-- SocialConnect Post Stats Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/post_stats.css">
+
+<div class="post-stats-container" role="group" aria-label="Post interaction statistics">
+    <div class="stats-wrapper">
+        <!-- Comments section -->
+        <button class="stat-button comment-button" 
+                onclick="navigateToComments('{{post_id}}')"
+                aria-label="View {{comment_count}} comments">
+            <svg class="stat-icon comment-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 12C21 16.9706 16.9706 21 12 21C10.8448 21 9.7355 20.7856 8.7121 20.3927L3 21L4.60734 15.2879C4.21444 14.2645 4 13.1552 4 12C4 7.02944 8.02944 3 13 3C17.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-count" id="comment-count-{{post_id}}">{{comment_count}}</span>
+        </button>
+        
+        <!-- Likes section -->
+        <button class="stat-button like-button" 
+                onclick="toggleLike('{{post_id}}')"
+                data-liked="{{user_has_liked}}"
+                data-post-id="{{post_id}}"
+                aria-label="{{user_has_liked == '1' ? 'Unlike this post' : 'Like this post'}}">
+            <svg class="stat-icon like-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 14C19 14 17 16 12 21C7 16 5 14 5 14C3.5 12.5 3.5 9.5 5 8C6.5 6.5 9.5 6.5 11 8L12 9L13 8C14.5 6.5 17.5 6.5 19 8C20.5 9.5 20.5 12.5 19 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="stat-count" id="like-count-{{post_id}}">{{like_count}}</span>
+        </button>
+    </div>
+</div>
+
+<!-- Include JavaScript -->
+<script src="../js/post_stats.js"></script>

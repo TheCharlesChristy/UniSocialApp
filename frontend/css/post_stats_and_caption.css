@@ -1,0 +1,93 @@
+/* Post Stats and Caption Component Styles */
+
+.post-stats-and-caption-container {
+    width: 100%;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.stats-caption-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+    width: 100%;
+    align-items: center;
+}
+
+.post-stats-and-caption-content {
+    width: 50%;
+    font-size: var(--font-size-body);
+    color: var(--color-text-body);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    height: 100%;
+    border: none;
+}
+
+.post-stats-and-caption-content:first-child {
+    font-weight: 500;
+    color: var(--color-text-dark);
+}
+
+.post-stats-and-caption-content:last-child {
+    margin-top: var(--spacing-xs);
+}
+
+.third-content {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-body);
+    color: var(--color-text-body);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background: var(--color-background-light);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .post-stats-and-caption-container {
+        gap: var(--spacing-xs);
+    }
+    
+    .stats-caption-wrapper {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .third-content {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-small);
+    }
+    
+    .post-stats-and-caption-content {
+        font-size: var(--font-size-small);
+    }
+}
+
+/* Accessibility improvements */
+.post-stats-and-caption-container:focus-within {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+.post-stats-and-caption-container,
+.stats-caption-wrapper,
+.third-content {
+    transition: all 0.2s ease;
+}
+
+/* Hover effects for interactive elements */
+.post-stats-and-caption-container:hover {
+    background: var(--color-background-light);
+}
+
+.post-stats-and-caption-container:hover .third-content {
+    background: var(--color-white);
+}

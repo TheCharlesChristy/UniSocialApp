@@ -282,6 +282,23 @@ class PostsAPI extends APIHandler {
         ]);
     }
 
+    public function hasLiked($postId) {
+        $params = [
+            'post_id' => $postId
+        ];
+
+        $response = $this->authenticatedRequest('/has_liked', [
+            'method' => 'GET',
+            'query_params' => $params
+        ]);
+
+        if (isset($response['has_liked'])) {
+            return $response['has_liked'];
+        } else {
+            throw new Exception('Failed to check like status');
+        }
+    }
+
     /**
      * Like a comment
      * 

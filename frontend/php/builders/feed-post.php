@@ -70,57 +70,44 @@ class FeedPost {
      * @param array $postData Post information from the API
      * @param array $userData User information from the API
      * @return void
-     */
+     */    
     private function buildPost($postData, $userData) {
-        echo "=== FEED POST DETAILS ===\n\n";
+        // Load Components for the post
+        $userbanner = $this->createUserBanner($userData);
+
+        $post_media = $postData['post_type'] !== 'text' ? $this->createPostMedia($postData) : '';
         
-        echo "POST INFORMATION:\n";
-        echo "- Post ID: " . $postData['post_id'] . "\n";
-        echo "- Caption: " . $postData['caption'] . "\n";
-        echo "- Post Type: " . $postData['post_type'] . "\n";
-        echo "- Privacy Level: " . $postData['privacy_level'] . "\n";
-        echo "- Created At: " . $postData['created_at'] . "\n";
-        echo "- Likes Count: " . $postData['likes_count'] . "\n";
-        echo "- Comments Count: " . $postData['comments_count'] . "\n";
-        
-        if (!empty($postData['media_url'])) {
-            echo "- Media URL: " . $postData['media_url'] . "\n";
+        $post_stats = $this->createPostStats($postData);
+
+        $post_caption = $this->createPostCaption($postData, $userData);
+
+        $post_view_comments = $this->createPostViewComments($postData);        // Wrap the stats and caption in a container
+        $post_stats_and_caption = $this->componentLoader->getComponentInsertHtml('post_stats_and_caption', [
+            'post_stats' => $post_stats,
+            'post_caption' => $post_caption,
+            'post_view_comments' => $post_view_comments
+        ]);
+
+        // Wrap everything in a post container
+        $post_container = $this->componentLoader->getComponentInsertHtml('post_container', [
+            'user_banner' => $userbanner,
+            'post_media' => $post_media,
+            'post_stats_and_caption' => $post_stats_and_caption,
+        ]);
+
+        // Output the final post HTML
+        if ($post_container === null) {
+            echo "Error: Failed to load post container component.";
+            return;
         }
-        
-        if (!empty($postData['location_name'])) {
-            echo "- Location: " . $postData['location_name'] . "\n";
-        }
-        
-        echo "\nUSER INFORMATION:\n";
-        echo "- User ID: " . $userData['user_id'] . "\n";
-        echo "- Username: " . $userData['username'] . "\n";
-        echo "- Full Name: " . $userData['first_name'] . " " . $userData['last_name'] . "\n";
-        
-        if (!empty($userData['profile_picture'])) {
-            echo "- Profile Picture: " . $userData['profile_picture'] . "\n";
-        }
-        
-        if (!empty($userData['bio'])) {
-            echo "- Bio: " . $userData['bio'] . "\n";
-        }
-        
-        echo "\n=== END FEED POST ===\n";
-        // Create the user banner component
-        $this->createUserBanner($userData);
-    }    
+        echo $post_container;
+    }
     
     private function createUserBanner($userData) {
         // Use the component loader to create a user banner component
         $profile_picture = $userData['profile_picture'] ?? 'default_profile_picture.png';
-        
-        // Extract the path from 'media/' onwards
-        $media_pos = strpos($profile_picture, 'media/');
-        if ($media_pos !== false) {
-            $profile_picture = substr($profile_picture, $media_pos);
-        }
 
-        // Add ../../backend/ to the path
-        $profile_picture = '../../backend/' . $profile_picture;
+        $profile_picture = $this->apiLibrary->mediaAPI->formatMediaUrl($profile_picture);
 
         $html = $this->componentLoader->getComponentWithVars('user_banner', [
             'user_id' => $userData['user_id'],
@@ -133,6 +120,66 @@ class FeedPost {
             echo "Error: Failed to load user banner component.";
             return;
         }
-        echo $html;
+        return $html;
+    }
+
+    private function createPostMedia($postData) {
+        // Use the component loader to create a post media component
+        $media_url = $postData['media_url'] ?? 'default_media.png';
+        $media_url = $this->apiLibrary->mediaAPI->formatMediaUrl($media_url);
+
+        $html = $this->componentLoader->getComponentWithVars('post_media', [
+            'media_src_url' => $media_url,
+        ]);
+        
+        if ($html === null) {
+            echo "Error: Failed to load post media component.";
+            return;
+        }
+        return $html;
+    }
+
+    private function createPostStats($postData) {
+        // Use the component loader to create a post stats component
+        $html = $this->componentLoader->getComponentWithVars('post_stats', [
+            'post_id' => $postData['post_id'],
+            'like_count' => $postData['likes_count'],
+            'comment_count' => $postData['comments_count'],
+            'created_at' => $postData['created_at'],
+            'user_has_liked' => $this->apiLibrary->postsAPI->hasLiked($postData['post_id'])
+        ]);
+        
+        if ($html === null) {
+            echo "Error: Failed to load post stats component.";
+            return;
+        }
+        return $html;
+    }
+
+    private function createPostCaption($postData, $userData) {
+        // Use the component loader to create a post caption component
+        $html = $this->componentLoader->getComponentWithVars('post_caption', [
+            'caption' => $postData['caption'],
+            'user_name' => $userData['username'],
+        ]);
+        
+        if ($html === null) {
+            echo "Error: Failed to load post caption component.";
+            return;
+        }
+        return $html;
+    }
+
+    private function createPostViewComments($postData) {
+        // Use the component loader to create a post view comments component
+        $html = $this->componentLoader->getComponentWithVars('view_post_comments', [
+            'post_id' => $postData['post_id'],
+        ]);
+        
+        if ($html === null) {
+            echo "Error: Failed to load post view comments component.";
+            return;
+        }
+        return $html;
     }
 }
