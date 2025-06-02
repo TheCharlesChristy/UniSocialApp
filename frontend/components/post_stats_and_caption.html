@@ -6,6 +6,16 @@
     <div class="stats-caption-wrapper">
         <div class="post-stats-and-caption-content">{{post_caption}}</div>
         <div class="post-stats-and-caption-content">{{post_stats}}</div>
+    </div>    <div class="hide-comments-wrapper">
+        <button class="hide-comments-btn" type="button" aria-expanded="true">
+            <svg class="hide-icon" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            <span class="hide-text">Hide</span>
+        </button>
     </div>
     <div class="third-content">{{post_view_comments}}</div>
 </div>
+
+<!-- Include JavaScript -->
+<script src="../js/post_stats_and_caption.js"></script>

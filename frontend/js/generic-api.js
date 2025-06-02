@@ -106,9 +106,7 @@ if (typeof window.APIHandler === 'undefined') {
         headers,
         body: formData
       });
-    }
-
-    // Get with authentication token
+    }    // Get with authentication token
     async authenticatedRequest(endpoint, options = {}) {
       const token = this.getAuthToken();
       if (!token) {
@@ -124,6 +122,67 @@ if (typeof window.APIHandler === 'undefined') {
         ...options,
         headers: authHeaders
       });
+    }    // GET request with authentication and parameters
+    async authenticatedGet(endpoint, params = {}) {
+      const token = this.getAuthToken();
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      // Build the URL manually to avoid .php appending conflicts
+      const urlParams = new URLSearchParams(params);
+      const queryString = urlParams.toString();
+      const url = `${this.baseURL}${endpoint}.php${queryString ? `?${queryString}` : ''}`;
+      
+      const config = {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          ...this.defaultHeaders
+        }
+      };
+
+      try {
+        const response = await fetch(url, config);
+        
+        const contentType = response.headers.get('content-type');
+        let responseData;
+        
+        if (contentType && contentType.includes('application/json')) {
+          responseData = await response.json();
+        } else {
+          responseData = await response.text();
+        }
+        
+        // Debug logging
+        console.log('API Response:', {
+          url,
+          status: response.status,
+          contentType,
+          responseData
+        });
+        
+        if (!response.ok) {
+          // If server returned JSON with error message, use that
+          if (typeof responseData === 'object' && responseData.message) {
+            throw new Error(responseData.message);
+          } else if (typeof responseData === 'string' && responseData.trim()) {
+            throw new Error(responseData);
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
+
+        return responseData;
+      } catch (error) {
+        // Enhanced error logging
+        console.error('API request failed:', {
+          url,
+          error: error.message,
+          stack: error.stack
+        });
+        throw error;
+      }
     }
 
     // Token management

@@ -290,9 +290,8 @@ class MediaAPI extends APIHandler {
     }
 
     public function formatMediaUrl($filename) {
-        // Ensure filename is not empty
         if (empty($filename)) {
-            throw new Exception('Filename cannot be empty');
+            return '';
         }
 
         // Extract the path from 'media/' onwards

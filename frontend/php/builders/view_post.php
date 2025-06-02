@@ -4,12 +4,12 @@ require_once __DIR__ . '/../api-library.php';
 require_once __DIR__ . '/../component-loader.php';
 
 /**
- * FeedPost Builder Class
+ * ViewPost Builder Class
  * 
- * This class handles building feed post components by fetching post and user data
+ * This class handles building post components by fetching post and user data
  * through the API library and processing them for display.
  */
-class FeedPost {
+class ViewPost {
     
     /**
      * API Library instance for accessing posts and users APIs
@@ -29,7 +29,7 @@ class FeedPost {
     }
 
     /**
-     * Public method to build a feed post component
+     * Public method to build a view post component
      * 
      * @param int $postId The ID of the post to build
      * @return void
@@ -46,7 +46,16 @@ class FeedPost {
             
             $postData = $postResponse['post'];
             
-            // Pass both post and user data to the private build method
+            // Get user details from the users API using the post's user_id
+            $userResponse = $this->apiLibrary->usersAPI->getUser($postData['user_id']);
+            
+            if (!$userResponse['success']) {
+                echo "Error: Failed to fetch user details - " . $userResponse['message'];
+                return;
+            }
+            
+            $userData = $userResponse['user'];
+              // Pass post data to the private build method
             $this->buildPost($postData);
             
         } catch (Exception $e) {
@@ -174,7 +183,8 @@ class FeedPost {
             echo "Error: Failed to load post caption component.";
             return;
         }
-        return $html;    }    private function createPostViewComments($postData) {
+        return $html;
+    }    private function createPostViewComments($postData) {
         // Get the comments for the post
         $commentsResponse = $this->apiLibrary->postsAPI->getComments($postData['post_id']);
         if (!$commentsResponse['success']) {
@@ -187,8 +197,7 @@ class FeedPost {
             $commentsHtml .= $this->renderSingleComment($comment, $postData['post_id']);
         }
         
-        // Wrap comments in a container with proper classes for dynamic insertion
-        return '<div class="comments-list" data-post-id="' . $postData['post_id'] . '">' . $commentsHtml . '</div>';
+        return $commentsHtml;
     }    /**
      * Recursively render a single comment and its children
      * 

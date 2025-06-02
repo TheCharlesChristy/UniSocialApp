@@ -71,12 +71,16 @@ class ComponentLoader {
     public function loadComponentByName($name) {
         $url = $this->getComponentUrl($name);
         return $this->loadComponent($url);
-    }
-
-    /**
+    }    /**
      * Get component HTML with error handling
      */
     public function getComponent($name) {
+        // Validate component name
+        if (empty($name) || !is_string($name)) {
+            error_log("Invalid component name provided: " . var_export($name, true));
+            return "<!-- Invalid component name -->";
+        }
+        
         $html = $this->loadComponentByName($name);
         if ($html === null) {
             error_log("Component not found: $name");
@@ -141,9 +145,7 @@ class ComponentLoader {
     public function clearComponentCache($name) {
         $url = $this->getComponentUrl($name);
         unset($this->cache[$url]);
-    }
-
-    /**
+    }    /**
      * Check if component exists
      */
     public function componentExists($name) {
@@ -154,6 +156,12 @@ class ComponentLoader {
      * Usage: getComponentWithVars('header', ['title' => 'My Page', 'user' => 'John'])
      */
     public function getComponentWithVars($name, $variables = []) {
+        // Validate component name
+        if (empty($name) || !is_string($name)) {
+            error_log("Invalid component name provided to getComponentWithVars: " . var_export($name, true));
+            return "<!-- Invalid component name -->";
+        }
+        
         $html = $this->getComponent($name);
         
         if (!empty($variables)) {
@@ -173,14 +181,18 @@ class ComponentLoader {
      */
     public function renderComponentWithVars($name, $variables = []) {
         echo $this->getComponentWithVars($name, $variables);
-    }
-
-    /**
+    }    /**
      * Get component with variables replaced without HTML escaping
      * Use this when inserting HTML content that should be rendered as HTML
      * Usage: getComponentInsertHtml('header', ['content' => '<div>HTML content</div>'])
      */
     public function getComponentInsertHtml($name, $variables = []) {
+        // Validate component name
+        if (empty($name) || !is_string($name)) {
+            error_log("Invalid component name provided to getComponentInsertHtml: " . var_export($name, true));
+            return "<!-- Invalid component name -->";
+        }
+        
         $html = $this->getComponent($name);
         
         if (!empty($variables)) {

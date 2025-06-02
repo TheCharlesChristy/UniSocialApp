@@ -1,0 +1,51 @@
+# Dynamic Comments System Fix
+
+## Problem Identified
+1. Comments were not automatically appearing when users added them or replied to posts, requiring a page refresh.
+2. The JavaScript selector in `post_stats.js` was incorrectly looking for comments containers.
+3. The "hide comments" feature in `post_stats_and_caption.js` was fully hiding the comments section from the DOM.
+4. There was no proper event communication between adding comments/replies and updating the DOM.
+
+## Changes Made
+
+### 1. Fix to the Comments Container Selector in `post_stats.js`:
+- Changed the selector from `[data-post-id="${postId}"] .comments-list` to `.comments-list[data-post-id="${postId}"]` 
+- This properly targets the comments-list element which has the data-post-id attribute directly on it
+
+### 2. Enhanced Comment Section Visibility in `post_stats_and_caption.js`:
+- Modified to keep comments accessible in the DOM even when visually hidden
+- Added a data-stored-post-id attribute to maintain reference to the post ID
+- Improved show/hide animations to maintain DOM accessibility
+
+### 3. Added Event Communication:
+- Implemented a 'commentsVisibilityChanged' event to communicate when comments are shown/hidden
+- Added functionality to store pending comments if container is hidden
+- Ability to automatically show hidden comments when a new comment is added
+
+### 4. Added Robustness to Comment Insertion:
+- Added retries to find comment containers via multiple methods
+- Added debug logging for better visibility into potential issues
+- Implemented proper event handling for both top-level comments and replies
+
+### 5. Improved Reply System:
+- Enhanced reply handling to properly insert replies into parent comments
+- Added proper event dispatching for reply comments
+- Better error handling for comments and replies
+
+## How It Works Now:
+1. When a user adds a comment via `add_comment.js`, it dispatches a 'commentAdded' event
+2. The `post_stats.js` file listens for this event and:
+   - Updates the comment count
+   - Tries to find the proper comment container using the improved selector
+   - If the container is hidden, it attempts to automatically show it
+   - If the container still can't be found, it stores the comment for later
+3. When a comments section becomes visible, it processes any pending comments
+4. Reply comments work similarly, with proper event dispatching and processing
+
+## Testing Instructions:
+1. Test adding a comment to a visible comments section
+2. Test adding a comment to a hidden comments section (should auto-show)
+3. Test adding a reply to a comment
+4. Test edge cases like multiple comments in quick succession
+
+This comprehensive fix ensures that comments and replies now appear dynamically without requiring page refresh, even when the comments section is hidden.

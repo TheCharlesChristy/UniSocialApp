@@ -1,0 +1,80 @@
+<!-- SocialConnect Add Comment Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/add_comment.css">
+
+<div class="add-comment-container" role="group" aria-label="Add a comment" data-post-id="{{post_id}}">
+    <!-- Initial button state -->
+    <div class="add-comment-button-container" id="addCommentButton-{{post_id}}">
+        <button class="add-comment-btn" 
+                onclick="showCommentForm('{{post_id}}')"
+                aria-label="Add a comment to this post">
+            <svg class="comment-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 12C22 17.5228 17.5228 22 12 22C10.1786 22 8.47087 21.4135 7.09899 20.4323L2 22L3.56766 16.9011C2.58648 15.5291 2 13.8214 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="add-comment-text">Add Comment</span>
+        </button>
+    </div>
+
+    <!-- Comment form (initially hidden) -->
+    <div class="add-comment-form-container" id="addCommentForm-{{post_id}}" style="display: none;" aria-hidden="true">
+        <form class="add-comment-form" onsubmit="submitComment(event, '{{post_id}}')">
+            <div class="form-content">
+                <!-- User avatar (optional - can be filled by component loader) -->
+                <div class="comment-avatar">
+                    <img src="{{current_user_profile_picture}}" 
+                         alt="Your profile picture" 
+                         class="profile-picture"
+                         onerror="this.src='../assets/images/default-profile.svg'">
+                </div>
+                
+                <!-- Text input area -->
+                <div class="comment-input-wrapper">
+                    <textarea class="comment-textarea" 
+                              id="commentTextarea-{{post_id}}"
+                              placeholder="Write a comment..." 
+                              maxlength="1000" 
+                              rows="3"
+                              aria-label="Comment text"
+                              required></textarea>
+                    
+                    <!-- Character counter -->
+                    <div class="character-counter" aria-live="polite">
+                        <span class="character-count" id="characterCount-{{post_id}}">0</span>/1000
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form actions -->
+            <div class="form-actions">
+                <button type="button" 
+                        class="cancel-btn" 
+                        onclick="hideCommentForm('{{post_id}}')"
+                        aria-label="Cancel adding comment">
+                    Cancel
+                </button>
+                <button type="submit" 
+                        class="submit-btn" 
+                        id="submitBtn-{{post_id}}"
+                        aria-label="Submit comment">
+                    <span class="submit-text">Comment</span>
+                    <div class="submit-spinner" style="display: none;">
+                        <svg class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" opacity="0.25"/>
+                            <path d="M12 2A10 10 0 0 1 22 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Success/Error messages -->
+    <div class="message-container" id="messageContainer-{{post_id}}" style="display: none;" aria-live="polite">
+        <div class="message" id="message-{{post_id}}"></div>
+    </div>
+</div>
+
+<!-- Include JavaScript -->
+<script src="../js/generic-api.js"></script>
+<script src="../js/add_comment.js"></script>

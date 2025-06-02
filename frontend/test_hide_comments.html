@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Stats and Caption - Hide Comments Test</title>    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/post_stats_and_caption.css">
+    <link rel="stylesheet" href="css/view_post_comments.css">
+    <style>
+        body {
+            padding: 20px;
+            background-color: var(--color-background-light);
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .test-header {
+            padding: 20px;
+            background: var(--color-brand-purple);
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            Hide Comments Button Test
+        </div>
+          <!-- Sample Post Stats and Caption Component -->
+        <div class="post-stats-and-caption-container" role="group" aria-label="Post statistics and caption">
+            <div class="stats-caption-wrapper">
+                <div class="post-stats-and-caption-content">
+                    <strong>john_doe</strong> This is a sample post caption to test the hide comments functionality. When you click the hide button, the comments section below should be hidden with a smooth animation.
+                </div>
+                <div class="post-stats-and-caption-content">
+                    <span style="color: var(--color-text-body); font-size: var(--font-size-small);">
+                        👍 15 likes • 💬 5 comments
+                    </span>
+                </div>
+            </div>            <div class="hide-comments-wrapper">
+                <button class="hide-comments-btn" type="button" aria-expanded="true">
+                    <svg class="hide-icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="hide-text">Hide</span>
+                </button>
+            </div>
+            <div class="third-content">
+                <!-- Sample View Comments Button -->
+                <div class="view-comments-container" role="group" aria-label="View post comments">
+                    <button class="view-comments-button" 
+                            onclick="alert('This would navigate to comments page')"
+                            aria-label="View comments for this post">
+                        <span class="comments-text">View Comments</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+                    <button class="view-comments-button" 
+                            onclick="alert('This would navigate to comments page')"
+                            aria-label="View comments for this post">
+                        <span class="comments-text">View Comments</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center; color: var(--color-text-body);">
+        <p><strong>Instructions:</strong></p>        <p>1. When the page loads, you should see a "Hide" button appear at the top of the comments section</p>
+        <p>2. Click the button to hide the comments section with animation</p>
+        <p>3. Click again to show the comments section</p>
+        <p>4. The button text should change between "Hide" and "Show"</p>
+    </div>
+
+    <script src="js/post_stats_and_caption.js"></script>
+</body>
+</html>

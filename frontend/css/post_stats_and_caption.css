@@ -91,3 +91,108 @@
 .post-stats-and-caption-container:hover .third-content {
     background: var(--color-white);
 }
+
+/* Hide Comments Button Styles */
+.hide-comments-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 var(--spacing-md) var(--spacing-sm);
+}
+
+.hide-comments-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--color-white);
+    color: var(--color-text-body);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    min-height: 32px;
+}
+
+.hide-comments-btn:hover {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border-color: var(--color-brand-purple);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+}
+
+.hide-comments-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(139, 92, 246, 0.2);
+}
+
+.hide-comments-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.hide-comments-btn.comments-hidden {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border-color: var(--color-brand-purple);
+    box-shadow: 0 1px 3px rgba(139, 92, 246, 0.3);
+}
+
+.hide-comments-btn.comments-hidden:hover {
+    background: #7C3AED;
+    border-color: #7C3AED;
+    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.3);
+}
+
+.hide-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hide-text {
+    font-size: var(--font-size-caption);
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Responsive adjustments for hide button */
+@media (max-width: 768px) {
+    .hide-comments-wrapper {
+        padding: 0 var(--spacing-sm) var(--spacing-xs);
+    }
+    
+    .hide-comments-btn {
+        padding: 6px var(--spacing-xs);
+        font-size: 11px;
+        min-height: 28px;
+    }
+    
+    .hide-icon {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .hide-text {
+        font-size: 11px;
+    }
+}
+
+/* Animation classes for smooth hiding/showing */
+.third-content {
+    transition: all 0.3s ease;
+}
+
+.third-content[aria-hidden="true"] {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
