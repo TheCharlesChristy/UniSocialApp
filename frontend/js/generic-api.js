@@ -94,9 +94,7 @@ if (typeof window.APIHandler === 'undefined') {
       return this.request(endpoint, {
         method: 'DELETE'
       });
-    }
-
-    // Upload file
+    }    // Upload file
     async upload(endpoint, formData) {
       const headers = { ...this.defaultHeaders };
       delete headers['Content-Type']; // Let browser set boundary for FormData
@@ -106,7 +104,25 @@ if (typeof window.APIHandler === 'undefined') {
         headers,
         body: formData
       });
-    }    // Get with authentication token
+    }
+
+    // Authenticated upload file
+    async authenticatedUpload(endpoint, formData) {
+      const token = this.getAuthToken();
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const headers = { ...this.defaultHeaders };
+      delete headers['Content-Type']; // Let browser set boundary for FormData
+      headers['Authorization'] = `Bearer ${token}`;
+
+      return this.request(endpoint, {
+        method: 'POST',
+        headers,
+        body: formData
+      });
+    }// Get with authentication token
     async authenticatedRequest(endpoint, options = {}) {
       const token = this.getAuthToken();
       if (!token) {

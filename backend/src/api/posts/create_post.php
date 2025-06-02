@@ -71,7 +71,7 @@ $locationLng = isset($input['location_lng']) ? floatval($input['location_lng']) 
 // Validate post type
 if (!in_array($postType, ['text', 'photo', 'video'])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid post type. Must be text, photo, or video']);
+    echo json_encode(['success' => false, 'message' => 'Invalid post type. Must be text, photo, or video not ' . $postType]);
     exit();
 }
 

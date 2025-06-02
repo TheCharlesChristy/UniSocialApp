@@ -1,0 +1,35 @@
+<div class="confirm-post-container">
+    <div class="confirm-post-card">
+        <!-- Media Preview Section -->        <div class="media-preview-section" id="mediaPreviewSection">
+            <div class="media-preview-container">
+                <img id="mediaPreviewImage" class="media-preview" style="display: none;" alt="Media preview">
+                <video 
+                    id="mediaPreviewVideo" 
+                    class="media-preview" 
+                    controls 
+                    preload="metadata"
+                    style="display: none;"
+                    playsinline
+                    muted="false"
+                >
+                    Your browser does not support video playback.
+                </video>
+                
+                <div class="media-info" id="mediaInfo" style="display: none;">
+                    <div class="media-details">
+                        <span class="media-type" id="mediaType"></span>
+                        <span class="media-size" id="mediaSize"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Media State -->
+        <div class="no-media-state" id="noMediaState">
+            <div class="no-media-icon">📷</div>
+            <h3 class="no-media-title">No Media Selected</h3>
+            <p class="no-media-text">You need to capture or select media before creating a post.</p>        </div>
+    </div>
+</div>
+
+<script src="../js/confirm_media.js"></script>

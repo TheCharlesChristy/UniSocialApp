@@ -189,29 +189,29 @@ class CameraCapture {
             } else {
                 console.warn('No audio tracks found - video will be recorded without audio');
             }
-            
-            // Try different codec options for better compatibility
+              // Try different codec options for better browser compatibility
             let options;
             const hasAudio = audioTracks.length > 0;
             
-            if (hasAudio && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
-                options = { mimeType: 'video/webm;codecs=vp9,opus' };
-                console.log('Using VP9 with Opus audio');
+            // Priority order: MP4 > WebM with VP8 > WebM with VP9 > basic WebM
+            if (MediaRecorder.isTypeSupported('video/mp4')) {
+                options = { mimeType: 'video/mp4' };
+                console.log('Using MP4 format (most compatible)');
             } else if (hasAudio && MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
                 options = { mimeType: 'video/webm;codecs=vp8,opus' };
                 console.log('Using VP8 with Opus audio');
-            } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-                options = { mimeType: 'video/webm;codecs=vp9' };
-                console.log('Using VP9 codec (video only)');
             } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
                 options = { mimeType: 'video/webm;codecs=vp8' };
                 console.log('Using VP8 codec (video only)');
+            } else if (hasAudio && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+                options = { mimeType: 'video/webm;codecs=vp9,opus' };
+                console.log('Using VP9 with Opus audio');
+            } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+                options = { mimeType: 'video/webm;codecs=vp9' };
+                console.log('Using VP9 codec (video only)');
             } else if (MediaRecorder.isTypeSupported('video/webm')) {
                 options = { mimeType: 'video/webm' };
                 console.log('Using basic WebM');
-            } else if (MediaRecorder.isTypeSupported('video/mp4')) {
-                options = { mimeType: 'video/mp4' };
-                console.log('Using MP4');
             } else {
                 options = {};
                 console.log('Using default options');
@@ -476,14 +476,24 @@ class CameraCapture {
                 type: this.capturedMediaType,
                 size: this.capturedMediaBlob.size,
                 timestamp: timestamp
-            };
-            
-            // Check file size - use different storage methods based on size
+            };            // Check file size and type - use different storage methods based on content
             const maxSessionStorageSize = 2 * 1024 * 1024; // 2MB limit for sessionStorage
+            const isVideo = this.capturedMediaType === 'video';
             
-            if (this.capturedMediaBlob.size <= maxSessionStorageSize) {
-                // Small files (typically photos) - use sessionStorage with base64
-                console.log('Using sessionStorage for small file:', this.capturedMediaBlob.size, 'bytes');
+            // Always use IndexedDB for videos to prevent playback issues
+            // Only use sessionStorage for small images
+            if (isVideo) {
+                // ALL videos use IndexedDB for proper blob handling and playback
+                console.log('Using IndexedDB for video (size:', this.capturedMediaBlob.size, 'bytes, type:', this.capturedMediaBlob.type, ')');
+                await this.storeInIndexedDB(this.capturedMediaBlob, mediaData);
+                mediaData.storageMethod = 'indexedDB';
+                sessionStorage.setItem('capturedMedia', JSON.stringify(mediaData));
+                
+                // Redirect to confirm post page
+                window.location.href = '../pages/confirm_post.php';
+            } else if (this.capturedMediaBlob.size <= maxSessionStorageSize) {
+                // Small images only - use sessionStorage with base64
+                console.log('Using sessionStorage for small image:', this.capturedMediaBlob.size, 'bytes');
                 const reader = new FileReader();
                 reader.onload = () => {
                     mediaData.dataUrl = reader.result;
@@ -495,10 +505,9 @@ class CameraCapture {
                 };
                 reader.readAsDataURL(this.capturedMediaBlob);
             } else {
-                // Large files (typically videos) - use IndexedDB
-                console.log('Using IndexedDB for large file:', this.capturedMediaBlob.size, 'bytes');
+                // Large images - use IndexedDB for better blob handling
+                console.log('Using IndexedDB for large image:', this.capturedMediaBlob.size, 'bytes');
                 await this.storeInIndexedDB(this.capturedMediaBlob, mediaData);
-                
                 mediaData.storageMethod = 'indexedDB';
                 sessionStorage.setItem('capturedMedia', JSON.stringify(mediaData));
                 
