@@ -1,7 +1,13 @@
 /**
  * Post Location Component JavaScript
- * Retrieves and displays location information based on coordinates
+ * Retrieves and displays location information based on coordinates using Google Maps API
  */
+
+// Configuration
+const LOCATION_CONFIG = {
+    // Using our secure proxy instead of directly calling Google Maps API
+    GEOCODING_URL: '/webdev/backend/src/api/geocode.php'
+};
 
 // Initialize API handler only if not already defined
 if (typeof window.locationAPI === 'undefined') {
@@ -92,7 +98,7 @@ function isValidCoordinate(longitude, latitude) {
 }
 
 /**
- * Fetch location details using an external API
+ * Fetch location details using Google Maps API
  * @param {string|number} longitude - The longitude value
  * @param {string|number} latitude - The latitude value
  * @param {string} postId - The post ID
@@ -104,31 +110,52 @@ function fetchLocationDetails(longitude, latitude, postId) {
         // Add loading class
         locationTextEl.textContent = 'Loading location...';
         locationTextEl.className = 'location-text loading';
+        // Use our secure proxy instead of directly calling Google Maps API
+        const apiUrl = `${LOCATION_CONFIG.GEOCODING_URL}?lat=${latitude}&lng=${longitude}`;
         
-        // Use OpenStreetMap's Nominatim API for reverse geocoding
-        // This is a free service with usage policy: https://operations.osmfoundation.org/policies/nominatim/
-        const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=14&addressdetails=1`;
-        
-        fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'User-Agent': 'SocialConnectApp/1.0' // Identify our application as per API usage policy
-            }
-        })
+        fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
-        })
-        .then(data => {
-            if (data && data.display_name) {
+        })        .then(data => {
+            // Check for error from our proxy
+            if (data.error) {
+                console.error('Proxy error:', data.error);
+                setLocationText(postId, 'Location service error', 'error');
+                return;
+            }
+            
+            // Process Google Maps API response
+            if (data && data.status === 'OK' && data.results && data.results.length > 0) {
                 // Format the location display based on available data
                 let locationDisplay = formatLocationDisplay(data);
                 setLocationText(postId, locationDisplay, 'success');
             } else {
-                setLocationText(postId, 'Location unavailable', 'error');
+                // Handle specific Google Maps API error statuses
+                let errorMessage = 'Location unavailable';
+                
+                if (data) {
+                    switch(data.status) {
+                        case 'ZERO_RESULTS':
+                            errorMessage = 'No location found';
+                            break;
+                        case 'OVER_QUERY_LIMIT':
+                            errorMessage = 'Location service temporarily unavailable';
+                            console.error('Google Maps API query limit exceeded');
+                            break;
+                        case 'REQUEST_DENIED':
+                            errorMessage = 'Location service error';
+                            console.error('Google Maps API request denied. Check your API key.');
+                            break;
+                        case 'INVALID_REQUEST':
+                            errorMessage = 'Invalid location data';
+                            break;
+                    }
+                }
+                
+                setLocationText(postId, errorMessage, 'error');
             }
         })
         .catch(error => {
@@ -139,48 +166,62 @@ function fetchLocationDetails(longitude, latitude, postId) {
 }
 
 /**
- * Format location display from API response
- * @param {Object} data - The location data from API
+ * Format location display from Google Maps API response
+ * @param {Object} data - The Google Maps geocoding data
  * @returns {string} - Formatted location string
  */
 function formatLocationDisplay(data) {
     // Start with an empty result
     let result = '';
     
-    // Try to get the most relevant parts of the address
-    if (data.address) {
-        const address = data.address;
+    // Get the first result which is usually the most accurate
+    const firstResult = data.results[0];
+    
+    if (firstResult && firstResult.address_components) {
+        // Google Maps returns address components with types array
+        // Extract the components we need for a friendly display
+        const locality = findAddressComponent(firstResult.address_components, 'locality');
+        const sublocality = findAddressComponent(firstResult.address_components, 'sublocality');
+        const administrativeArea = findAddressComponent(firstResult.address_components, 'administrative_area_level_1');
+        const country = findAddressComponent(firstResult.address_components, 'country');
         
-        // City/town/village level
-        if (address.city) {
-            result = address.city;
-        } else if (address.town) {
-            result = address.town;
-        } else if (address.village) {
-            result = address.village;
+        // Build the location string, starting with the most specific
+        if (locality) {
+            result = locality;
+        } else if (sublocality) {
+            result = sublocality;
         }
         
-        // Add state/province if available
-        if (address.state || address.province) {
-            const region = address.state || address.province;
-            result = result ? `${result}, ${region}` : region;
+        // Add administrative area (state/province)
+        if (administrativeArea) {
+            result = result ? `${result}, ${administrativeArea}` : administrativeArea;
         }
         
         // Add country
-        if (address.country) {
-            result = result ? `${result}, ${address.country}` : address.country;
+        if (country) {
+            result = result ? `${result}, ${country}` : country;
         }
     }
     
-    // If we couldn't format the address, use the display name as fallback
-    // but limit it to avoid too long strings
-    if (!result && data.display_name) {
-        // Split the display name and take just a few parts to keep it short
-        const parts = data.display_name.split(',');
+    // If we still couldn't format the address, use formatted_address as fallback
+    if (!result && firstResult && firstResult.formatted_address) {
+        // Take just part of the formatted address to keep it short
+        const parts = firstResult.formatted_address.split(',');
         result = parts.slice(0, 3).join(',');
     }
     
     return result || 'Unknown location';
+}
+
+/**
+ * Find a specific address component by type from Google Maps API response
+ * @param {Array} components - Array of address components
+ * @param {string} type - The type of component to find
+ * @returns {string|null} - The long_name of the component or null if not found
+ */
+function findAddressComponent(components, type) {
+    const component = components.find(comp => comp.types.includes(type));
+    return component ? component.long_name : null;
 }
 
 /**
