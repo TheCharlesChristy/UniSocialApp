@@ -68,12 +68,21 @@ class ConfirmPost {
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
     }
-    
-    loadMediaData() {
+      async loadMediaData() {
         try {
             const mediaDataString = sessionStorage.getItem('capturedMedia');
             if (mediaDataString) {
                 this.mediaData = JSON.parse(mediaDataString);
+                
+                // Check storage method and load accordingly
+                if (this.mediaData.storageMethod === 'indexedDB') {
+                    console.log('Loading media from IndexedDB...');
+                    await this.loadFromIndexedDB();
+                } else {
+                    console.log('Loading media from sessionStorage...');
+                    // Media data URL is already in this.mediaData
+                }
+                
                 this.displayMedia();
                 this.showMediaState();
             } else {
@@ -83,6 +92,48 @@ class ConfirmPost {
             console.error('Error loading media data:', error);
             this.showNoMediaState();
         }
+    }
+    
+    async loadFromIndexedDB() {
+        return new Promise((resolve, reject) => {
+            const dbRequest = indexedDB.open('SocialConnectMedia', 1);
+            
+            dbRequest.onerror = () => {
+                console.error('IndexedDB error:', dbRequest.error);
+                reject(dbRequest.error);
+            };
+            
+            dbRequest.onsuccess = (event) => {
+                const db = event.target.result;
+                const transaction = db.transaction(['media'], 'readonly');
+                const store = transaction.objectStore('media');
+                
+                const getRequest = store.get(this.mediaData.filename);
+                
+                getRequest.onsuccess = () => {
+                    const mediaRecord = getRequest.result;
+                    if (mediaRecord) {
+                        // Create object URL for the blob
+                        this.mediaData.dataUrl = URL.createObjectURL(mediaRecord.blob);
+                        this.mediaData.blob = mediaRecord.blob; // Keep reference to original blob
+                        console.log('Media loaded from IndexedDB successfully');
+                        resolve();
+                    } else {
+                        console.error('Media not found in IndexedDB');
+                        reject(new Error('Media not found'));
+                    }
+                };
+                
+                getRequest.onerror = () => {
+                    console.error('Error loading media from IndexedDB:', getRequest.error);
+                    reject(getRequest.error);
+                };
+                
+                transaction.oncomplete = () => {
+                    db.close();
+                };
+            };
+        });
     }
     
     displayMedia() {

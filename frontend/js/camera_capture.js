@@ -2,15 +2,13 @@
 // Handles camera access, photo/video capture, file uploads, and media preview
 
 class CameraCapture {
-    constructor() {
-        // DOM elements
+    constructor() {        // DOM elements
         this.cameraView = document.getElementById('cameraView');
         this.previewView = document.getElementById('previewView');
         this.cameraStream = document.getElementById('cameraStream');
         this.cameraPermission = document.getElementById('cameraPermission');
         this.cameraError = document.getElementById('cameraError');
         this.errorText = document.getElementById('errorText');
-        
         // Mode controls
         this.photoModeBtn = document.getElementById('photoModeBtn');
         this.videoModeBtn = document.getElementById('videoModeBtn');
@@ -30,8 +28,7 @@ class CameraCapture {
         this.recordingIndicator = document.getElementById('recordingIndicator');
         this.recordingTime = document.getElementById('recordingTime');
         this.requestPermissionBtn = document.getElementById('requestPermissionBtn');
-        
-        // State
+          // State
         this.currentMode = 'photo';
         this.stream = null;
         this.mediaRecorder = null;
@@ -42,6 +39,11 @@ class CameraCapture {
         this.capturedMediaBlob = null;
         this.capturedMediaType = null;
         
+        // Flipped video canvas for recording
+        this.flippedCanvas = null;
+        this.flippedContext = null;
+        this.flippedStream = null;
+        
         this.init();
     }
     
@@ -49,11 +51,16 @@ class CameraCapture {
         this.bindEvents();
         this.requestCameraAccess();
     }
-    
-    bindEvents() {
+      bindEvents() {
         // Mode selection
-        this.photoModeBtn.addEventListener('click', () => this.setMode('photo'));
-        this.videoModeBtn.addEventListener('click', () => this.setMode('video'));
+        this.photoModeBtn.addEventListener('click', () => {
+            console.log('Photo mode button clicked');
+            this.setMode('photo');
+        });
+        this.videoModeBtn.addEventListener('click', () => {
+            console.log('Video mode button clicked');
+            this.setMode('video');
+        });
         
         // Capture button
         this.captureBtn.addEventListener('click', () => this.handleCapture());
@@ -84,11 +91,11 @@ class CameraCapture {
             }
         }
     }
-    
-    async requestCameraAccess() {
+      async requestCameraAccess() {
         try {
             this.showCameraPermission();
             
+            // First try to get both video and audio
             const constraints = {
                 video: {
                     width: { ideal: 1920 },
@@ -98,7 +105,29 @@ class CameraCapture {
                 audio: true
             };
             
-            this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+            try {
+                this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+                console.log('Camera and audio stream obtained:', this.stream);
+                console.log('Video tracks:', this.stream.getVideoTracks().length);
+                console.log('Audio tracks:', this.stream.getAudioTracks().length);
+            } catch (error) {
+                console.warn('Failed to get audio permission, trying video-only:', error);
+                
+                // Fallback to video-only if audio permission is denied
+                const videoOnlyConstraints = {
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        facingMode: 'user'
+                    }
+                };
+                
+                this.stream = await navigator.mediaDevices.getUserMedia(videoOnlyConstraints);
+                console.log('Video-only stream obtained:', this.stream);
+                console.log('Video tracks:', this.stream.getVideoTracks().length);
+                console.log('Audio tracks:', this.stream.getAudioTracks().length);
+            }
+            
             this.setupCameraStream();
             this.hideCameraPermission();
             
@@ -106,42 +135,145 @@ class CameraCapture {
             console.error('Camera access error:', error);
             this.showCameraError(error);
         }
-    }
-    
-    setupCameraStream() {
+    }setupCameraStream() {
         if (this.stream && this.cameraStream) {
             this.cameraStream.srcObject = this.stream;
             this.captureBtn.disabled = false;
             
-            // Setup media recorder for video mode
-            try {
-                this.mediaRecorder = new MediaRecorder(this.stream, {
-                    mimeType: 'video/webm;codecs=vp9'
-                });
-                
-                this.mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        this.recordedChunks.push(event.data);
-                    }
-                };
-                
-                this.mediaRecorder.onstop = () => {
-                    this.capturedMediaBlob = new Blob(this.recordedChunks, {
-                        type: 'video/webm'
-                    });
-                    this.capturedMediaType = 'video';
-                    this.recordedChunks = [];
-                    this.showPreview();
-                };
-                
-            } catch (error) {
-                console.warn('MediaRecorder not supported, video recording disabled:', error);
-                this.videoModeBtn.disabled = true;
+            // Create a flipped canvas for video recording
+            this.setupFlippedCanvas();
+            
+            // Don't disable video mode immediately - wait for canvas to be ready
+            // The MediaRecorder will be set up in setupFlippedCanvas after metadata loads
+        }
+    }
+      setupFlippedCanvas() {
+        // Create a hidden canvas for flipping video
+        this.flippedCanvas = document.createElement('canvas');
+        this.flippedContext = this.flippedCanvas.getContext('2d');
+        this.flippedCanvas.style.display = 'none';
+        document.body.appendChild(this.flippedCanvas);
+        
+        // Set canvas size once video dimensions are available
+        this.cameraStream.addEventListener('loadedmetadata', () => {
+            this.flippedCanvas.width = this.cameraStream.videoWidth;
+            this.flippedCanvas.height = this.cameraStream.videoHeight;
+            
+            // Create stream from flipped canvas
+            this.flippedStream = this.flippedCanvas.captureStream(30);
+            
+            // Now setup MediaRecorder with the flipped stream
+            this.setupMediaRecorder();
+            
+            // Start the flipping animation loop
+            this.startFlippingLoop();
+        });
+    }    setupMediaRecorder() {
+        console.log('Setting up MediaRecorder...');
+        try {
+            // Create a combined stream with flipped video and original audio (if available)
+            const combinedStream = new MediaStream();
+            
+            // Add the flipped video track from canvas
+            const videoTracks = this.flippedStream.getVideoTracks();
+            if (videoTracks.length > 0) {
+                combinedStream.addTrack(videoTracks[0]);
+                console.log('Added flipped video track');
             }
+            
+            // Add the original audio track from camera stream (if available)
+            const audioTracks = this.stream.getAudioTracks();
+            if (audioTracks.length > 0) {
+                combinedStream.addTrack(audioTracks[0]);
+                console.log('Added original audio track');
+            } else {
+                console.warn('No audio tracks found - video will be recorded without audio');
+            }
+            
+            // Try different codec options for better compatibility
+            let options;
+            const hasAudio = audioTracks.length > 0;
+            
+            if (hasAudio && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+                options = { mimeType: 'video/webm;codecs=vp9,opus' };
+                console.log('Using VP9 with Opus audio');
+            } else if (hasAudio && MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+                options = { mimeType: 'video/webm;codecs=vp8,opus' };
+                console.log('Using VP8 with Opus audio');
+            } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+                options = { mimeType: 'video/webm;codecs=vp9' };
+                console.log('Using VP9 codec (video only)');
+            } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+                options = { mimeType: 'video/webm;codecs=vp8' };
+                console.log('Using VP8 codec (video only)');
+            } else if (MediaRecorder.isTypeSupported('video/webm')) {
+                options = { mimeType: 'video/webm' };
+                console.log('Using basic WebM');
+            } else if (MediaRecorder.isTypeSupported('video/mp4')) {
+                options = { mimeType: 'video/mp4' };
+                console.log('Using MP4');
+            } else {
+                options = {};
+                console.log('Using default options');
+            }
+            
+            console.log('Creating MediaRecorder with combined stream');
+            console.log('Stream tracks:', combinedStream.getTracks().map(t => `${t.kind}: ${t.label || 'unlabeled'}`));
+            this.mediaRecorder = new MediaRecorder(combinedStream, options);
+            
+            this.mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    this.recordedChunks.push(event.data);
+                }
+            };
+            
+            this.mediaRecorder.onstop = () => {
+                this.capturedMediaBlob = new Blob(this.recordedChunks, {
+                    type: this.mediaRecorder.mimeType || 'video/webm'
+                });
+                this.capturedMediaType = 'video';
+                this.recordedChunks = [];
+                this.showPreview();
+            };
+            
+            console.log('MediaRecorder initialized successfully with mimeType:', this.mediaRecorder.mimeType);
+            console.log('Video button should be clickable now');
+            
+        } catch (error) {
+            console.error('MediaRecorder setup failed:', error);
+            this.videoModeBtn.disabled = true;
+            this.videoModeBtn.title = 'Video recording not supported in this browser';
+            console.log('Video button disabled due to MediaRecorder error');
         }
     }
     
-    setMode(mode) {
+    startFlippingLoop() {
+        const flipFrame = () => {
+            if (this.stream && this.flippedCanvas) {
+                // Clear canvas
+                this.flippedContext.clearRect(0, 0, this.flippedCanvas.width, this.flippedCanvas.height);
+                
+                // Apply horizontal flip
+                this.flippedContext.scale(-1, 1);
+                this.flippedContext.translate(-this.flippedCanvas.width, 0);
+                
+                // Draw the video frame
+                this.flippedContext.drawImage(this.cameraStream, 0, 0);
+                
+                // Reset transformation for next frame
+                this.flippedContext.setTransform(1, 0, 0, 1, 0, 0);
+                
+                // Continue animation if stream is active
+                if (this.stream) {
+                    requestAnimationFrame(flipFrame);
+                }
+            }
+        };
+        
+        // Start the loop
+        requestAnimationFrame(flipFrame);
+    }    setMode(mode) {
+        console.log('Setting mode to:', mode);
         this.currentMode = mode;
         
         // Update mode buttons
@@ -172,8 +304,7 @@ class CameraCapture {
             }
         }
     }
-    
-    capturePhoto() {
+      capturePhoto() {
         if (!this.stream) return;
         
         // Create canvas to capture frame
@@ -183,7 +314,11 @@ class CameraCapture {
         canvas.width = this.cameraStream.videoWidth;
         canvas.height = this.cameraStream.videoHeight;
         
-        // Draw current frame
+        // Apply horizontal flip transformation to canvas
+        context.scale(-1, 1);
+        context.translate(-canvas.width, 0);
+        
+        // Draw current frame (flipped)
         context.drawImage(this.cameraStream, 0, 0);
         
         // Convert to blob
@@ -280,8 +415,7 @@ class CameraCapture {
         // Reset file input
         event.target.value = '';
     }
-    
-    showPreview() {
+      showPreview() {
         if (!this.capturedMediaBlob) return;
         
         const url = URL.createObjectURL(this.capturedMediaBlob);
@@ -290,10 +424,14 @@ class CameraCapture {
             this.previewImage.src = url;
             this.previewImage.style.display = 'block';
             this.previewVideo.style.display = 'none';
+            // Remove any CSS flip for preview since image is already flipped
+            this.previewImage.style.transform = 'none';
         } else {
             this.previewVideo.src = url;
             this.previewVideo.style.display = 'block';
             this.previewImage.style.display = 'none';
+            // Remove any CSS flip for preview since video is already flipped
+            this.previewVideo.style.transform = 'none';
         }
         
         // Switch views
@@ -324,24 +462,15 @@ class CameraCapture {
         this.previewView.style.display = 'none';
         this.cameraView.style.display = 'block';
     }
-    
-    async confirmMedia() {
+      async confirmMedia() {
         if (!this.capturedMediaBlob) return;
         
         try {
-            // Create FormData to send the file
-            const formData = new FormData();
-            
             // Generate filename
             const timestamp = Date.now();
             const extension = this.capturedMediaType === 'image' ? 'jpg' : 'webm';
             const filename = `capture_${timestamp}.${extension}`;
             
-            formData.append('media', this.capturedMediaBlob, filename);
-            formData.append('type', this.capturedMediaType);
-            
-            // Store in session or temporary storage
-            // For now, we'll use localStorage to pass data to the next page
             const mediaData = {
                 filename: filename,
                 type: this.capturedMediaType,
@@ -349,17 +478,33 @@ class CameraCapture {
                 timestamp: timestamp
             };
             
-            // Convert blob to base64 for storage (for demo purposes)
-            // In production, you'd upload to server and get a URL
-            const reader = new FileReader();
-            reader.onload = () => {
-                mediaData.dataUrl = reader.result;
+            // Check file size - use different storage methods based on size
+            const maxSessionStorageSize = 2 * 1024 * 1024; // 2MB limit for sessionStorage
+            
+            if (this.capturedMediaBlob.size <= maxSessionStorageSize) {
+                // Small files (typically photos) - use sessionStorage with base64
+                console.log('Using sessionStorage for small file:', this.capturedMediaBlob.size, 'bytes');
+                const reader = new FileReader();
+                reader.onload = () => {
+                    mediaData.dataUrl = reader.result;
+                    mediaData.storageMethod = 'sessionStorage';
+                    sessionStorage.setItem('capturedMedia', JSON.stringify(mediaData));
+                    
+                    // Redirect to confirm post page
+                    window.location.href = '../pages/confirm_post.php';
+                };
+                reader.readAsDataURL(this.capturedMediaBlob);
+            } else {
+                // Large files (typically videos) - use IndexedDB
+                console.log('Using IndexedDB for large file:', this.capturedMediaBlob.size, 'bytes');
+                await this.storeInIndexedDB(this.capturedMediaBlob, mediaData);
+                
+                mediaData.storageMethod = 'indexedDB';
                 sessionStorage.setItem('capturedMedia', JSON.stringify(mediaData));
                 
                 // Redirect to confirm post page
                 window.location.href = '../pages/confirm_post.php';
-            };
-            reader.readAsDataURL(this.capturedMediaBlob);
+            }
             
         } catch (error) {
             console.error('Error confirming media:', error);
@@ -396,11 +541,74 @@ class CameraCapture {
         this.cameraError.style.display = 'flex';
         this.captureBtn.disabled = true;
     }
-    
+      async storeInIndexedDB(blob, mediaData) {
+        return new Promise((resolve, reject) => {
+            // Open IndexedDB
+            const dbRequest = indexedDB.open('SocialConnectMedia', 1);
+            
+            dbRequest.onerror = () => {
+                console.error('IndexedDB error:', dbRequest.error);
+                reject(dbRequest.error);
+            };
+            
+            dbRequest.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('media')) {
+                    db.createObjectStore('media', { keyPath: 'filename' });
+                }
+            };
+            
+            dbRequest.onsuccess = (event) => {
+                const db = event.target.result;
+                const transaction = db.transaction(['media'], 'readwrite');
+                const store = transaction.objectStore('media');
+                
+                // Store the blob with metadata
+                const mediaRecord = {
+                    filename: mediaData.filename,
+                    blob: blob,
+                    type: mediaData.type,
+                    size: mediaData.size,
+                    timestamp: mediaData.timestamp
+                };
+                
+                const putRequest = store.put(mediaRecord);
+                
+                putRequest.onsuccess = () => {
+                    console.log('Media stored in IndexedDB successfully');
+                    resolve();
+                };
+                
+                putRequest.onerror = () => {
+                    console.error('Error storing media in IndexedDB:', putRequest.error);
+                    reject(putRequest.error);
+                };
+                
+                transaction.oncomplete = () => {
+                    db.close();
+                };
+            };
+        });
+    }
+
     cleanup() {
         // Stop camera stream
         if (this.stream) {
             this.stream.getTracks().forEach(track => track.stop());
+            this.stream = null;
+        }
+        
+        // Stop flipped stream
+        if (this.flippedStream) {
+            this.flippedStream.getTracks().forEach(track => track.stop());
+            this.flippedStream = null;
+        }
+        
+        // Remove flipped canvas
+        if (this.flippedCanvas && this.flippedCanvas.parentNode) {
+            this.flippedCanvas.parentNode.removeChild(this.flippedCanvas);
+            this.flippedCanvas = null;
+            this.flippedContext = null;
         }
         
         // Clear recording interval
