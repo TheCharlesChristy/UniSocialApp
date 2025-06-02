@@ -73,6 +73,8 @@ class FeedPost {
         // Load Components for the post
         $userbanner = $this->createUserBanner($userData);
 
+        $post_location = $this->createLocationBanner($postData);
+
         $post_media = $postData['post_type'] !== 'text' ? $this->createPostMedia($postData) : '';
         
         $post_stats = $this->createPostStats($postData);
@@ -97,6 +99,7 @@ class FeedPost {
         // Wrap everything in a post container
         $post_container = $this->componentLoader->getComponentInsertHtml('post_container', [
             'user_banner' => $userbanner,
+            'post_location' => $post_location,
             'post_media' => $post_media,
             'post_stats_and_caption' => $post_stats_and_caption,
             'add_comment' => $add_comment,
@@ -297,6 +300,26 @@ class FeedPost {
             'post_id' => $postData['post_id'],
             'current_user_profile_picture' => $profile_picture
         ]);
+
+        return $html;
+    }
+
+    private function createLocationBanner($postData) {
+        // Use the component loader to create a location component
+        if (empty($postData['location_lat']) || empty($postData['location_lng'])) {
+            return '';
+        }
+
+        $html = $this->componentLoader->getComponentWithVars('post_location', [
+            'post_id' => $postData['post_id'],
+            'latitude' => $postData['location_lat'] ?? '',
+            'longitude' => $postData['location_lng'] ?? ''
+        ]);
+
+        if ($html === null) {
+            echo "Error: Failed to load post location component.";
+            return '';
+        }
 
         return $html;
     }
