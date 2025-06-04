@@ -19,11 +19,15 @@ AddType application/x-httpd-php .php
 </IfModule>
 
 # Enhanced upload limits for media files
-php_value upload_max_filesize 500M
-php_value post_max_size 500M
-php_value max_execution_time 600
-php_value max_input_time 600
-php_value memory_limit 512M
+# NOTE: PHP configuration directives moved to individual PHP files
+# to avoid server configuration conflicts. Configure these in your
+# upload.php and get_media.php files instead:
+#
+# ini_set('upload_max_filesize', '500M');
+# ini_set('post_max_size', '500M');
+# ini_set('max_execution_time', 600);
+# ini_set('max_input_time', 600);
+# ini_set('memory_limit', '512M');
 
 # Security: Prevent direct access to documentation
 <Files "*.md">
@@ -37,6 +41,7 @@ php_value memory_limit 512M
     Deny from all
 </Files>
 
-# Error logging for media endpoints
-php_flag log_errors on
-php_value error_log ../../../../logs/media_errors.log
+# NOTE: Error logging configuration moved to individual PHP files
+# If your server supports these directives, you can uncomment:
+# php_flag log_errors on
+# php_value error_log ../../../../logs/media_errors.log

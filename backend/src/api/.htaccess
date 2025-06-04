@@ -1,11 +1,6 @@
 # Enable URL rewriting for API endpoints
 RewriteEngine On
 
-# Suppress PHP errors and warnings for API endpoints to ensure clean JSON responses
-php_flag display_errors off
-php_flag log_errors on
-php_value error_log ../../../logs/api_errors.log
-
 # Set proper MIME types for API responses
 AddType application/json .json
 
@@ -42,12 +37,18 @@ RewriteRule ^(.*)$ $1 [R=200,L]
     Deny from all
 </Files>
 
-# Increase upload limits for media endpoints
-php_value upload_max_filesize 100M
-php_value post_max_size 100M
-php_value max_execution_time 300
-php_value max_input_time 300
-php_value memory_limit 256M
+# NOTE: PHP configuration directives (php_flag, php_value) have been moved to php.ini
+# or will be handled in individual PHP files to avoid server configuration conflicts.
+# If your server supports these directives, you can uncomment the lines below:
+#
+# php_flag display_errors off
+# php_flag log_errors on
+# php_value error_log ../../../logs/api_errors.log
+# php_value upload_max_filesize 100M
+# php_value post_max_size 100M
+# php_value max_execution_time 300
+# php_value max_input_time 300
+# php_value memory_limit 256M
 
 # Set proper content type for PHP files
 AddType application/x-httpd-php .php
