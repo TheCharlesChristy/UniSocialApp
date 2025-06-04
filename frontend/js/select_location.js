@@ -146,9 +146,12 @@ function loadGoogleMapsApi() {
         return;
     }
     
+    // TODO: Replace with your actual Google Maps API key
+    const API_KEY = 'GOOGLE_MAPS_API_KEY';
+    
     // Create a script element to load Google Maps API
     const script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?libraries=places&callback=googleMapsCallback';
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=googleMapsCallback`;
     script.async = true;
     script.defer = true;
     
