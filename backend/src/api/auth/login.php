@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 // Get database connection
 $Database = require_once dirname(dirname(dirname(__FILE__))) . '/db_handler/connection.php';
 require_once 'auth_utils.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/db_handler/config.php';
 
 // Check database connection
 if (!$Database->isConnected()) {
@@ -120,7 +121,11 @@ $updateLoginTimeResult = $Database->execute(
 
 // Generate JWT token
 $token = AuthUtils::generateToken($user['user_id']);
-$expirationTime = time() + AuthUtils::ACCESS_TOKEN_EXPIRY;
+
+// Get token expiry from configuration
+$config = new DatabaseConfig(__DIR__ . '/../../db_handler/config.txt');
+$tokenExpiry = (int)$config->get('JWT_ACCESS_TOKEN_EXPIRE', 86400); // Default 24 hours
+$expirationTime = time() + $tokenExpiry;
 
 // Return success with token
 echo json_encode([
