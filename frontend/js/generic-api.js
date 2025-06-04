@@ -4,7 +4,7 @@
 // Check if classes are already defined
 if (typeof window.APIHandler === 'undefined') {
   class APIHandler {
-    constructor(baseURL = '/webdev/backend/src/api') {
+    constructor(baseURL = '/backend/src/api') {
       this.baseURL = baseURL;
       this.defaultHeaders = {
         'Content-Type': 'application/json',

@@ -342,7 +342,7 @@ class LoginForm {
                 }
             });
               if (response.success) {
-                window.location.href = '/webdev/frontend/pages/welcome.php';
+                window.location.href = '/frontend/pages/welcome.php';
             }
         } catch (error) {
             // Token invalid, continue with login form

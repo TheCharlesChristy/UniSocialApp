@@ -84,7 +84,7 @@ $pageTitle = "Database Connection Test";
     </style>
 </head>
 <body>
-    <a href="http://localhost/webdev/tests" class="back-to-tests-btn">← Back to Tests</a>
+    <a href="http://localhost/tests" class="back-to-tests-btn">← Back to Tests</a>
     <h1><?php echo $pageTitle; ?></h1>
     
     <div class="test-section">

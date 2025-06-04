@@ -6,7 +6,7 @@
 // Configuration
 const LOCATION_CONFIG = {
     // Using our secure proxy instead of directly calling Google Maps API
-    GEOCODING_URL: '/webdev/backend/src/api/geocode.php'
+    GEOCODING_URL: '/backend/src/api/geocode.php'
 };
 
 // Initialize API handler only if not already defined

@@ -122,7 +122,7 @@
     </style>
 </head>
 <body>
-    <a href="http://localhost/webdev/tests" class="back-to-tests-btn">← Back to Tests</a>
+    <a href="http://localhost/tests" class="back-to-tests-btn">← Back to Tests</a>
     <h1>Friends and Blocking API Test Page</h1>
 
     <!-- Authentication Section -->

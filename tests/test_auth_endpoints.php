@@ -8,7 +8,7 @@
 
 // Define constants
 // Apache isn't accessing the full path correctly, adjusting URL
-define('BASE_API_URL', 'http://localhost/webdev/backend/src/api/auth/');
+define('BASE_API_URL', 'http://localhost/backend/src/api/auth/');
 define('ADJUSTED_API_URL', true); // Set to false if original URL should be used
 
 // Function to get the proper API URL
@@ -316,7 +316,7 @@ function formatJson($json) {
     </style>
 </head>
 <body>
-    <a href="http://localhost/webdev/tests" class="back-to-tests-btn">← Back to Tests</a>
+    <a href="http://localhost/tests" class="back-to-tests-btn">← Back to Tests</a>
     <div class="container">
         <h1 class="text-center mb-4">Authentication API Test Page</h1>
         

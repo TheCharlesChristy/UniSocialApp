@@ -37,7 +37,7 @@
         session_start();
         
         // Base URLs
-        define('BASE_API_URL', 'http://localhost/webdev/backend/src/api/');
+        define('BASE_API_URL', 'http://localhost/backend/src/api/');
         define('ADMIN_API_URL', BASE_API_URL . 'admin/');
         define('SEARCH_API_URL', BASE_API_URL . 'search/');
         
@@ -684,13 +684,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5>Admin Dashboard</h5>
-                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/webdev/backend/src/api/admin/dashboard.php" `
+                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/backend/src/api/admin/dashboard.php" `
   -Method GET `
   -Headers @{"Authorization"="Bearer YOUR_ADMIN_TOKEN"}</code></pre>
                 </div>
                 <div class="col-md-6">
                     <h5>Global Search</h5>
-                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/webdev/backend/src/api/search/index.php?q=test&type=all" `
+                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/backend/src/api/search/index.php?q=test&type=all" `
   -Method GET `
   -Headers @{"Authorization"="Bearer YOUR_TOKEN"}</code></pre>
                 </div>
@@ -699,7 +699,7 @@
             <div class="row mt-3">
                 <div class="col-md-6">
                     <h5>Search Users</h5>
-                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/webdev/backend/src/api/search/users.php?q=john&status=active" `
+                    <pre><code class="language-powershell">Invoke-RestMethod -Uri "http://localhost/backend/src/api/search/users.php?q=john&status=active" `
   -Method GET `
   -Headers @{"Authorization"="Bearer YOUR_TOKEN"}</code></pre>
                 </div>
@@ -710,7 +710,7 @@
   first_name = "Updated"
 } | ConvertTo-Json
 
-Invoke-RestMethod -Uri "http://localhost/webdev/backend/src/api/admin/update_user.php" `
+Invoke-RestMethod -Uri "http://localhost/backend/src/api/admin/update_user.php" `
   -Method PUT `
   -Headers @{"Authorization"="Bearer YOUR_ADMIN_TOKEN"; "Content-Type"="application/json"} `
   -Body $body</code></pre>

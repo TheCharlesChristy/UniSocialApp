@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\webdev\backend\src\api\conversations\delete_conversation.php
+// filepath: c:\xampp\htdocs\backend\src\api\conversations\delete_conversation.php
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');

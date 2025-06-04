@@ -15,7 +15,7 @@ class PrivacyAPI extends APIHandler {
      * 
      * @param string $baseURL The base URL for the API (defaults to privacy endpoints)
      */
-    public function __construct($baseURL = '/webdev/backend/src/api') {
+    public function __construct($baseURL = '/backend/src/api') {
         parent::__construct($baseURL);
     }
 

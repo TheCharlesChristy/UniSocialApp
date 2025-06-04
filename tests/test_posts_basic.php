@@ -28,7 +28,7 @@ echo "<!DOCTYPE html>\n<html>\n<head>\n<title>Posts API Basic Test</title>\n<sty
     text-decoration: none;
 }
 </style>\n</head>\n<body>\n";
-echo "<a href='http://localhost/webdev/tests' class='back-to-tests-btn'>← Back to Tests</a>\n";
+echo "<a href='http://localhost/tests' class='back-to-tests-btn'>← Back to Tests</a>\n";
 echo "<h1>Posts and Media API Basic Test</h1>\n";
 
 // Check database connection

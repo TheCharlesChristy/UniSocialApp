@@ -4,7 +4,7 @@ require_once 'api-handler.php';
 
 class ConversationsAPI extends APIHandler {
     
-    public function __construct($baseURL = '/webdev/backend/src/api') {
+    public function __construct($baseURL = '/backend/src/api') {
         parent::__construct($baseURL);
     }
 

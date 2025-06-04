@@ -1,4 +1,4 @@
-// filepath: c:\xampp\htdocs\webdev\frontend\js\logged-in-header.js
+// filepath: c:\xampp\htdocs\frontend\js\logged-in-header.js
 /* SocialConnect Logged-in Header JavaScript */
 /* Handles mobile navigation, user dropdown, notifications, and user data */
 

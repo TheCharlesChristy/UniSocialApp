@@ -159,7 +159,7 @@
     </style>
 </head>
 <body>
-    <a href="http://localhost/webdev/tests" class="back-to-tests-btn">← Back to Tests</a>
+    <a href="http://localhost/tests" class="back-to-tests-btn">← Back to Tests</a>
     <h1>Posts and Media API Test Page</h1>
 
     <!-- Authentication Section -->
@@ -970,7 +970,7 @@
                     };                    profilePictureImg.onerror = function() {
                         // Prevent infinite loop by checking if we're already showing placeholder
                         if (!profilePictureImg.src.includes('placeholder.png')) {
-                            profilePictureImg.src = '/webdev/backend/media/images/placeholder.png';
+                            profilePictureImg.src = '/backend/media/images/placeholder.png';
                         }
                         displayResponse('profileTestResponse', {
                             success: false,
@@ -978,7 +978,7 @@
                             media_url: mediaUrl
                         }, true);
                     };                } else {
-                    profilePictureImg.src = '/webdev/backend/media/images/placeholder.png';
+                    profilePictureImg.src = '/backend/media/images/placeholder.png';
                     profilePictureImg.alt = 'Default profile picture';
                 }
                 

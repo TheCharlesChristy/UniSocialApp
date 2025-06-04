@@ -3,7 +3,7 @@
 require_once 'api-handler.php';
 class AdminAPI extends APIHandler {
     
-    public function __construct($baseURL = '/webdev/backend/src/api') {
+    public function __construct($baseURL = '/backend/src/api') {
         parent::__construct($baseURL);
     }
 
@@ -217,7 +217,7 @@ class AdminAPI extends APIHandler {
         if ($lastId) $params['last_id'] = (int)$lastId;
 
         $queryString = http_build_query($params);
-        return '/webdev/backend/src/api/admin/live_reports.php?' . $queryString;
+        return '/backend/src/api/admin/live_reports.php?' . $queryString;
     }
 
     /**
@@ -235,7 +235,7 @@ class AdminAPI extends APIHandler {
 
         $params = ['token' => $token];
         $queryString = http_build_query($params);
-        return '/webdev/backend/src/api/admin/live_users.php?' . $queryString;
+        return '/backend/src/api/admin/live_users.php?' . $queryString;
     }
 
     // =============================================================================

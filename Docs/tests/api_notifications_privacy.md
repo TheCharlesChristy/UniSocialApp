@@ -6,7 +6,7 @@ This test plan covers all notification management and privacy settings endpoints
 ## Prerequisites
 - Two user accounts created and verified
 - Valid auth tokens for both users
-- Access to `http://localhost/webdev/tests/test_notifications_privacy_endpoints.php`
+- Access to `http://localhost/tests/test_notifications_privacy_endpoints.php`
 - Some existing posts/comments for notification testing
 
 ## Test Data Setup
@@ -23,7 +23,7 @@ For this test plan, we'll assume:
 ### Phase 1: Initial Setup and Authentication
 
 #### Step 1.1: Access Test Page
-1. Open browser and navigate to `http://localhost/webdev/tests/test_notifications_privacy_endpoints.php`
+1. Open browser and navigate to `http://localhost/tests/test_notifications_privacy_endpoints.php`
 2. Verify the page loads with two tabs: "Notifications", "Privacy Settings"
 
 #### Step 1.2: Authentication Setup

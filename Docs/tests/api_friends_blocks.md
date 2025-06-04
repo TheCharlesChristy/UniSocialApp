@@ -6,7 +6,7 @@ This test plan covers all friend management and user blocking endpoints availabl
 ## Prerequisites
 - Two user accounts created and verified
 - Valid auth tokens for both users
-- Access to `http://localhost/webdev/tests/test_friends_endpoints.php`
+- Access to `http://localhost/tests/test_friends_endpoints.php`
 
 ## Test Data Setup
 For this test plan, we'll assume:
@@ -20,7 +20,7 @@ For this test plan, we'll assume:
 ### Phase 1: Initial Setup and Authentication
 
 #### Step 1.1: Access Test Page
-1. Open browser and navigate to `http://localhost/webdev/tests/test_friends_endpoints.php`
+1. Open browser and navigate to `http://localhost/tests/test_friends_endpoints.php`
 2. Verify the page loads with three tabs: "Friends", "Friend Requests", "Blocking"
 
 #### Step 1.2: Authentication Setup

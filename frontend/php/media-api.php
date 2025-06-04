@@ -20,7 +20,7 @@ class MediaAPI extends APIHandler {
      * Initialize Media API with media-specific base URL
      */
     public function __construct() {
-        parent::__construct('/webdev/backend/src/api');
+        parent::__construct('/backend/src/api');
     }
 
     /**

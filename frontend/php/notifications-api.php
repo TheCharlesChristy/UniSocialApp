@@ -5,7 +5,7 @@ require_once 'api-handler.php';
 class NotificationsAPI extends APIHandler {
     private $notificationsEndpoint = '/notifications';
 
-    public function __construct($baseURL = '/webdev/backend/src/api') {
+    public function __construct($baseURL = '/backend/src/api') {
         parent::__construct($baseURL);
     }
 

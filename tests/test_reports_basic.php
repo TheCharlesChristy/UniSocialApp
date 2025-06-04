@@ -42,7 +42,7 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 </style>\n</head>\n<body>\n";
-echo "<a href='http://localhost/webdev/tests' class='back-to-tests-btn'>← Back to Tests</a>\n";
+echo "<a href='http://localhost/tests' class='back-to-tests-btn'>← Back to Tests</a>\n";
 echo "<h1>Reports API Basic Test</h1>\n";
 
 // Check database connection

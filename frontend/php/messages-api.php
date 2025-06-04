@@ -6,7 +6,7 @@ class MessagesAPI extends APIHandler {
     
     public function __construct() {
         // Initialize with messages-specific base URL
-        parent::__construct('/webdev/backend/src/api/messages');
+        parent::__construct('/backend/src/api/messages');
     }
 
     /**

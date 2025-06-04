@@ -16,8 +16,8 @@ if (isset($_POST['save_token']) && isset($_POST['token'])) {
 }
 
 // Define constants
-define('BASE_CONVERSATIONS_URL', 'http://localhost/webdev/backend/src/api/conversations/');
-define('BASE_MESSAGES_URL', 'http://localhost/webdev/backend/src/api/messages/');
+define('BASE_CONVERSATIONS_URL', 'http://localhost/backend/src/api/conversations/');
+define('BASE_MESSAGES_URL', 'http://localhost/backend/src/api/messages/');
 define('ADJUSTED_API_URL', true); // Set to false if original URL should be used
 
 // Function to get the proper API URL
@@ -67,41 +67,41 @@ function getApiUrl($endpoint, $pathParams = []) {
         // RESTful URLs without .php extension
         switch ($endpoint) {
             case 'get_conversations':
-                return 'http://localhost/webdev/backend/src/api/conversations';
+                return 'http://localhost/backend/src/api/conversations';
             case 'create_conversation':
-                return 'http://localhost/webdev/backend/src/api/conversations';
+                return 'http://localhost/backend/src/api/conversations';
             case 'get_conversation_details':
                 $conversationId = !empty($pathParams['conversationId']) ? $pathParams['conversationId'] : '';
                 if (!empty($conversationId)) {
-                    return 'http://localhost/webdev/backend/src/api/conversations/' . $conversationId;
+                    return 'http://localhost/backend/src/api/conversations/' . $conversationId;
                 }
-                return 'http://localhost/webdev/backend/src/api/conversations/';
+                return 'http://localhost/backend/src/api/conversations/';
             case 'get_conversation_messages':
                 $conversationId = !empty($pathParams['conversationId']) ? $pathParams['conversationId'] : '';
                 if (!empty($conversationId)) {
-                    return 'http://localhost/webdev/backend/src/api/conversations/' . $conversationId . '/messages';
+                    return 'http://localhost/backend/src/api/conversations/' . $conversationId . '/messages';
                 }
-                return 'http://localhost/webdev/backend/src/api/conversations/messages';
+                return 'http://localhost/backend/src/api/conversations/messages';
             case 'send_message':
                 $conversationId = !empty($pathParams['conversationId']) ? $pathParams['conversationId'] : '';
                 if (!empty($conversationId)) {
-                    return 'http://localhost/webdev/backend/src/api/conversations/' . $conversationId . '/messages';
+                    return 'http://localhost/backend/src/api/conversations/' . $conversationId . '/messages';
                 }
-                return 'http://localhost/webdev/backend/src/api/conversations/messages';
+                return 'http://localhost/backend/src/api/conversations/messages';
             case 'mark_message_read':
                 $messageId = !empty($pathParams['messageId']) ? $pathParams['messageId'] : '';
                 if (!empty($messageId)) {
-                    return 'http://localhost/webdev/backend/src/api/messages/' . $messageId . '/read';
+                    return 'http://localhost/backend/src/api/messages/' . $messageId . '/read';
                 }
-                return 'http://localhost/webdev/backend/src/api/messages/read';
+                return 'http://localhost/backend/src/api/messages/read';
             case 'delete_message':
                 $messageId = !empty($pathParams['messageId']) ? $pathParams['messageId'] : '';
                 if (!empty($messageId)) {
-                    return 'http://localhost/webdev/backend/src/api/messages/' . $messageId;
+                    return 'http://localhost/backend/src/api/messages/' . $messageId;
                 }
-                return 'http://localhost/webdev/backend/src/api/messages/';
+                return 'http://localhost/backend/src/api/messages/';
             default:
-                return 'http://localhost/webdev/backend/src/api/conversations/' . $endpoint;
+                return 'http://localhost/backend/src/api/conversations/' . $endpoint;
         }
     }
 }

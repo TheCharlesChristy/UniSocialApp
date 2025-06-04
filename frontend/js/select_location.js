@@ -5,7 +5,7 @@
 
 // Configuration
 const SELECT_LOCATION_CONFIG = {
-    GEOCODING_URL: '/webdev/backend/src/api/geocode.php',
+    GEOCODING_URL: '/backend/src/api/geocode.php',
     // Default map center (if no location is selected)
     DEFAULT_LAT: 40.7128,
     DEFAULT_LNG: -74.0060,

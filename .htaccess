@@ -1,0 +1,46 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Redirect root domain to frontend/pages
+# This handles requests to www.mywebsite.com and redirects to www.mywebsite.com/frontend/pages/
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ /frontend/pages/ [R=301,L]
+
+# Optional: Also handle requests to just /frontend to redirect to /frontend/pages/
+RewriteCond %{REQUEST_URI} ^/frontend/?$
+RewriteRule ^frontend/?$ /frontend/pages/ [R=301,L]
+
+# Allow direct access to backend API endpoints
+# This ensures API calls still work properly
+RewriteCond %{REQUEST_URI} ^/backend/
+RewriteRule ^(.*)$ - [L]
+
+# Allow direct access to any existing files and directories
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)$ - [L]
+
+# Optional: Set default index files for directories
+DirectoryIndex index.php index.html welcome.php
+
+# Security: Prevent access to sensitive files
+<Files "*.md">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.txt">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.py">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent access to .htaccess files
+<Files ".htaccess">
+    Order allow,deny
+    Deny from all
+</Files>

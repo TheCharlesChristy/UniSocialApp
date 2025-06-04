@@ -10,7 +10,7 @@ class APIHandler {
         if ($baseURL === null) {
             $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-            $baseURL = $protocol . '://' . $host . '/webdev/backend/src/api';
+            $baseURL = $protocol . '://' . $host . '/backend/src/api';
         }        $this->baseURL = $baseURL;
         $this->defaultHeaders = [
             'Content-Type' => 'application/json',

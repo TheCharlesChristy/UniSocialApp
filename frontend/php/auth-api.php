@@ -6,7 +6,7 @@ class AuthAPI extends APIHandler {
     
     public function __construct() {
         // Initialize with auth-specific base URL
-        parent::__construct('/webdev/backend/src/api/auth');
+        parent::__construct('/backend/src/api/auth');
     }
 
     /**
