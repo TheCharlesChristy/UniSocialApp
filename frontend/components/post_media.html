@@ -1,0 +1,32 @@
+<!-- SocialConnect Post Media Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/post_media.css">
+
+<div class="post-media-container" role="figure" aria-label="Post media content">
+    <div class="media-wrapper">        <!-- Image content -->
+        <img src="{{media_src_url}}" 
+             alt="Post media content" 
+             class="post-media-image"
+             loading="lazy"
+             onerror="this.style.display='none'; this.closest('.media-wrapper').querySelector('.media-error').style.display='flex';"
+             onload="this.style.display='block';">
+        
+        <!-- Video content (hidden by default, shown by JS if needed) -->
+        <video class="post-media-video" 
+               controls
+               preload="metadata"
+               style="display: none;">
+            <source src="{{media_src_url}}">
+            Your browser does not support the video element.
+        </video>
+        
+        <!-- Error state -->
+        <div class="media-error" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <p class="error-text">Unable to load media content</p>
+        </div>
+    </div>
+</div>
+
+<!-- Include JavaScript -->
+<script src="../js/post_media.js"></script>

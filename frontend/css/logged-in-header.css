@@ -1,0 +1,400 @@
+/* SocialConnect Logged-in Header Styles */
+
+/* Base header layout - consistent with home_header.html */
+.logged-in-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md);
+    background-color: var(--color-background-light);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Branding section */
+.header-branding {
+    flex-shrink: 0;
+}
+
+.brand-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.brand-title {
+    font-size: var(--font-size-h3);
+    color: var(--color-brand-purple);
+    margin: 0;
+}
+
+/* Main navigation */
+.main-navigation {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-menu {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-decoration: none;
+    color: var(--color-text-dark);
+    border-radius: var(--border-radius-md);
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+.nav-link:hover {
+    background-color: var(--color-brand-purple);
+    color: var(--color-white);
+    transform: translateY(-1px);
+}
+
+.nav-link:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.nav-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.nav-text {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+}
+
+/* User section */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+/* Notification button */
+.notification-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    transition: background-color 0.3s ease;
+}
+
+.notification-btn:hover {
+    background-color: var(--color-background-light);
+}
+
+.notification-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.notification-icon {
+    font-size: 20px;
+    color: var(--color-text-dark);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-error);
+    color: var(--color-white);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: var(--font-size-caption);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.notification-badge.show {
+    display: flex;
+}
+
+/* User profile dropdown */
+.user-profile-dropdown {
+    position: relative;
+}
+
+.user-profile-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-profile-btn:hover {
+    background-color: var(--color-background-light);
+    border-color: var(--color-brand-purple);
+}
+
+.user-profile-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.profile-picture {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+}
+
+.user-name {
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    color: var(--color-text-dark);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    font-size: var(--font-size-small);
+    color: var(--color-text-body);
+    transition: transform 0.3s ease;
+}
+
+.user-profile-btn[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--spacing-xs);
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.user-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    text-decoration: none;
+    color: var(--color-text-dark);
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-background-light);
+}
+
+.dropdown-item:focus {
+    background-color: var(--color-background-light);
+    outline: none;
+}
+
+.dropdown-icon {
+    font-size: 16px;
+}
+
+/* Mobile navigation */
+.mobile-nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+}
+
+.mobile-nav-toggle:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: var(--color-text-dark);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.mobile-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.mobile-nav-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mobile-nav-content {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    text-decoration: none;
+    color: var(--color-text-dark);
+    border-radius: var(--border-radius-md);
+    transition: background-color 0.3s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-size: var(--font-size-body);
+}
+
+.mobile-nav-link:hover {
+    background-color: var(--color-background-light);
+}
+
+.mobile-nav-link:focus {
+    background-color: var(--color-background-light);
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .logged-in-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .desktop-nav {
+        display: none;
+    }
+    
+    .mobile-nav-toggle {
+        display: flex;
+    }
+    
+    .user-name {
+        display: none;
+    }
+    
+    .user-section {
+        gap: var(--spacing-sm);
+    }
+    
+    .brand-title {
+        font-size: var(--font-size-large);
+    }
+}
+
+@media (max-width: 480px) {
+    .logged-in-header {
+        padding: var(--spacing-sm);
+    }
+    
+    .notification-btn {
+        padding: var(--spacing-xs);
+    }
+    
+    .user-profile-btn {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.logged-in-header a:focus,
+.logged-in-header button:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .nav-link:hover {
+        background-color: var(--color-text-dark);
+        color: var(--color-white);
+    }
+    
+    .user-dropdown-menu {
+        border-width: 2px;
+    }
+}

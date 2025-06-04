@@ -1,0 +1,74 @@
+/* SocialConnect View Post Comments Component Styles */
+
+.view-comments-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-white);
+}
+
+.view-comments-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 40px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.view-comments-button:hover {
+    background: #7C3AED;
+    transform: translateY(-1px);
+}
+
+.view-comments-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.view-comments-button:focus {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 2px;
+}
+
+.comments-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.comments-text {
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .view-comments-container {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .view-comments-button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-xs);
+        min-height: 36px;
+    }
+    
+    .comments-icon {
+        width: 18px;
+        height: 18px;
+    }
+}

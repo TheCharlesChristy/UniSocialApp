@@ -1,0 +1,196 @@
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/register-form.css">
+
+<section class="register-form-section" role="main" aria-label="Registration form">
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <h1 class="register-title">Create Your Account</h1>
+                <p class="register-subtitle">Join SocialConnect and start connecting</p>
+            </div>
+            
+            <form class="register-form" id="registerForm" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            class="form-input" 
+                            placeholder="Enter your first name"
+                            required
+                            maxlength="50"
+                            aria-describedby="firstName-error"
+                        >
+                        <div class="error-message" id="firstName-error" role="alert" aria-live="polite"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            class="form-input" 
+                            placeholder="Enter your last name"
+                            required
+                            maxlength="50"
+                            aria-describedby="lastName-error"
+                        >
+                        <div class="error-message" id="lastName-error" role="alert" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                    <input 
+                        type="date" 
+                        id="dateOfBirth" 
+                        name="dateOfBirth" 
+                        class="form-input" 
+                        required
+                        aria-describedby="dateOfBirth-error"
+                    >
+                    <div class="error-message" id="dateOfBirth-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Choose a unique username"
+                        required
+                        minlength="3"
+                        maxlength="20"
+                        aria-describedby="username-error username-hint"
+                    >
+                    <div class="input-hint" id="username-hint">3-20 characters, letters, numbers, and underscores only</div>
+                    <div class="error-message" id="username-error" role="alert" aria-live="polite"></div>
+                    <div class="success-message" id="username-success" style="display: none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="Enter your email address"
+                        required
+                        aria-describedby="email-error"
+                    >
+                    <div class="error-message" id="email-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input password-input" 
+                            placeholder="Create a strong password"
+                            required
+                            minlength="8"
+                            aria-describedby="password-error password-strength"
+                        >
+                        <button 
+                            type="button" 
+                            class="password-toggle" 
+                            aria-label="Toggle password visibility"
+                            id="passwordToggle"
+                        >
+                            <svg class="password-toggle-icon show-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="password-toggle-icon hide-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="password-strength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <div class="strength-text" id="strength-text"></div>
+                    </div>
+                    <div class="error-message" id="password-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            class="form-input password-input" 
+                            placeholder="Re-enter your password"
+                            required
+                            aria-describedby="confirmPassword-error"
+                        >
+                        <button 
+                            type="button" 
+                            class="password-toggle" 
+                            aria-label="Toggle password visibility"
+                            id="confirmPasswordToggle"
+                        >
+                            <svg class="password-toggle-icon show-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="password-toggle-icon hide-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="error-message" id="confirmPassword-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-wrapper terms-wrapper">
+                        <input type="checkbox" id="termsAccepted" name="termsAccepted" class="checkbox-input" required>
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-label">
+                            I agree to the 
+                            <a href="/terms" class="terms-link" target="_blank">Terms of Service</a> 
+                            and 
+                            <a href="/privacy" class="terms-link" target="_blank">Privacy Policy</a>
+                        </span>
+                    </label>
+                    <div class="error-message" id="termsAccepted-error" role="alert" aria-live="polite"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary register-submit" id="registerSubmit">
+                    <span class="submit-text">Create Account</span>
+                    <div class="loading-spinner" style="display: none;">
+                        <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2v4"></path>
+                        </svg>
+                    </div>
+                </button>
+
+                <div class="form-footer">
+                    <p class="login-prompt">
+                        Already have an account? 
+                        <a href="login.php" class="login-link">Sign in here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="../js/generic-api.js"></script>
+<script src="../js/generic-validation.js"></script>
+<script src="../js/register-form.js"></script>

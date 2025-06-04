@@ -94,9 +94,49 @@
             padding: 15px;
             border-radius: 4px;
             margin-bottom: 20px;
-        }
-        .file-input {
+        }        .file-input {
             margin-bottom: 10px;
+        }
+        .media-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .media-preview img, .media-preview video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .profile-picture-test {
+            text-align: center;
+            padding: 20px;
+        }
+        .profile-picture-test img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+            transition: transform 0.2s;
+        }
+        .profile-picture-test img:hover {
+            transform: scale(1.05);
+        }
+        .url-test-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .url-display {
+            word-break: break-all;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
         }
         .back-to-tests-btn {
             position: fixed;
@@ -400,9 +440,7 @@
             <button onclick="deleteComment()" style="background-color: #dc3545;">Delete Comment</button>
             <div id="deleteCommentResponse" class="response"></div>
         </div>
-    </div>
-
-    <!-- Media Tab -->
+    </div>    <!-- Media Tab -->
     <div id="media" class="tab-content">
         <!-- Upload Media -->
         <div class="container">
@@ -420,6 +458,55 @@
             </div>
             <button onclick="uploadMedia()">Upload File</button>
             <div id="uploadResponse" class="response"></div>
+        </div>
+
+        <!-- Get Media File -->
+        <div class="container">
+            <h3>Get Media File</h3>
+            <div class="form-group">
+                <label for="mediaFileName">File Name:</label>
+                <input type="text" id="mediaFileName" placeholder="Enter media file name (e.g., 1_profile_1732123456.jpg)">
+                <small>Get the filename from an upload response or API call</small>
+            </div>
+            <button onclick="getMediaFile()">Get Media File</button>
+            <div id="getMediaResponse" class="response"></div>
+            <div id="mediaPreview" style="margin-top: 15px; display: none;">
+                <label>Media Preview:</label>
+                <div id="mediaContainer" style="max-width: 500px; margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <!-- Test Profile Picture Display -->
+        <div class="container">
+            <h3>Test Profile Picture Display</h3>
+            <div class="form-group">
+                <label for="testUserId">User ID:</label>
+                <input type="number" id="testUserId" placeholder="Enter user ID to test profile picture">
+            </div>
+            <button onclick="testProfilePicture()">Test Profile Picture</button>
+            <div id="profileTestResponse" class="response"></div>
+            <div id="profilePicturePreview" style="margin-top: 15px; display: none;">
+                <label>Profile Picture Preview:</label>
+                <div id="profilePictureContainer" style="margin-top: 10px;">
+                    <img id="profilePictureImg" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #007bff;" alt="Profile Picture">
+                </div>
+            </div>
+        </div>
+
+        <!-- Media URL Builder -->
+        <div class="container">
+            <h3>Media URL Builder & Tester</h3>
+            <div class="form-group">
+                <label for="mediaUrlFileName">File Name:</label>
+                <input type="text" id="mediaUrlFileName" placeholder="Enter file name">
+            </div>
+            <button onclick="buildMediaUrl()">Build & Test URL</button>
+            <div id="mediaUrlResponse" class="response"></div>
+            <div id="builtUrlPreview" style="margin-top: 15px; display: none;">
+                <label>Built URL:</label>
+                <p id="builtUrl" style="word-break: break-all; background: #f8f9fa; padding: 10px; border-radius: 4px;"></p>
+                <div id="urlTestResult" style="margin-top: 10px;"></div>
+            </div>
         </div>
     </div>
 
@@ -765,9 +852,7 @@
             
             const result = await makeRequest(API_BASE_URL + '/posts/delete_comment.php', 'DELETE', { comment_id: parseInt(commentId) });
             displayResponse('deleteCommentResponse', result.success ? result.data : result.error, !result.success);
-        }
-
-        // Media API functions
+        }        // Media API functions
         async function uploadMedia() {
             const uploadType = document.getElementById('uploadType').value;
             const fileInput = document.getElementById('uploadFile');
@@ -784,6 +869,216 @@
             const result = await makeRequest(API_BASE_URL + '/media/upload.php', 'POST', formData, true);
             displayResponse('uploadResponse', result.success ? result.data : result.error, !result.success);
         }
+
+        // Get Media File function
+        async function getMediaFile() {
+            const fileName = document.getElementById('mediaFileName').value;
+            if (!fileName) {
+                displayResponse('getMediaResponse', { error: 'File name is required' }, true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/media/get_media.php?file=${encodeURIComponent(fileName)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    
+                    displayResponse('getMediaResponse', {
+                        success: true,
+                        message: 'Media file retrieved successfully',
+                        content_type: contentType,
+                        file_size: blob.size
+                    });
+
+                    // Show media preview
+                    const mediaPreview = document.getElementById('mediaPreview');
+                    const mediaContainer = document.getElementById('mediaContainer');
+                    
+                    if (contentType.startsWith('image/')) {
+                        mediaContainer.innerHTML = `<img src="${url}" alt="Media Preview" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">`;
+                    } else if (contentType.startsWith('video/')) {
+                        mediaContainer.innerHTML = `<video controls style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"><source src="${url}" type="${contentType}">Your browser does not support the video tag.</video>`;
+                    } else {
+                        mediaContainer.innerHTML = `<p>Media type: ${contentType}<br>File size: ${blob.size} bytes</p>`;
+                    }
+                    
+                    mediaPreview.style.display = 'block';
+                } else {
+                    const errorData = await response.json();
+                    displayResponse('getMediaResponse', errorData, true);
+                    document.getElementById('mediaPreview').style.display = 'none';
+                }
+            } catch (error) {
+                displayResponse('getMediaResponse', { error: 'Failed to fetch media: ' + error.message }, true);
+                document.getElementById('mediaPreview').style.display = 'none';
+            }
+        }
+
+        // Test Profile Picture function
+        async function testProfilePicture() {
+            const userId = document.getElementById('testUserId').value;
+            if (!userId) {
+                displayResponse('profileTestResponse', { error: 'User ID is required' }, true);
+                return;
+            }
+
+            try {                // First get user info to find their profile picture
+                const userResult = await makeRequest(`${API_BASE_URL}/users/get_user.php?userId=${userId}`);
+                
+                if (!userResult.success) {
+                    displayResponse('profileTestResponse', userResult.error, true);
+                    return;
+                }
+
+                const user = userResult.data.user;
+                displayResponse('profileTestResponse', {
+                    success: true,
+                    message: 'User data retrieved',
+                    user: {
+                        user_id: user.user_id,
+                        username: user.username,
+                        name: `${user.first_name} ${user.last_name}`,
+                        profile_picture_url: user.profile_picture_url
+                    }
+                });
+
+                // Test profile picture display
+                const profilePicturePreview = document.getElementById('profilePicturePreview');
+                const profilePictureImg = document.getElementById('profilePictureImg');
+                
+                if (user.profile_picture_url) {
+                    const mediaUrl = `${API_BASE_URL}/media/get_media.php?file=${encodeURIComponent(user.profile_picture_url)}`;
+                    console.log("Media URL:", mediaUrl);
+                    profilePictureImg.src = mediaUrl;
+                    profilePictureImg.alt = `${user.username}'s profile picture`;
+                    
+                    // Test if image loads
+                    profilePictureImg.onload = function() {
+                        displayResponse('profileTestResponse', {
+                            success: true,
+                            message: 'Profile picture loaded successfully',
+                            media_url: mediaUrl
+                        });
+                    };                    profilePictureImg.onerror = function() {
+                        // Prevent infinite loop by checking if we're already showing placeholder
+                        if (!profilePictureImg.src.includes('placeholder.png')) {
+                            profilePictureImg.src = '/webdev/backend/media/images/placeholder.png';
+                        }
+                        displayResponse('profileTestResponse', {
+                            success: false,
+                            message: 'Failed to load profile picture, showing placeholder',
+                            media_url: mediaUrl
+                        }, true);
+                    };                } else {
+                    profilePictureImg.src = '/webdev/backend/media/images/placeholder.png';
+                    profilePictureImg.alt = 'Default profile picture';
+                }
+                
+                profilePicturePreview.style.display = 'block';
+                
+            } catch (error) {
+                displayResponse('profileTestResponse', { error: 'Failed to test profile picture: ' + error.message }, true);
+                document.getElementById('profilePicturePreview').style.display = 'none';
+            }
+        }
+
+        // Build Media URL function
+        async function buildMediaUrl() {
+            const fileName = document.getElementById('mediaUrlFileName').value;
+            if (!fileName) {
+                displayResponse('mediaUrlResponse', { error: 'File name is required' }, true);
+                return;
+            }
+
+            const mediaUrl = `${API_BASE_URL}/media/get_media.php?file=${encodeURIComponent(fileName)}`;
+            
+            displayResponse('mediaUrlResponse', {
+                success: true,
+                message: 'Media URL built successfully',
+                url: mediaUrl
+            });
+
+            // Show built URL
+            const builtUrlPreview = document.getElementById('builtUrlPreview');
+            const builtUrl = document.getElementById('builtUrl');
+            const urlTestResult = document.getElementById('urlTestResult');
+            
+            builtUrl.textContent = mediaUrl;
+            builtUrlPreview.style.display = 'block';
+
+            // Test the URL
+            try {
+                const response = await fetch(mediaUrl, {
+                    method: 'HEAD', // Use HEAD to just check if file exists without downloading
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    const contentLength = response.headers.get('content-length');
+                    
+                    urlTestResult.innerHTML = `
+                        <div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 10px; border-radius: 4px;">
+                            <strong>✓ URL Test Successful</strong><br>
+                            Content-Type: ${contentType}<br>
+                            ${contentLength ? `Content-Length: ${contentLength} bytes` : ''}
+                        </div>
+                    `;
+                } else {
+                    const errorText = await response.text();
+                    urlTestResult.innerHTML = `
+                        <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; border-radius: 4px;">
+                            <strong>✗ URL Test Failed</strong><br>
+                            Status: ${response.status} ${response.statusText}<br>
+                            ${errorText}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                urlTestResult.innerHTML = `
+                    <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; border-radius: 4px;">
+                        <strong>✗ URL Test Error</strong><br>
+                        ${error.message}
+                    </div>                `;
+            }
+        }
+
+        // Initialize dropdown values when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize post type dropdown
+            const postTypeSelect = document.getElementById('postType');
+            postTypeSelect.innerHTML = `
+                <option value="text">Text</option>
+                <option value="photo">Photo</option>
+                <option value="video">Video</option>
+            `;
+
+            // Initialize privacy level dropdowns
+            const privacyOptions = `
+                <option value="public">Public</option>
+                <option value="friends">Friends</option>
+                <option value="private">Private</option>
+            `;
+            document.getElementById('privacyLevel').innerHTML = privacyOptions;
+            document.getElementById('updatePrivacy').innerHTML = privacyOptions;
+
+            // Initialize upload type dropdown
+            const uploadTypeSelect = document.getElementById('uploadType');
+            uploadTypeSelect.innerHTML = `
+                <option value="profile_picture">Profile Picture</option>
+                <option value="post_media">Post Media</option>
+            `;
+        });
     </script>
 </body>
 </html>

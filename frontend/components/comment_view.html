@@ -1,0 +1,70 @@
+<!-- SocialConnect Comment View Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/comment_view.css">
+
+<div class="comment-container" role="article" aria-label="Comment by {{user_name}}" data-post-id="{{post_id}}" data-comment-id="{{comment_id}}">
+    <div class="comment-header">
+        <!-- Profile Picture -->
+        <div class="comment-avatar">
+            <img src="{{user_profile_picture_url}}" 
+                 alt="{{user_name}}'s profile picture" 
+                 class="profile-picture"
+                 onerror="this.src='../assets/images/default-profile.svg'">
+        </div>
+        
+        <!-- User Info -->
+        <div class="comment-user-info">
+            <a href="profile.php?user_id={{user_id}}" class="username-link">
+                <span class="username">{{user_name}}</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Comment Content -->
+    <div class="comment-content">
+        <p class="comment-text">{{comment_content}}</p>
+    </div>    <!-- Comment Actions -->
+    <div class="comment-actions">
+        <button class="comment-like-button" 
+                onclick="toggleCommentLike('{{comment_id}}')"
+                data-liked="{{has_liked}}"
+                data-comment-id="{{comment_id}}"
+                aria-label="{{has_liked == '1' ? 'Unlike this comment' : 'Like this comment'}}">
+            <svg class="like-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 14C19 14 17 16 12 21C7 16 5 14 5 14C3.5 12.5 3.5 9.5 5 8C6.5 6.5 9.5 6.5 11 8L12 9L13 8C14.5 6.5 17.5 6.5 19 8C20.5 9.5 20.5 12.5 19 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="like-count" id="comment-like-count-{{comment_id}}">{{comment_likes}}</span>
+        </button>
+          <button class="comment-reply-button" 
+                onclick="toggleReplyForm('{{comment_id}}')"
+                aria-label="Reply to {{user_name}}'s comment">
+            <svg class="reply-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 17L4 12L9 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M20 18V16C20 13.7909 18.2091 12 16 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="reply-text">Reply</span>
+        </button>
+    </div>
+    
+    <!-- Reply Form -->
+    <div class="reply-form-container" id="reply-form-{{comment_id}}" style="display: none;">
+        <form class="reply-form" onsubmit="submitReply(event, '{{comment_id}}')">
+            <textarea class="reply-textarea" 
+                      placeholder="Write a reply..." 
+                      maxlength="1000" 
+                      rows="3"
+                      required></textarea>
+            <div class="reply-form-actions">
+                <button type="button" class="reply-cancel-btn" onclick="hideReplyForm('{{comment_id}}')">Cancel</button>
+                <button type="submit" class="reply-submit-btn">Reply</button>
+            </div>
+        </form>
+    </div>    <!-- Children Comments -->
+    <div class="children-comments">
+        {{children_comments}}
+        {{load_more_replies_button}}
+    </div>
+</div>
+
+<!-- Include JavaScript -->
+<script src="../js/comment_view.js"></script>

@@ -1,0 +1,19 @@
+<!-- SocialConnect Logged-in Header Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/user_banner.css">
+
+<section class="user_banner" role="banner" aria-label="User Banner" onclick="gotoProfile('{{user_id}}')">
+    <div class="user_icon">
+        <img src="{{profile_picture}}" 
+             alt="{{user_name}}'s profile picture" 
+             class="profile-picture"
+             onerror="this.src='../assets/images/default-profile.svg';">
+    </div>
+    <div class="user_info">
+        <h1 class="user_name">{{user_name}}</h1>
+    </div>
+</section>
+
+<!-- Include JavaScript -->
+<script src="../js/generic-api.js"></script>
+<script src="../js/user_banner.js"></script>

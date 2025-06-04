@@ -1,0 +1,49 @@
+<!-- SocialConnect Select Location Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/select_location.css">
+
+<div class="select-location-container" role="region" aria-label="Select location">
+    <div class="location-input-wrapper">
+        <!-- Location icon -->
+        <svg class="location-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        
+        <!-- Location display/input -->
+        <input type="text" id="location-display-{{component_id}}" class="location-display" value="{{default_location_text}}" readonly placeholder="No location selected">
+        
+        <!-- Select location button -->
+        <button type="button" class="select-location-button" id="select-location-button-{{component_id}}" aria-label="Select location">
+            Select Location
+        </button>
+    </div>
+    
+    <!-- Hidden map container (shown when button is clicked) -->
+    <div class="map-container" id="map-container-{{component_id}}" style="display: none;">
+        <div class="map-header">
+            <h4>Select a location</h4>
+            <button type="button" class="close-map-button" id="close-map-button-{{component_id}}" aria-label="Close map">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="map-search">
+            <input type="text" id="map-search-input-{{component_id}}" class="map-search-input" placeholder="Search for a location">
+        </div>
+        <div class="map-view" id="map-view-{{component_id}}"></div>
+        <div class="map-footer">
+            <button type="button" class="confirm-location-button" id="confirm-location-button-{{component_id}}">Confirm Location</button>
+            <button type="button" class="remove-location-button" id="remove-location-button-{{component_id}}">Remove Location</button>
+        </div>
+    </div>
+    
+    <!-- Hidden fields to store coordinates -->
+    <input type="hidden" id="location-latitude-{{component_id}}" name="location_latitude" value="{{default_latitude}}">
+    <input type="hidden" id="location-longitude-{{component_id}}" name="location_longitude" value="{{default_longitude}}">
+    <input type="hidden" id="location-name-{{component_id}}" name="location_name" value="{{default_location_name}}">
+</div>
+
+<script src="../js/select_location.js"></script>

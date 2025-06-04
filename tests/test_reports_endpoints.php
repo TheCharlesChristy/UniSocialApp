@@ -165,15 +165,18 @@
         <ul>
             <li><strong>POST /api/reports</strong> - Create a new report</li>
             <li><strong>GET /api/users/:userId/reports</strong> - Get reports filed by a user</li>
+            <li><strong>GET /api/reports/:reportId</strong> - Get specific report by ID (admin only)</li>
         </ul>
         <p><strong>Content Types:</strong> user, post, comment</p>
         <p><strong>Report Statuses:</strong> pending, reviewed, action_taken, dismissed</p>
+        <p><strong>Note:</strong> The "Get Report" endpoint requires admin authentication.</p>
     </div>
 
     <!-- Tabs -->
     <div class="tabs">
         <div class="tab active" onclick="showTab('create-report')">Create Report</div>
         <div class="tab" onclick="showTab('get-reports')">Get User Reports</div>
+        <div class="tab" onclick="showTab('get-report')">Get Report (Admin)</div>
     </div>
 
     <!-- Create Report Tab -->
@@ -299,6 +302,41 @@
             <button onclick="getUserReports()">Get Reports</button>
             <button onclick="clearReportsFilters()" style="background-color: #6c757d; margin-left: 10px;">Clear Filters</button>
             <div id="getUserReportsResponse" class="response"></div>
+        </div>
+    </div>    <!-- Get Report (Admin) Tab -->
+    <div id="get-report" class="tab-content">
+        <div class="container">
+            <h3>Get Report (Admin Only)</h3>
+            <p><strong>Endpoint:</strong> GET /api/reports/:reportId</p>
+            
+            <div class="info-box">
+                <h4>Admin Access Required</h4>
+                <p>This endpoint requires admin authentication. Only admin users can retrieve specific report details.</p>
+                <p><strong>Features:</strong></p>
+                <ul>
+                    <li>Detailed report information including all user data</li>
+                    <li>Content details based on content type (post, comment, user)</li>
+                    <li>Review history and admin notes</li>
+                    <li>Reporter and reported user information</li>
+                </ul>
+            </div>
+            
+            <div class="form-group">
+                <label for="getReportId">Report ID:</label>
+                <input type="number" id="getReportId" value="1" placeholder="Enter report ID to retrieve">
+                <div class="example-values">Enter the ID of the report you want to retrieve (must exist in database)</div>
+            </div>
+            
+            <button onclick="getReport()">Get Report Details</button>
+            <div id="getReportResponse" class="response"></div>
+            
+            <div class="info-box" style="margin-top: 20px;">
+                <h4>Expected Response Structure</h4>
+                <p><strong>Success (200):</strong> Detailed report object with reporter, reported user, content details, and review information</p>
+                <p><strong>Error (403):</strong> Admin access required</p>
+                <p><strong>Error (404):</strong> Report not found</p>
+                <p><strong>Error (400):</strong> Invalid report ID</p>
+            </div>
         </div>
     </div>
 
@@ -462,6 +500,18 @@
             const url = `${API_BASE_URL}/users/get_user_reports.php?${queryParams.toString()}`;
             const result = await makeRequest(url);
             displayResponse('getUserReportsResponse', result.success ? result.data : result, !result.success);
+        }        // Get Report (Admin) function
+        async function getReport() {
+            const reportId = document.getElementById('getReportId').value;
+            
+            if (!reportId || reportId <= 0) {
+                displayResponse('getReportResponse', 'Please enter a valid report ID', true);
+                return;
+            }
+
+            const url = `${API_BASE_URL}/reports/get_report.php?id=${reportId}`;
+            const result = await makeRequest(url);
+            displayResponse('getReportResponse', result.success ? result.data : result, !result.success);
         }
 
         // Initialize content ID placeholder on page load

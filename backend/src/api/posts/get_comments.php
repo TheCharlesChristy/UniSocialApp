@@ -153,61 +153,154 @@ if (empty($topLevelComments)) {
     exit();
 }
 
+// Function to count only direct replies (not nested replies)
+function countDirectReplies($Database, $commentId) {
+    $sql = "SELECT COUNT(*) as count FROM comments WHERE parent_comment_id = ?";
+    $result = $Database->query($sql, [$commentId]);
+    
+    if ($result === false || empty($result)) {
+        return 0;
+    }
+    
+    return (int)$result[0]['count'];
+}
+
+// Function to recursively count all descendant comments (kept for compatibility)
+function countAllDescendants($Database, $commentId) {
+    $sql = "SELECT comment_id FROM comments WHERE parent_comment_id = ?";
+    $directReplies = $Database->query($sql, [$commentId]);
+    
+    if ($directReplies === false) {
+        return 0;
+    }
+    
+    $count = count($directReplies);
+    
+    // Recursively count descendants of each direct reply
+    foreach ($directReplies as $reply) {
+        $count += countAllDescendants($Database, $reply['comment_id']);
+    }
+    
+    return $count;
+}
+
+// Function to get direct reply counts for comments (counts only direct replies, not nested)
+function getDirectReplyCountsForComments($Database, $commentIds) {
+    if (empty($commentIds)) {
+        return [];
+    }
+    
+    $counts = [];
+    foreach ($commentIds as $commentId) {
+        $counts[$commentId] = countDirectReplies($Database, $commentId);
+    }
+    
+    return $counts;
+}
+
+// Function to get limited replies for comments
+function getLimitedRepliesForComments($Database, $postId, $userId, $commentIds, $repliesLimit = 5) {
+    if (empty($commentIds)) {
+        return [];
+    }
+    
+    $placeholders = str_repeat('?,', count($commentIds) - 1) . '?';
+      // Get only the first few direct replies for each comment
+    $sql = "
+        SELECT 
+            c.comment_id,
+            c.post_id,
+            c.user_id,
+            c.content,
+            c.created_at,
+            c.updated_at,
+            c.parent_comment_id,
+            u.username,
+            u.first_name,
+            u.last_name,
+            u.profile_picture,
+            COALESCE(like_counts.likes_count, 0) as likes_count,
+            CASE WHEN user_likes.like_id IS NOT NULL THEN 1 ELSE 0 END as user_has_liked
+        FROM comments c
+        INNER JOIN users u ON c.user_id = u.user_id
+        LEFT JOIN (
+            SELECT comment_id, COUNT(*) as likes_count
+            FROM likes
+            WHERE comment_id IS NOT NULL
+            GROUP BY comment_id
+        ) like_counts ON c.comment_id = like_counts.comment_id
+        LEFT JOIN likes user_likes ON c.comment_id = user_likes.comment_id AND user_likes.user_id = ?
+        WHERE c.post_id = ?
+        AND c.parent_comment_id IN ($placeholders)
+        AND u.account_status = 'active'
+        ORDER BY c.created_at ASC
+    ";
+    
+    $queryParams = array_merge([$userId, $postId], $commentIds);
+    $allReplies = $Database->query($sql, $queryParams);
+    
+    if ($allReplies === false) {
+        return false;
+    }
+    
+    // Filter to only include the first N replies per parent
+    $limitedReplies = [];
+    $replyCountPerParent = [];
+    
+    foreach ($allReplies as $reply) {
+        $parentId = $reply['parent_comment_id'];
+        
+        if (!isset($replyCountPerParent[$parentId])) {
+            $replyCountPerParent[$parentId] = 0;
+        }
+        
+        if ($replyCountPerParent[$parentId] < $repliesLimit) {
+            $limitedReplies[] = $reply;
+            $replyCountPerParent[$parentId]++;
+        }
+    }
+      return $limitedReplies;
+}
+
 // Get all comment IDs from the top-level comments
 $topLevelCommentIds = array_column($topLevelComments, 'comment_id');
-$placeholders = str_repeat('?,', count($topLevelCommentIds) - 1) . '?';
 
-// Now get ALL replies for these top-level comments (no pagination on replies)
-$repliesSql = "
-    SELECT 
-        c.comment_id,
-        c.post_id,
-        c.user_id,
-        c.content,
-        c.created_at,
-        c.updated_at,
-        c.parent_comment_id,
-        u.username,
-        u.first_name,
-        u.last_name,
-        u.profile_picture,
-        COALESCE(like_counts.likes_count, 0) as likes_count,
-        CASE WHEN user_likes.like_id IS NOT NULL THEN 1 ELSE 0 END as user_has_liked
-    FROM comments c
-    INNER JOIN users u ON c.user_id = u.user_id
-    LEFT JOIN (
-        SELECT comment_id, COUNT(*) as likes_count
-        FROM likes
-        WHERE comment_id IS NOT NULL
-        GROUP BY comment_id
-    ) like_counts ON c.comment_id = like_counts.comment_id
-    LEFT JOIN likes user_likes ON c.comment_id = user_likes.comment_id AND user_likes.user_id = ?
-    WHERE c.post_id = ?
-    AND c.parent_comment_id IN ($placeholders)
-    AND u.account_status = 'active'
-    ORDER BY c.created_at ASC
-";
+// Get limited replies (first 5 replies) for top-level comments
+$repliesLimit = 5; // You can make this configurable
+$limitedReplies = getLimitedRepliesForComments($Database, $postId, $userId, $topLevelCommentIds, $repliesLimit);
 
-$queryParams = array_merge([$userId, $postId], $topLevelCommentIds);
-$replies = $Database->query($repliesSql, $queryParams);
-
-if ($replies === false) {
+if ($limitedReplies === false) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database error']);
     exit();
 }
 
-// Combine top-level comments and replies
-$comments = array_merge($topLevelComments, $replies);
+// Combine top-level comments and limited replies
+$comments = array_merge($topLevelComments, $limitedReplies);
+
+// Get direct reply counts for ALL fetched comments (counts only direct replies, not nested)
+$allCommentIds = array_column($comments, 'comment_id');
+$allReplyCounts = getDirectReplyCountsForComments($Database, $allCommentIds);
+
+if ($allReplyCounts === false) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Database error']);
+    exit();
+}
 
 // Organize comments into nested structure
 $commentTree = [];
 $commentMap = [];
 
-// First pass: create map and identify top-level comments
+// First pass: create map and set reply counts
 foreach ($comments as $comment) {
     $commentMap[$comment['comment_id']] = $comment;
     $commentMap[$comment['comment_id']]['replies'] = [];
+    
+    // Set reply count from our fetched counts for ALL comments
+    $commentMap[$comment['comment_id']]['reply_count'] = isset($allReplyCounts[$comment['comment_id']]) 
+        ? $allReplyCounts[$comment['comment_id']] 
+        : 0;
     
     if ($comment['parent_comment_id'] === null) {
         $commentTree[] = &$commentMap[$comment['comment_id']];
@@ -222,13 +315,36 @@ foreach ($comments as $comment) {
     }
 }
 
+// Add metadata to indicate if there are more replies to load
+foreach ($commentTree as &$topLevelComment) {
+    $commentId = $topLevelComment['comment_id'];
+    $loadedReplies = count($topLevelComment['replies']);
+    $totalReplies = $topLevelComment['reply_count'];
+    
+    $topLevelComment['has_more_replies'] = $totalReplies > $loadedReplies;
+    $topLevelComment['loaded_replies'] = $loadedReplies;
+    
+    // Also set metadata for nested replies
+    if (!empty($topLevelComment['replies'])) {
+        foreach ($topLevelComment['replies'] as &$reply) {
+            $replyId = $reply['comment_id'];
+            $replyLoadedReplies = count($reply['replies'] ?? []);
+            $replyTotalReplies = $reply['reply_count'];
+            
+            $reply['has_more_replies'] = $replyTotalReplies > $replyLoadedReplies;
+            $reply['loaded_replies'] = $replyLoadedReplies;
+        }
+    }
+}
+
 // Format response
 $response = [
     'success' => true,
     'comments' => $commentTree,
     'total_comments' => (int)$totalTopLevelComments,
     'current_page' => $page,
-    'total_pages' => $totalPages
+    'total_pages' => $totalPages,
+    'replies_per_comment_limit' => $repliesLimit
 ];
 
 echo json_encode($response);

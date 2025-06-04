@@ -1,0 +1,101 @@
+<!-- SocialConnect Create Post Container Component -->
+<link rel="stylesheet" href="../css/globals.css">
+<link rel="stylesheet" href="../css/create_post_container.css">
+
+<div class="create-post-container" role="main" aria-label="Create new post">
+    <div class="create-post-card">
+        <!-- Header -->
+        <div class="create-post-header">
+            <h2 class="create-post-title">Create New Post</h2>
+        </div>
+          <div class="create-post-content">
+            <!-- 1. Confirm Media Component -->
+            <div class="content-section media-section" id="mediaSection">
+                {{confirm_media_component}}
+            </div>
+            
+            <!-- 2. Select Location Component -->
+            <div class="content-section location-section" id="locationSection">
+                <div class="section-header">
+                    <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 21C16 17 20 13.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 13.4183 8 17 12 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="section-title">Add Location</span>
+                </div>
+                {{location_component}}
+            </div>
+            
+            <div class="content-section privacy-section" id="privacySection">
+                <div class="section-header">
+                    <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="section-title">Privacy Level</span>
+                </div>
+                <div class="privacy-dropdown-wrapper">
+                    <select id="privacyLevel" class="privacy-dropdown" aria-label="Select privacy level">
+                        <option value="public">Public - Everyone can see this post</option>
+                        <option value="friends">Friends - Only friends can see this post</option>
+                        <option value="private">Private - Only you can see this post</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="content-section caption-section" id="captionSection">
+                <div class="section-header">
+                    <svg class="section-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="section-title">Caption</span>
+                </div>
+                <div class="caption-input-wrapper">
+                    <textarea 
+                        id="postCaption" 
+                        class="caption-textarea" 
+                        placeholder="What's on your mind? Share your thoughts, experiences, or what's happening..."
+                        maxlength="2000"
+                        aria-label="Post caption"
+                        rows="4"
+                    ></textarea>
+                    <div class="caption-footer">
+                        <span class="character-count" id="characterCount">0/2000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="create-post-footer">
+            <button 
+                type="button" 
+                id="createPostButton" 
+                class="btn btn-primary create-post-btn"
+                aria-label="Create post"
+            >
+                <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 2l7.586 7.586" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="11" cy="11" r="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="btn-text">Share Post</span>
+            </button>
+            
+            <div id="postLoadingState" class="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <span class="loading-text">Creating your post...</span>
+            </div>
+        </div>
+        
+        <div id="postStatusMessages" class="status-messages" style="display: none;">
+            <!-- Success/Error messages will be displayed here -->
+        </div>
+    </div>
+</div>
+
+<!-- Include JavaScript -->
+<script src="../js/create_post_container.js"></script>

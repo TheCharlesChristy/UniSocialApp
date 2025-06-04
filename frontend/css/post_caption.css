@@ -1,0 +1,111 @@
+/* Post Caption Component Styles */
+.post-caption-container {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-white);
+}
+
+.caption-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+.username {
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    color: var(--color-text-dark);
+    cursor: pointer;
+    text-decoration: none;
+    padding: 1px 2px;
+    transition: all 0.2s ease;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.username:hover {
+    background-color: var(--color-background-light);
+    color: var(--color-brand-purple);
+    transform: translateY(-1px);
+}
+
+.username:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+    background-color: var(--color-background-light);
+}
+
+.username:active {
+    transform: translateY(0);
+}
+
+.caption-text {
+    font-size: var(--font-size-body);
+    color: var(--color-text-body);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .post-caption-container {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .username {
+        font-size: var(--font-size-small);
+    }
+    
+    .caption-text {
+        font-size: var(--font-size-small);
+    }
+}
+
+@media (max-width: 480px) {
+    .caption-wrapper {
+        gap: var(--spacing-xs);
+    }
+    
+    .username {
+        font-size: var(--font-size-small);
+    }
+    
+    .caption-text {
+        font-size: var(--font-size-small);
+        line-height: 1.4;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .username {
+        transition: none;
+    }
+    
+    .username:hover {
+        transform: none;
+    }
+    
+    .username:active {
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    
+    .username:hover {
+        background-color: var(--color-text-dark);
+        color: var(--color-white);
+    }
+}
+
+/* Focus styles for keyboard navigation */
+.username:focus-visible {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}

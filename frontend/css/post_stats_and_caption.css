@@ -1,0 +1,198 @@
+/* Post Stats and Caption Component Styles */
+
+.post-stats-and-caption-container {
+    width: 100%;
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.stats-caption-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+    width: 100%;
+    align-items: center;
+}
+
+.post-stats-and-caption-content {
+    width: 50%;
+    font-size: var(--font-size-body);
+    color: var(--color-text-body);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    height: 100%;
+    border: none;
+}
+
+.post-stats-and-caption-content:first-child {
+    font-weight: 500;
+    color: var(--color-text-dark);
+}
+
+.post-stats-and-caption-content:last-child {
+    margin-top: var(--spacing-xs);
+}
+
+.third-content {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-body);
+    color: var(--color-text-body);
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background: var(--color-background-light);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .post-stats-and-caption-container {
+        gap: var(--spacing-xs);
+    }
+    
+    .stats-caption-wrapper {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .third-content {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-small);
+    }
+    
+    .post-stats-and-caption-content {
+        font-size: var(--font-size-small);
+    }
+}
+
+/* Accessibility improvements */
+.post-stats-and-caption-container:focus-within {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+/* Animation for smooth transitions */
+.post-stats-and-caption-container,
+.stats-caption-wrapper,
+.third-content {
+    transition: all 0.2s ease;
+}
+
+/* Hover effects for interactive elements */
+.post-stats-and-caption-container:hover {
+    background: var(--color-background-light);
+}
+
+.post-stats-and-caption-container:hover .third-content {
+    background: var(--color-white);
+}
+
+/* Hide Comments Button Styles */
+.hide-comments-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 var(--spacing-md) var(--spacing-sm);
+}
+
+.hide-comments-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--color-white);
+    color: var(--color-text-body);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-caption);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    min-height: 32px;
+}
+
+.hide-comments-btn:hover {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border-color: var(--color-brand-purple);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+}
+
+.hide-comments-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(139, 92, 246, 0.2);
+}
+
+.hide-comments-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.hide-comments-btn.comments-hidden {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    border-color: var(--color-brand-purple);
+    box-shadow: 0 1px 3px rgba(139, 92, 246, 0.3);
+}
+
+.hide-comments-btn.comments-hidden:hover {
+    background: #7C3AED;
+    border-color: #7C3AED;
+    box-shadow: 0 2px 4px rgba(124, 58, 237, 0.3);
+}
+
+.hide-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.hide-text {
+    font-size: var(--font-size-caption);
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* Responsive adjustments for hide button */
+@media (max-width: 768px) {
+    .hide-comments-wrapper {
+        padding: 0 var(--spacing-sm) var(--spacing-xs);
+    }
+    
+    .hide-comments-btn {
+        padding: 6px var(--spacing-xs);
+        font-size: 11px;
+        min-height: 28px;
+    }
+    
+    .hide-icon {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .hide-text {
+        font-size: 11px;
+    }
+}
+
+/* Animation classes for smooth hiding/showing */
+.third-content {
+    transition: all 0.3s ease;
+}
+
+.third-content[aria-hidden="true"] {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}

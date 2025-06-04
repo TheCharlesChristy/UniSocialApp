@@ -128,10 +128,9 @@ $allowedTypes = [
         'extensions' => ['jpg', 'jpeg', 'png', 'gif'],
         'max_size' => 5 * 1024 * 1024, // 5MB
         'directory' => 'media/images/'
-    ],
-    'post_media' => [
-        'mime_types' => ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/avi', 'video/quicktime'],
-        'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mov'],
+    ],    'post_media' => [
+        'mime_types' => ['image/jpeg', 'image/png', 'image/gif', 'video/mp4', 'video/avi', 'video/quicktime', 'video/webm'],
+        'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mov', 'webm'],
         'max_size' => 50 * 1024 * 1024, // 50MB
         'directory' => 'media/images/posts/'
     ]
@@ -149,9 +148,14 @@ if (!in_array($extension, $config['extensions'])) {
 
 // Validate MIME type
 $mimeType = mime_content_type($uploadFile['tmp_name']);
-if (!in_array($mimeType, $config['mime_types'])) {
+// Strip codec information for validation (e.g., "video/mp4;codecs=avc1,opus" -> "video/mp4")
+$baseMimeType = explode(';', $mimeType)[0];
+if (!in_array($baseMimeType, $config['mime_types'])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Invalid file format']);
+    echo json_encode([
+        'success' => false, 
+        'message' => 'Invalid file format. Detected: ' . $mimeType . ', Base: ' . $baseMimeType
+    ]);
     exit();
 }
 

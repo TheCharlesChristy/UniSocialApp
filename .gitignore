@@ -6,3 +6,5 @@ Docs/~*
 
 # Ignore user posts media
 backend/media/*
+
+backend/src/config/*

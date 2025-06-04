@@ -1,0 +1,381 @@
+/* SocialConnect Add Comment Component Styles */
+
+.add-comment-container {
+    width: 100%;
+    background: var(--color-white);
+    border-radius: var(--border-radius-md);
+    transition: all 0.2s ease;
+}
+
+/* Button State Styles */
+.add-comment-button-container {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.add-comment-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-background-light);
+    color: var(--color-text-body);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 40px;
+}
+
+.add-comment-btn:hover {
+    background: var(--color-white);
+    border-color: var(--color-brand-purple);
+    color: var(--color-brand-purple);
+    transform: translateY(-1px);
+}
+
+.add-comment-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+    background: var(--color-white);
+    border-color: var(--color-brand-purple);
+    color: var(--color-brand-purple);
+}
+
+.add-comment-btn:active {
+    transform: translateY(0);
+}
+
+.comment-icon {
+    color: currentColor;
+    transition: transform 0.2s ease;
+}
+
+.add-comment-btn:hover .comment-icon {
+    transform: scale(1.1);
+}
+
+.add-comment-text {
+    font-weight: 500;
+}
+
+/* Form State Styles */
+.add-comment-form-container {
+    width: 100%;
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background-light);
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 300px;
+    }
+}
+
+.add-comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.form-content {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+}
+
+/* Avatar Styles */
+.comment-avatar {
+    flex-shrink: 0;
+}
+
+.profile-picture {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+    transition: border-color 0.2s ease;
+}
+
+.profile-picture:hover {
+    border-color: var(--color-brand-purple);
+}
+
+/* Input Wrapper */
+.comment-input-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+.comment-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dark);
+    background: var(--color-white);
+    resize: vertical;
+    transition: all 0.2s ease;
+    line-height: 1.5;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: var(--color-brand-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.comment-textarea:focus:invalid {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.comment-textarea::placeholder {
+    color: var(--color-text-body);
+    opacity: 0.7;
+}
+
+/* Character Counter */
+.character-counter {
+    position: absolute;
+    bottom: var(--spacing-xs);
+    right: var(--spacing-sm);
+    font-size: var(--font-size-caption);
+    color: var(--color-text-body);
+    background: var(--color-white);
+    padding: 2px 4px;
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    pointer-events: none;
+}
+
+.character-counter.warning {
+    color: var(--color-warning);
+}
+
+.character-counter.error {
+    color: var(--color-error);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    margin-left: 44px; /* Align with textarea (36px avatar + 8px gap) */
+}
+
+.cancel-btn,
+.submit-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-family: inherit;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.cancel-btn {
+    background: var(--color-white);
+    color: var(--color-text-body);
+    border: 1px solid var(--color-border);
+}
+
+.cancel-btn:hover {
+    background: var(--color-background-light);
+    border-color: var(--color-text-body);
+    color: var(--color-text-dark);
+}
+
+.cancel-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.submit-btn {
+    background: var(--color-brand-purple);
+    color: var(--color-white);
+    position: relative;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #7C3AED;
+    transform: translateY(-1px);
+}
+
+.submit-btn:focus {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    background: var(--color-border);
+    color: var(--color-text-body);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Loading state */
+.submit-btn.loading .submit-text {
+    opacity: 0;
+}
+
+.submit-btn.loading .submit-spinner {
+    display: flex !important;
+    position: absolute;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Message Container */
+.message-container {
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-top: var(--spacing-xs);
+}
+
+.message {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.message.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.message.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-error);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add-comment-form-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .form-content {
+        gap: var(--spacing-xs);
+    }
+    
+    .profile-picture {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .comment-textarea {
+        min-height: 60px;
+        font-size: var(--font-size-small);
+    }
+    
+    .form-actions {
+        margin-left: 40px; /* Adjust for smaller avatar */
+    }
+    
+    .cancel-btn,
+    .submit-btn {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: var(--font-size-caption);
+        min-width: 60px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-actions {
+        margin-left: 0;
+        flex-direction: column-reverse;
+    }
+    
+    .cancel-btn,
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .add-comment-form-container,
+    .add-comment-btn,
+    .comment-textarea,
+    .cancel-btn,
+    .submit-btn,
+    .spinner {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .add-comment-btn:hover,
+    .submit-btn:hover:not(:disabled) {
+        transform: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .add-comment-btn,
+    .cancel-btn {
+        border-width: 2px;
+    }
+    
+    .comment-textarea:focus {
+        border-width: 3px;
+    }
+}
+
+/* Focus visible for better keyboard navigation */
+.add-comment-btn:focus-visible,
+.cancel-btn:focus-visible,
+.submit-btn:focus-visible,
+.comment-textarea:focus-visible {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 2px;
+}
