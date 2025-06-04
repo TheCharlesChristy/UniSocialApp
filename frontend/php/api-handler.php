@@ -164,7 +164,7 @@ class APIHandler {
                 }
                 
                 if (is_array($responseData) && isset($responseData['message'])) {
-                    throw new Exception($responseData['message']);
+                    throw new Exception(message: $responseData['message']);
                 } elseif (is_string($responseData) && trim($responseData)) {
                     throw new Exception($responseData);
                 } else {

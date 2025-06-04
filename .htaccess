@@ -1,6 +1,15 @@
 # Enable URL rewriting
 RewriteEngine On
 
+# Pass Authorization header to PHP scripts (crucial for API authentication)
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Alternative method for Authorization header (for different server configs)
+<IfModule mod_setenvif.c>
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
 # Redirect root domain to frontend/pages
 # This handles requests to www.mywebsite.com and redirects to www.mywebsite.com/frontend/pages/
 RewriteCond %{REQUEST_URI} ^/$
