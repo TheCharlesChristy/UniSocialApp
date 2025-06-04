@@ -66,13 +66,17 @@ function authorizeRequest($required = true) {
             exit();
         }
         return null;
-    }
+    }    $token = $matches[1];
     
-    $token = $matches[1];
+    // Debug logging for production issue
+    error_log("AUTH DEBUG - Token validation starting");
     
     // Validate token
     $tokenData = AuthUtils::validateToken($token);
+    error_log("AUTH DEBUG - validateToken result: " . ($tokenData === false ? 'FALSE' : 'SUCCESS'));
+    
     if ($tokenData === false) {
+        error_log("AUTH DEBUG - Token validation failed, returning 'Invalid or expired token'");
         if ($required) {
             http_response_code(401); // Unauthorized
             echo json_encode(['success' => false, 'message' => 'Invalid or expired token', 'reset_token' => true]);
@@ -81,8 +85,13 @@ function authorizeRequest($required = true) {
         return null;
     }
     
-    // Check if token is blacklisted
-    if (AuthUtils::isTokenBlacklisted($token, $Database)) {
+    // Check if valid token is blacklisted (pass token data to avoid double validation)
+    error_log("AUTH DEBUG - Checking if token is blacklisted");
+    $isBlacklisted = AuthUtils::isTokenBlacklisted($token, $Database, $tokenData);
+    error_log("AUTH DEBUG - isTokenBlacklisted result: " . ($isBlacklisted ? 'TRUE (blacklisted)' : 'FALSE (not blacklisted)'));
+    
+    if ($isBlacklisted) {
+        error_log("AUTH DEBUG - Token is blacklisted, returning 'Token has been invalidated'");
         if ($required) {
             http_response_code(401); // Unauthorized
             echo json_encode(['success' => false, 'message' => 'Token has been invalidated', 'reset_token' => true]);

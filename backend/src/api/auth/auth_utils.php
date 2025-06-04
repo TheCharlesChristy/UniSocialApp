@@ -199,31 +199,41 @@ class AuthUtils {
         $result = $db->execute($sql, [$payload['jti'], date('Y-m-d H:i:s', $payload['exp'])]);
         
         return $result !== false;
-    }
-    
-    /**
+    }    /**
      * Check if token is blacklisted
      * 
      * @param string $token JWT token
      * @param object $db Database connection
-     * @return bool True if token is blacklisted
+     * @param array $tokenData Optional pre-validated token data to avoid double validation
+     * @return bool True if token is blacklisted, false if not blacklisted or invalid
      */
-    public static function isTokenBlacklisted($token, $db) {
-        $tokenParts = explode('.', $token);
-        if (count($tokenParts) != 3) {
-            return true; // Invalid tokens are considered blacklisted
+    public static function isTokenBlacklisted($token, $db, $tokenData = null) {
+        // If token data is not provided, validate the token first
+        if ($tokenData === null) {
+            $tokenParts = explode('.', $token);
+            if (count($tokenParts) != 3) {
+                return false; // Invalid token structure - let main validation handle it
+            }
+            
+            // Validate the token to ensure it's properly signed before checking blacklist
+            $tokenData = self::validateToken($token);
+            if ($tokenData === false) {
+                return false; // Invalid token - let main validation handle it
+            }
         }
         
-        $payload = json_decode(self::base64UrlDecode($tokenParts[1]), true);
-        if (!isset($payload['jti'])) {
-            return true;
+        // Token is valid, now check if it's blacklisted
+        if (!isset($tokenData['jti'])) {
+            return false; // No token ID - can't be blacklisted
         }
         
         $sql = "SELECT COUNT(*) as count FROM token_blacklist WHERE token_id = ?";
-        $result = $db->query($sql, [$payload['jti']]);
+        $result = $db->query($sql, [$tokenData['jti']]);
         
         if ($result === false || !isset($result[0]['count'])) {
-            return true; // If error, consider token blacklisted for security
+            // Database error - log it but don't block valid tokens
+            error_log("Error checking token blacklist: database query failed");
+            return false;
         }
         
         return (int)$result[0]['count'] > 0;
