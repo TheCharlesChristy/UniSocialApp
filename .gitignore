@@ -8,3 +8,6 @@ Docs/~*
 backend/media/*
 
 backend/src/config/*
+
+# Ignore configuration files
+backend/src/db_handler/*.txt
