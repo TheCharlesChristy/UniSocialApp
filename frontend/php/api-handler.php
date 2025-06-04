@@ -155,6 +155,13 @@ class APIHandler {
                 $this->debugLog("HTTP Error $httpCode for URL: $url", [
                     'response_body' => substr($responseBody, 0, 200)
                 ], 'error');
+
+                // Check if the reset_token flag is set
+                if (is_array($responseData) && isset($responseData['reset_token']) && $responseData['reset_token'] === true) {
+                    // Automatically remove the auth token if reset is requested
+                    $this->removeAuthToken();
+                    throw new Exception("Authentication token reset required. Please log in again.");
+                }
                 
                 if (is_array($responseData) && isset($responseData['message'])) {
                     throw new Exception($responseData['message']);

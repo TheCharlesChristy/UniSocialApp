@@ -64,7 +64,7 @@ function authorizeRequest($required = true) {
     if ($tokenData === false) {
         if ($required) {
             http_response_code(401); // Unauthorized
-            echo json_encode(['success' => false, 'message' => 'Invalid or expired token']);
+            echo json_encode(['success' => false, 'message' => 'Invalid or expired token', 'reset_token' => true]);
             exit();
         }
         return null;
@@ -74,7 +74,7 @@ function authorizeRequest($required = true) {
     if (AuthUtils::isTokenBlacklisted($token, $Database)) {
         if ($required) {
             http_response_code(401); // Unauthorized
-            echo json_encode(['success' => false, 'message' => 'Token has been invalidated']);
+            echo json_encode(['success' => false, 'message' => 'Token has been invalidated', 'reset_token' => true]);
             exit();
         }
         return null;
