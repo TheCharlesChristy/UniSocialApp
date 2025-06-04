@@ -1,0 +1,30 @@
+# Test directory configuration
+# Uncomment the following lines for production to deny access to tests
+
+# PRODUCTION: Uncomment these lines to deny access to test files
+# Order deny,allow
+# Deny from all
+
+# DEVELOPMENT: Allow access to test files (current setting)
+# Tests are accessible during development
+
+# Prevent access to sensitive test data if any
+<FilesMatch "\.env|\.key|\.secret">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Set proper PHP execution
+AddType application/x-httpd-php .php
+
+# Basic CORS for test endpoints
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Error reporting for tests (helpful during development)
+php_flag display_errors on
+php_flag log_errors on
+php_value error_log ../backend/logs/test_errors.log

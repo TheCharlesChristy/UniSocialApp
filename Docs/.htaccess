@@ -1,0 +1,26 @@
+# Documentation directory - RESTRICTED ACCESS
+# This directory contains project documentation and sensitive information
+
+# Deny access to documentation files in production
+# Comment out the following lines if you want to allow access during development
+
+Order deny,allow
+Deny from all
+
+# Prevent access to specific sensitive file types
+<FilesMatch "\.(docx?|txt|md|pdf)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Alternative: Allow only local access (uncomment if needed)
+# <RequireAll>
+#     Require ip 127.0.0.1
+#     Require ip ::1
+# </RequireAll>
+
+# Redirect to main site
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ / [R=301,L]
+</IfModule>

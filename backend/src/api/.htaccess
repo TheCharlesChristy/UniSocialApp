@@ -1,10 +1,59 @@
+# Enable URL rewriting for API endpoints
+RewriteEngine On
+
 # Suppress PHP errors and warnings for API endpoints to ensure clean JSON responses
 php_flag display_errors off
 php_flag log_errors on
 php_value error_log ../../../logs/api_errors.log
 
-# Increase upload limits if needed (optional - can also be done in php.ini)
-# php_value upload_max_filesize 100M
-# php_value post_max_size 100M
-# php_value max_execution_time 300
-# php_value max_input_time 300
+# Set proper MIME types for API responses
+AddType application/json .json
+
+# CORS headers for API endpoints
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    Header set Access-Control-Max-Age "3600"
+</IfModule>
+
+# Handle OPTIONS requests for CORS preflight
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Security: Prevent direct access to sensitive files
+<Files "*.md">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.txt">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "auth_middleware.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "auth_utils.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Increase upload limits for media endpoints
+php_value upload_max_filesize 100M
+php_value post_max_size 100M
+php_value max_execution_time 300
+php_value max_input_time 300
+php_value memory_limit 256M
+
+# Set proper content type for PHP files
+AddType application/x-httpd-php .php
+
+# Prevent access to .htaccess files
+<Files ".htaccess">
+    Order allow,deny
+    Deny from all
+</Files>

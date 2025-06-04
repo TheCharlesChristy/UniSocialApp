@@ -1,0 +1,17 @@
+# Database backups directory - DENY ALL ACCESS
+
+# Deny all access to this directory
+Order deny,allow
+Deny from all
+
+# Alternative method - redirect all requests away
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ / [R=301,L]
+</IfModule>
+
+# Prevent access to all file types
+<Files "*">
+    Order allow,deny
+    Deny from all
+</Files>

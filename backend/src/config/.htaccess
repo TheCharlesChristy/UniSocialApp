@@ -1,6 +1,18 @@
-# filepath: c:\xampp\htdocs\webdev\backend\src\config\.htaccess
+# Configuration directory - DENY ALL ACCESS
+# This directory contains sensitive configuration files including API keys
+
 # Deny access to all files in this directory
 <FilesMatch ".*">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
+
+# Additional security layer
+Order deny,allow
+Deny from all
+
+# Redirect attempts to access config files
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ / [R=301,L]
+</IfModule>

@@ -1,0 +1,23 @@
+# Logs directory - DENY ALL ACCESS
+
+# Deny all access to log files
+Order deny,allow
+Deny from all
+
+# Alternative method - return 404 for all requests
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ - [R=404,L]
+</IfModule>
+
+# Prevent access to all file types
+<Files "*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Additional security for log files
+<FilesMatch "\.(log|txt)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

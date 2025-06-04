@@ -1,0 +1,29 @@
+# Database handler directory - DENY ALL ACCESS
+# This directory contains sensitive database configuration and connection files
+
+# Deny all access to this directory
+Order deny,allow
+Deny from all
+
+# Prevent access to configuration files
+<FilesMatch "\.(php|txt|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to all files
+<Files "*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Return 404 for any attempts to access this directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ - [R=404,L]
+</IfModule>
+
+# Additional security headers
+<IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow"
+</IfModule>

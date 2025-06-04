@@ -1,0 +1,24 @@
+# Database schema directory - DENY ALL ACCESS
+# This directory contains database schema files
+
+# Deny all access to this directory
+Order deny,allow
+Deny from all
+
+# Prevent access to SQL files
+<FilesMatch "\.(sql|db)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Prevent access to all files
+<Files "*">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Redirect attempts to access schema files
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ / [R=404,L]
+</IfModule>
