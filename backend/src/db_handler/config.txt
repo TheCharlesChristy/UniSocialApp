@@ -3,6 +3,14 @@ DB_HOST=localhost:3306
 DB_NAME=Data
 DB_USER=superuser
 DB_PASS=xyz
+
+# JWT Configuration
+JWT_SECRET_KEY=webdev_production_secret_key_2025_secure_256_bit_change_this_in_production
+JWT_ALGORITHM=HS256
+JWT_ACCESS_TOKEN_EXPIRE=86400
+JWT_REFRESH_TOKEN_EXPIRE=604800
+
 # Configuration file for database connection
 # Set RESET_DB to FALSE in production environments
-# This is test configuration for a local database. Wont work in prod.
+# IMPORTANT: Change JWT_SECRET_KEY to a secure 256-bit key in production!
+# For production, update database credentials and set RESET_DB=FALSE

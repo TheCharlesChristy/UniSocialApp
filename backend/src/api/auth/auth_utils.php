@@ -8,16 +8,65 @@
  * - Email token generation
  */
 
+require_once __DIR__ . '/../../db_handler/config.php';
+
 class AuthUtils {
-    // Token expiration times (in seconds)
-    const ACCESS_TOKEN_EXPIRY = 86400; // 24 hours
-    const RESET_TOKEN_EXPIRY = 3600; // 1 hour
-    const VERIFICATION_TOKEN_EXPIRY = 172800; // 48 hours
+    // Default token expiration times (in seconds) - can be overridden by config
+    const DEFAULT_ACCESS_TOKEN_EXPIRY = 86400; // 24 hours
+    const DEFAULT_RESET_TOKEN_EXPIRY = 3600; // 1 hour
+    const DEFAULT_VERIFICATION_TOKEN_EXPIRY = 172800; // 48 hours
     
-    // Secret key for JWT tokens - should be moved to a secure config in production
-    private static $secretKey = 'your-256-bit-secret-key'; // Change this in production!
+    private static $config = null;
     
     /**
+     * Get configuration instance
+     * 
+     * @return DatabaseConfig Configuration instance
+     */
+    private static function getConfig() {
+        if (self::$config === null) {
+            $configPath = __DIR__ . '/../../db_handler/config.txt';
+            self::$config = new DatabaseConfig($configPath);
+        }
+        return self::$config;
+    }
+    
+    /**
+     * Get JWT secret key from configuration
+     * 
+     * @return string JWT secret key
+     */
+    private static function getSecretKey() {
+        $config = self::getConfig();
+        $secretKey = $config->get('JWT_SECRET_KEY', 'your-256-bit-secret-key');
+        
+        // Log warning if using default key
+        if ($secretKey === 'your-256-bit-secret-key') {
+            error_log('WARNING: Using default JWT secret key. Please set JWT_SECRET_KEY in config.txt for production!');
+        }
+        
+        return $secretKey;
+    }
+    
+    /**
+     * Get token expiry time from configuration
+     * 
+     * @param string $type Token type (auth, reset, verify)
+     * @return int Expiry time in seconds
+     */
+    private static function getTokenExpiry($type) {
+        $config = self::getConfig();
+        
+        switch ($type) {
+            case 'reset':
+                return (int)$config->get('JWT_RESET_TOKEN_EXPIRE', self::DEFAULT_RESET_TOKEN_EXPIRY);
+            case 'verify':
+                return (int)$config->get('JWT_VERIFICATION_TOKEN_EXPIRE', self::DEFAULT_VERIFICATION_TOKEN_EXPIRY);
+            default:
+                return (int)$config->get('JWT_ACCESS_TOKEN_EXPIRE', self::DEFAULT_ACCESS_TOKEN_EXPIRY);
+        }
+    }
+      /**
      * Generate JWT token
      * 
      * @param int $userId User ID
@@ -27,16 +76,7 @@ class AuthUtils {
      */
     public static function generateToken($userId, $type = 'auth', $expiry = null) {
         if ($expiry === null) {
-            switch ($type) {
-                case 'reset':
-                    $expiry = self::RESET_TOKEN_EXPIRY;
-                    break;
-                case 'verify':
-                    $expiry = self::VERIFICATION_TOKEN_EXPIRY;
-                    break;
-                default:
-                    $expiry = self::ACCESS_TOKEN_EXPIRY;
-            }
+            $expiry = self::getTokenExpiry($type);
         }
         
         $issuedAt = time();
@@ -49,10 +89,9 @@ class AuthUtils {
             'type' => $type,
             'jti' => bin2hex(random_bytes(16)) // Token ID for revocation purposes
         ];
-        
-        $header = self::base64UrlEncode(json_encode(['alg' => 'HS256', 'typ' => 'JWT']));
+          $header = self::base64UrlEncode(json_encode(['alg' => 'HS256', 'typ' => 'JWT']));
         $payload = self::base64UrlEncode(json_encode($payload));
-        $signature = self::base64UrlEncode(hash_hmac('sha256', "$header.$payload", self::$secretKey, true));
+        $signature = self::base64UrlEncode(hash_hmac('sha256', "$header.$payload", self::getSecretKey(), true));
         
         return "$header.$payload.$signature";
     }
@@ -72,9 +111,8 @@ class AuthUtils {
         }
         
         list($header, $payload, $signature) = $tokenParts;
-        
-        // Verify signature
-        $expectedSignature = self::base64UrlEncode(hash_hmac('sha256', "$header.$payload", self::$secretKey, true));
+          // Verify signature
+        $expectedSignature = self::base64UrlEncode(hash_hmac('sha256', "$header.$payload", self::getSecretKey(), true));
         if (!hash_equals($expectedSignature, $signature)) {
             return false;
         }

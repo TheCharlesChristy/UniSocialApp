@@ -1,0 +1,21 @@
+# Production Configuration Template
+# Copy this to config.txt on your production server and update the values
+
+RESET_DB=FALSE
+DB_HOST=your_production_db_host:3306
+DB_NAME=your_production_db_name
+DB_USER=your_production_db_user
+DB_PASS=your_production_db_password
+
+# JWT Configuration - Generate a secure 256-bit key for production
+JWT_SECRET_KEY=your_secure_256_bit_jwt_secret_key_change_this_immediately
+JWT_ALGORITHM=HS256
+JWT_ACCESS_TOKEN_EXPIRE=86400
+JWT_REFRESH_TOKEN_EXPIRE=604800
+
+# IMPORTANT SECURITY NOTES:
+# 1. NEVER commit production credentials to version control
+# 2. Generate a strong JWT secret key (256-bit recommended)
+# 3. Use environment-specific database credentials
+# 4. Set RESET_DB=FALSE in production to prevent data loss
+# 5. Ensure file permissions restrict access to this config file

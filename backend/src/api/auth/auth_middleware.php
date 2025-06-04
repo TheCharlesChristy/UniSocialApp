@@ -40,21 +40,13 @@ function authorizeRequest($required = true) {
     if (empty($authHeader) && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
         $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
     }
-    
-    // Try CGI/FastCGI environment variable
+      // Try CGI/FastCGI environment variable
     if (empty($authHeader) && function_exists('apache_request_headers')) {
         $apacheHeaders = apache_request_headers();
         if (isset($apacheHeaders['Authorization'])) {
             $authHeader = $apacheHeaders['Authorization'];
         }
     }
-    
-    // Debug logging for authorization header detection (remove in production)
-    error_log("Auth Middleware Debug - Authorization header sources:");
-    error_log("- getallheaders(): " . (isset($headers['Authorization']) ? 'Found' : 'Not found'));
-    error_log("- HTTP_AUTHORIZATION: " . (isset($_SERVER['HTTP_AUTHORIZATION']) ? 'Found' : 'Not found'));
-    error_log("- REDIRECT_HTTP_AUTHORIZATION: " . (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION']) ? 'Found' : 'Not found'));
-    error_log("- Final authHeader: " . ($authHeader ? 'Found (' . substr($authHeader, 0, 20) . '...)' : 'Empty'));
     
     // Check if Authorization header exists
     if (empty($authHeader)) {
